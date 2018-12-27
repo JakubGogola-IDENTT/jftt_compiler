@@ -1,0 +1,7 @@
+[ Błąd w linii 6: niewłaściwe użycie zmiennej a ]
+DECLARE
+  a; b(1:20);
+IN
+  a:=1;
+  a(1):=b(a);
+END

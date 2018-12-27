@@ -1,0 +1,43 @@
+SUB B B		# generowanie n=100
+INC B
+ADD B B
+INC B
+ADD B B
+ADD B B
+ADD B B
+INC B
+ADD B B
+ADD B B
+SUB C C		# generowanie 1
+INC C
+COPY D B	# i:=n
+COPY E B	# licznik pętli
+DEC E		# licznik--
+JZERO E 20	# wyjście z pętli
+COPY A D	# sito(i):=1
+STORE C
+DEC D		# i--
+JUMP 14		# powrót do pętli
+DEC C		# generowanie 0
+SUB D D		# i:=2
+INC D
+INC D
+COPY E B	# licznik pętli
+DEC E		# licznik--
+JZERO E 42	# wyście z pętli
+COPY A D	# czytanie sito(i)
+LOAD F
+JZERO F 40	# sito(i)=0
+COPY G D	# j:=i
+ADD G D		# j+=i
+COPY H B	# j<=n ?
+INC H
+SUB H G
+JZERO H 39	# wyjście z while
+COPY A G	# sito(j):=0
+STORE C
+JUMP 31		# powrót do pętli
+PUT D		# write i 
+INC D		# i++
+JUMP 25		# powrót do pętli
+HALT		# koniec

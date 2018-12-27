@@ -1,0 +1,39 @@
+program      -> DECLARE declarations IN commands END
+
+declarations -> declarations pidentifier;
+             | declarations pidentifier(num:num);
+             | 
+
+commands     -> commands command
+             | command
+
+command      -> identifier := expression;
+             | IF condition THEN commands ELSE commands ENDIF
+             | IF condition THEN commands ENDIF
+             | WHILE condition DO commands ENDWHILE
+             | DO commands WHILE condition ENDDO
+             | FOR pidentifier FROM value TO value DO commands ENDFOR
+             | FOR pidentifier FROM value DOWNTO value DO commands ENDFOR
+             | READ identifier;
+             | WRITE value;
+
+expression   -> value
+             | value + value
+             | value - value
+             | value * value
+             | value / value
+             | value % value
+
+condition    -> value = value
+             | value != value
+             | value < value
+             | value > value
+             | value <= value
+             | value >= value
+
+value        -> num
+             | identifier
+
+identifier   -> pidentifier
+             | pidentifier(pidentifier)
+             | pidentifier(num)

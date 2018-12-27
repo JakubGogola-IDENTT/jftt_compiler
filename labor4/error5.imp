@@ -1,0 +1,6 @@
+[ Błąd w linii 5: użycie niezainicjowanej zmiennej a ]
+DECLARE
+  a;
+IN
+  WRITE a;
+END

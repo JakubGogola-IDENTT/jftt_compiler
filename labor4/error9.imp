@@ -1,0 +1,9 @@
+[ Błąd w linii 8: niezadeklarowana zmienna i ]
+DECLARE
+  a; b(10:10);
+IN
+  FOR i FROM 0 TO 9 DO 
+    b(i) := i*i;
+  ENDFOR
+  a := b(i);
+END

@@ -1,0 +1,4 @@
+[ szybsza wersja programu 0
+wykorzystanie div i mod
+]
+DECLAREa;b;INREADa;WHILEa>0DOb:=a%2;a:=a/2;WRITEb;ENDWHILEEND

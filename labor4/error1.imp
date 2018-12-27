@@ -1,0 +1,7 @@
+[ Błąd w linii 3: druga deklaracja a ]
+DECLARE
+  a; b; a;
+IN
+  READ a;
+  b := a;
+END

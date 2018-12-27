@@ -1,0 +1,12 @@
+# zapis binarny
+GET A
+JZERO A 10
+COPY B A
+HALF B
+ADD B B
+COPY C A
+SUB C B
+PUT C
+HALF A
+JUMP 1
+HALT

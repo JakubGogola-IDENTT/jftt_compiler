@@ -1,0 +1,7 @@
+[ Błąd w linii 5: niewłaściwy znak '-' ]
+DECLARE
+  a; b;
+IN
+  b := -3;
+  a := b;
+END

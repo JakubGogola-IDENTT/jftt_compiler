@@ -1,0 +1,7 @@
+[ Błąd w linii 5: niewłaściwe użycie zmiennej tablicowej b ]
+DECLARE
+  a; b(10:10);
+IN
+  b := 1;
+  a := b;
+END

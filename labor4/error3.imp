@@ -1,0 +1,7 @@
+[ Błąd w linii 6: użycie niezainicjowanej zmiennej a ]
+DECLARE
+  a; b;
+IN
+  READ b;
+  b := a;
+END

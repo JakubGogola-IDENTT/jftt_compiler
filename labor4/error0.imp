@@ -1,0 +1,7 @@
+[ Błąd w linii 3: niewłaściwy zakres tablicy b ]
+DECLARE
+  a; b(11:10);
+IN
+  b(10) := 1;
+  a := b(11);
+END

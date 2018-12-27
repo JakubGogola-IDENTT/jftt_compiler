@@ -1,0 +1,7 @@
+[ Błąd w linii 3: nierozpoznany napis 1 ]
+DECLARE
+  a1; b;
+IN
+  READ a1;
+  b := a1;
+END
