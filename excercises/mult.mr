@@ -1,4 +1,4 @@
-GET B
+GET B # Multiplying
 GET C
 SUB D D
 JZERO C 12
