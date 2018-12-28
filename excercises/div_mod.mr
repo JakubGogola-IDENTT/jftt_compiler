@@ -9,7 +9,7 @@ COPY H C  	# LESS condidtion
 INC H
 SUB H B
 JZERO H 12 	# end of LESS condition
-JUMP 15		# if condition doesn't work
+JUMP 15		# when condition doesn't work
 ADD C C 	# divisor := divisor + divisot
 ADD E E 	# multiplier := multiplier + multiplier
 JUMP 7 		
