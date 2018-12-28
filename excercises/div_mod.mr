@@ -4,7 +4,7 @@ SUB D D     # result
 SUB E E     # multiplier
 INC E       
 COPY F B    # reminder
-JZERO C 36	# check if divisor ==
+JZERO C 36	# check if divisor == 0
 COPY H C  	# LESS condidtion
 INC H
 SUB H B
