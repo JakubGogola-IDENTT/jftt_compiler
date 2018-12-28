@@ -1,0 +1,5 @@
+SUB A A
+INC A
+PUT A
+HALT
+
