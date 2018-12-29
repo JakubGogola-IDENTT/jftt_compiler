@@ -23,10 +23,12 @@ class ConstantGenerator:
         # Const is 0 or 1
         if self.const == 0:
             self.output_code = ['SUB B B', 'PUT B', 'HALT']
+            print('Const is 0')
             self.write_to_file()
             return
         elif self.const == 1:
             self.output_code = ['SUB B B', 'INC B', 'PUT B', 'HALT']
+            print('Const is 1')
             self.write_to_file()
             return
 
