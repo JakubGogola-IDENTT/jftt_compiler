@@ -5,4 +5,4 @@ Aby skompilować program należy użyć polecenia `make`. Aby uruchomić program
 1. `./maszyna-rejestrowa filename.mr` (wersja obłusgująca liczby typu <i>long long</i>)
 2. `./maszyna-rejestrowa-cln filename.mr` (wersja obsługjąca liczby dowolnej długości, korzystająca z biblioteki `CLN` dla języka `C++`)
 
-Maszyna została przetestowana i skompilowana pod systemem `Kubuntu 18.10 (Cosmis Cuttlefish)` dla kompilatora języka `C++` `g++` dla standardu `c++17`, dla programu `flex` w wersji 2.6.4 i dla programu `bison` w wersji 3.0.4.
+Maszyna została przetestowana i skompilowana pod systemem `Kubuntu 18.10 (Cosmic Cuttlefish)` dla kompilatora języka `C++` `g++` dla standardu `c++17`, dla programu `flex` w wersji 2.6.4 i dla programu `bison` w wersji 3.0.4.
