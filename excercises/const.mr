@@ -2,4 +2,3 @@ SUB B B
 INC B
 PUT B
 HALT
-
