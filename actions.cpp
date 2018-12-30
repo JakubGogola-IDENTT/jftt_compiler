@@ -8,7 +8,7 @@
 #include "actions.hpp"
 #include "defs.hpp"
 
-void write_to_file(std::string filename) {
+void print_code(std::string filename) {
 
 }
 
@@ -16,3 +16,6 @@ bool check_context(symbol sym) {
     
 }
 
+void gen_const(long long constant) {
+
+}

@@ -7,14 +7,14 @@
 // Struct for symbol in symbols array
 struct symbol {
     std::string name;
-    unsigned long long offset;
+    long long offset;
     bool is_init;
     bool is_array;
-    unsigned long long array_start;
-    unsigned long long array_end;
+    long long array_start;
+    long long array_end;
 
     // Not array variable
-    symbol(std::string name, unsigned long long offset) {
+    symbol(std::string name, long long offset) {
         this->name = name;
         this->offset = offset;
         this->is_init = false;
@@ -24,7 +24,7 @@ struct symbol {
     }
 
     // Array variable
-    symbol(std::string name, unsigned long long offset, unsigned long long array_start, unsigned long long array_end) {
+    symbol(std::string name, long long offset, long long array_start, long long array_end) {
         this->name = name;
         this->offset = offset;
         this->is_init = false;
@@ -36,10 +36,10 @@ struct symbol {
 
 // Struct for temporary labels
 struct label {
-    unsigned long long jump_true;
-    unsigned long long jump_false;
+    long long jump_true;
+    long long jump_false;
 
-    label(unsigned long long jump_true, unsigned long long jump_false) {
+    label(long long jump_true, long long jump_false) {
         this->jump_true = jump_true;
         this->jump_false = jump_false;
     }
@@ -49,20 +49,21 @@ struct label {
 // TODO: I'don't know if it is unecessarry..
 struct block {
     //TODO: implement
-    unsigned long long offset;
+    long long offset;
     std::vector<std::string> cmds;
 };
 
 struct utils {
     // Memory offset
-    unsigned long long mem_offset;
+    long long mem_offset;
     // Code offset
-    unsigned long long code_offset;
+    long long code_offset;
     // Last label
-    unsigned long long next_label;
+    long long next_label;
 
     // TODO: Check if using std::map is faster
     std::map<std::string, symbol> sym_map;
+    std::vector<int> mem;
 
     utils() {
         this->mem_offset = 0;

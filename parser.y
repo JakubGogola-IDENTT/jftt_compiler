@@ -1,4 +1,5 @@
 %{
+#include <iostream>
 #include <string>
 #include <memory>
 #include <vector>
@@ -15,31 +16,33 @@ std::shared_ptr<utils> data();
 %}
 %union{
     std::string *pidentifier;
-    unsigned long long num;
-    //std::vector<std::string> *code;
-    //label *cond;
-    //symbol *sym;
+    long long num;
+    std::vector<std::string> *code;
+    struct label *cond;
+    struct symbol *sym;
 }
 
-/*%type <code> program;
-%type <code> commands;
-%type <code> command;
-%type <code> expression;
-%type <cond> condition;
-%type <sym> identifier;*/
-
-%token <pidentifier> pidentifier
-%token <num> num
-
+/*%type <code> program
+%type <code> commands
+%type <code> command
+%type <code> expression*/
 %start program
 %token DECLARE IN END
-%token IF WHILE
+%token <cond> IF WHILE
 %token FOR
 %token THEN ELSE ENDIF FROM TO DOWNTO DO ENDFOR ENDWHILE ENDDO
 %token READ WRITE       
 %token LESS GREATER LEQ GEQ EQ NEQ
 %token ASSIGN
 %token ERROR
+
+%token <pidentifier> pidentifier
+%token <num> num
+
+//%type <num> condition
+%type <sym> value
+%type <sym> identifier
+
 %left ADD SUB
 %left MUL DIV MOD
 %%      

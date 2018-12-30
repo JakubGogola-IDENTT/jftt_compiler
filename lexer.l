@@ -4,6 +4,7 @@
 %{
 #include <iostream>
 #include <string>
+#include <vector>
 #include <memory>
 #include "parser.tab.h"
 %}
@@ -54,7 +55,7 @@ PUNCT                   [\(\)\:\;]
                             yylval.pidentifier = std::make_shared<std::string>(yytext).get();
                             return pidentifier;
                         }
-{DIGIT}+                { yylval.num = std::stoull(yytext); return num; }
+{DIGIT}+                { yylval.num = std::stoll(yytext); return num; }
 {PUNCT}                 { return yytext[0]; }
 \[.*\]                  { /*ignore comments TODO: make comments better again*/ }
 [ \t\n]+                { /*ignore whitespaces*/ }
