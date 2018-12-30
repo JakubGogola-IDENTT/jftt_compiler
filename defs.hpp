@@ -8,6 +8,7 @@
 struct symbol {
     std::string name;
     unsigned long long offset;
+    bool is_init;
     bool is_array;
     unsigned long long array_start;
     unsigned long long array_end;
@@ -16,6 +17,7 @@ struct symbol {
     symbol(std::string name, unsigned long long offset) {
         this->name = name;
         this->offset = offset;
+        this->is_init = false;
         this->is_array = false;
         this->array_start = 0;
         this->array_end = 0;
@@ -25,6 +27,7 @@ struct symbol {
     symbol(std::string name, unsigned long long offset, unsigned long long array_start, unsigned long long array_end) {
         this->name = name;
         this->offset = offset;
+        this->is_init = false;
         this->is_array = true;
         this->array_start = array_start;
         this->array_end = array_end;
@@ -43,6 +46,7 @@ struct label {
 };
 
 // Struct for code blocks: IF, IF-ELSE, WHILE, FOR
+// TODO: I'don't know if it is unecessarry..
 struct block {
     //TODO: implement
     unsigned long long offset;

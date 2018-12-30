@@ -39,7 +39,7 @@ std::shared_ptr<utils> data();
 %token READ WRITE       
 %token LESS GREATER LEQ GEQ EQ NEQ
 %token ASSIGN
-%token TERM
+%token ERROR
 %left ADD SUB
 %left MUL DIV MOD
 %%      
@@ -48,27 +48,27 @@ program:        DECLARE
                         declarations
                 IN
                         commands
-                END {std::cout << "This is the end!" << std::endl;}
+                END 
 ;
 
-declarations:   declarations pidentifier TERM                             
-                | declarations pidentifier'('num ':' num')' TERM          
-                |                                                        {std::cout << "empty!" << std::endl;}
+declarations:   declarations pidentifier';'                             
+                | declarations pidentifier'('num ':' num')'';'          
+                |                                                        
 ;
 
 commands:       commands command
                 | command       
 ;
 
-command:        identifier ASSIGN expression TERM
+command:        identifier ASSIGN expression';'
                 | IF condition THEN commands ELSE commands ENDIF
                 | IF condition THEN commands ENDIF
                 | WHILE condition DO commands ENDWHILE
                 | DO commands WHILE condition ENDWHILE
                 | FOR pidentifier FROM value TO value DO commands ENDFOR
                 | FOR pidentifier FROM value DOWNTO value DO commands ENDFOR
-                | READ identifier TERM 
-                | WRITE value TERM
+                | READ identifier';'
+                | WRITE value';'
 ;
 
 expression:     value

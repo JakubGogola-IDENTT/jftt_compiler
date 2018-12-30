@@ -10,5 +10,7 @@
 
 // Write compiled program to file.
 void write_to_file(std::string filename);
+// Check if symbol exists.
 bool check_context(symbol sym);
-void stupid_func();
+// Generate constat value.
+void gen_const(unsigned long long constant);

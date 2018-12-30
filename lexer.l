@@ -7,6 +7,11 @@
 #include <memory>
 #include "parser.tab.h"
 %}
+
+IDENTIFIER              [_a-z]
+DIGIT                   [0-9]
+PUNCT                   [\(\)\:\;]
+
 %%
 "DECLARE"               { return DECLARE; }
 "IN"                    { return IN; }
@@ -45,14 +50,13 @@
 "/"                     { return DIV; }
 "%"                     { return MOD; }
 "*"                     { return MUL; }
-";"                     { return TERM; } 
-[_a-z]+                 { 
-                            std::cout << yytext << std::endl;
+{IDENTIFIER}+           { 
                             yylval.pidentifier = std::make_shared<std::string>(yytext).get();
                             return pidentifier;
                         }
-[0-9]+                  { yylval.num = std::stoull(yytext); return num; }
+{DIGIT}+                { yylval.num = std::stoull(yytext); return num; }
+{PUNCT}                 { return yytext[0]; }
 \[.*\]                  { /*ignore comments TODO: make comments better again*/ }
 [ \t\n]+                { /*ignore whitespaces*/ }
-.                       { return yytext[0]; }
+.                       { return ERROR; }
 %%
