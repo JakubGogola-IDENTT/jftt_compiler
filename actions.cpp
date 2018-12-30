@@ -14,3 +14,7 @@ void write_to_file(std::string filename) {
 bool check_context(symbol sym) {
     
 }
+
+void stupid_func() {
+    std::cout << "Hello, world!" << std::endl;
+}

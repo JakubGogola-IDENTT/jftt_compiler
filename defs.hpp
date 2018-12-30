@@ -37,8 +37,8 @@ struct label {
     unsigned long long jump_false;
 
     label(unsigned long long jump_true, unsigned long long jump_false) {
-        this->jump_true;
-        this->jump_false;
+        this->jump_true = jump_true;
+        this->jump_false = jump_false;
     }
 };
 
@@ -49,13 +49,20 @@ struct block {
     std::vector<std::string> cmds;
 };
 
-// Memory offset
-unsigned long long mem_offset = 0;
-// Code offset
-unsigned long long code_offset = 0;
-// Last label
-unsigned long long next_label = 0;
+struct utils {
+    // Memory offset
+    unsigned long long mem_offset;
+    // Code offset
+    unsigned long long code_offset;
+    // Last label
+    unsigned long long next_label;
 
-// TODO: Check if using std::map is faster
-std::map<std::string, symbol> sym_map;
+    // TODO: Check if using std::map is faster
+    std::map<std::string, symbol> sym_map;
 
+    utils() {
+        this->mem_offset = 0;
+        this->code_offset = 0;
+        this->next_label = 0;
+    }
+};
