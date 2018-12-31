@@ -44,6 +44,4 @@ public:
 
     long long alloc_mem();
     long long alloc_mem_array(long long start, long long end);
-
-
 };

@@ -12,6 +12,7 @@
 int yylex();
 int yyparse();
 void yyerror(std::string s);
+extern FILE *yyin;
 
 std::shared_ptr<data> d = std::make_shared<data>();
 std::shared_ptr<code_generator> cg = std::make_shared<code_generator>(d);
@@ -52,6 +53,7 @@ program:        DECLARE
                 IN
                         commands
                 END                                                                     { 
+                                                                                                std::cout << "end" << std::endl;
                                                                                                 cg->end_prog();
                                                                                                 code = cg->get_code();
                                                                                         }
@@ -104,8 +106,17 @@ identifier:     pidentifier                                                     
 %%
 
 int main(int argc, char** argv) {
-        //std::shared_ptr<io_handler> io = std::make_shared<io_handler>(argc, argv);
+        std::shared_ptr<io_handler> io = std::make_shared<io_handler>(argc, argv);
+        yyin = io->read_code();
+
+        if(yyin == nullptr) {
+                return -1;
+        }
+
         yyparse();
+        std::cout << "Parsing end" << std::endl;
+        std::cout << code.size() << std::endl;
+        io->print_code(code);
         return 0;
 }
 

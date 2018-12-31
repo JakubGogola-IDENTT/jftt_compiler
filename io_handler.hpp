@@ -3,6 +3,9 @@
 #include <iostream>
 #include <fstream>
 #include <string>
+#include <streambuf>
+#include <cstdio>
+#include <vector>
 
 class io_handler {
 private:
@@ -17,5 +20,6 @@ private:
 
 public:
     io_handler(int argc, char** argv);
-    void print_code();
+    FILE *read_code();
+    void print_code(std::vector<std::string> code);
 };

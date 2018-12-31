@@ -5,7 +5,7 @@
 #include <map>
 
 /**
- * Instructions
+ * Some instructions
  */
 enum instr {
     I_INC,
