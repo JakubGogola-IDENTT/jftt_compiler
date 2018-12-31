@@ -80,27 +80,33 @@ struct label {
 };
 
 struct variable {
+    //Array cell
     long long array_addr;
+
+    //Number of array cell
     long long addr;
 
+    //Single variable
     variable(long long addr) {
         this->array_addr = -1;
         this->addr = addr;
     }
 
+    //Array cell
     variable(long long array_addr, long long addr) {
         this->array_addr = array_addr;
         this->addr = addr;
     }
 };
 
+/**
+ * Wrapper for address 
+ */
 struct variable_value {
     long long addr;
-    long long value;
 
-    variable_value(long long addr, long long value) {
+    variable_value(long long addr) {
         this->addr = addr;
-        this->value = value;
     }
 };
 

@@ -9,8 +9,8 @@
 
 data::data() {
     this->mem_offset = 0;
-    this->code_offset = 0;
-    this->next_label = 0;
+    //this->code_offset = 0;
+    //this->next_label = 0;
     this->errors = false;
     this->errors_num = 0;
 }
@@ -35,7 +35,7 @@ void data::init_variable(std::string name) {
     if(this->check_context(name)) {
         this->sym_map[name]->is_init = true;
     } else {
-        std::cerr << this->error_alert << "variable is not defined" << std::endl;
+        std::cerr << this->error_alert << name << " - variable is not defined" << std::endl;
         this->error_found();
     }
     //TODO: finish!!!!
@@ -88,7 +88,7 @@ long long data::alloc_mem_array(long long start, long long end) {
  */
 long long data::put_symbol(std::string name) {
     if(this->check_context(name)) {
-        std::cerr << this->error_alert << name << " is already defined" << std::endl;
+        std::cerr << this->error_alert << name << " - is already defined" << std::endl;
         this->error_found();
         return -1;
     }
@@ -104,7 +104,7 @@ long long data::put_symbol(std::string name) {
  */
 long long data::put_symbol_array(std::string name, long long start, long long end) {
     if(this->check_context(name)) {
-        std::cerr << this->error_alert << name << " is already defined" << std::endl;
+        std::cerr << this->error_alert << name << " - is already defined" << std::endl;
         this->error_found();
         return -1;
     }
@@ -127,18 +127,19 @@ symbol *data::get_symbol(std::string name) {
     symbol *sym;
 
     if(!this->check_context(name)) {
-        std::cerr << this->error_alert << "variable is not declared" << std::endl;
+        std::cerr << this->error_alert << name << " - variable is not declared" << std::endl;
         this->error_found();
         return nullptr;
     }
     //TODO: CHECK IF IT WORKS!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! (if not - make pointer)
     sym = this->sym_map[name].get();
 
-    if(!sym->is_array && !sym->is_init) {
-        std::cerr << this->error_alert << "variable is not initialized" << std::endl;
+    //TODO: UNECESSARRY CODE!!!!! NOT HERE
+    /*if(!sym->is_array && !sym->is_init) {
+        std::cerr << this->error_alert << name << " - variable is not initialized" << std::endl;
         this->error_found();
         return nullptr;
-    }
+    }*/
 
     //TODO: CHECK!!!!!!!!!!!!!!!
     //return this->sym_map[name].get();
@@ -146,7 +147,7 @@ symbol *data::get_symbol(std::string name) {
 }
 
 /**
- * Returns variable's addres
+ * Returns variable's addres (single variable)
  */
 variable *data::get_variable(std::string name) {
     std::shared_ptr<variable> var;
@@ -172,6 +173,12 @@ variable *data::get_variable_array_var(std::string name, std::string var_name) {
         return nullptr;
     }
 
+    if(!var_sym->is_init) {
+        std::cerr << this->error_alert << name << " - variable is not initialized" << std::endl;
+        this->error_found();
+        return nullptr;
+    }
+
     var = std::make_shared<variable>(array_sym->offset, var_sym->offset);
     return var.get();
 
@@ -191,4 +198,23 @@ variable *data::get_variable_array_num(std::string name, long long num) {
     long long real_addr = num - array_sym->offset + 1;
     var = std::make_shared<variable>(real_addr);
     return var.get();
+}
+
+/**
+ * Returns specific addres to value
+ */
+variable_value *data::get_value(variable *var) {
+    std::shared_ptr<variable_value> val;
+
+    if(var == nullptr) {
+        return nullptr;
+    }
+
+    if(var->array_addr == -1) {
+        val = std::make_shared<variable_value>(var->addr);
+    } else {
+        
+    }
+
+    return val.get();
 }

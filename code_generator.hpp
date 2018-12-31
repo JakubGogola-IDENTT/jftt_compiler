@@ -20,23 +20,39 @@ private:
     //Flag - true if sth is wrtite to stdout
     bool is_write;
 
+    //Code offset
+    long long code_offset;
+
+    //Next free label
+    long long next_label;
+
     //Genearted code
     std::vector<std::string> code;
 
     //Cost of some instructions
     std::map<enum instr, int> costs;
 
+    /*FUNCTIONS*/
+
     //Generate costs map
     void gen_costs();
 
+    //Gets label
+    long long get_label();
+
+    //Increases offset when code added
+    void incr_offset(long long incr);
+
 public:
     code_generator(std::shared_ptr<data> d);
+
+    void set_mem_reg(long long addr);
 
     // Returns generated code
     std::vector<std::string> get_code();
 
     // Generate constat value.
-    void gen_const(long long c); 
+    std::vector<std::string> gen_const(long long c, std::string reg); 
 
     // Program is reading sth from stdin
     void read_interact();

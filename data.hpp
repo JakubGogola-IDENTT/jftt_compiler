@@ -11,12 +11,6 @@ private:
     //Memory offset
     long long mem_offset;
 
-    //Code offset
-    long long code_offset;
-
-    //Next free label
-    long long next_label;
-
     //Symbols table
     std::map<std::string, std::shared_ptr<symbol>> sym_map;
 
@@ -24,7 +18,7 @@ private:
     std::vector<long long> mem;
 
     //Error color message
-    const std::string error_alert = "\x1b[31m error \x1b[0m: ";
+    const std::string error_alert = "\x1b[31merror\x1b[0m: ";
 
     //Flag - true if errors occured
     bool errors;
@@ -55,5 +49,7 @@ public:
     variable *get_variable_array_var(std::string name, std::string var_name);
     variable *get_variable_array_num(std::string name, long long num);
 
+    variable_value *get_value(variable *var);
+    variable_value *get_value_num();
     //TODO: long long get_value();
 };

@@ -96,13 +96,13 @@ condition:      value EQ value
                 | value GEQ value
 ;
 
-value:          num
-                | identifier                                                            {  }
+value:          num                                                                     {  }
+                | identifier                                                            { $$ = d->get_value($1); }
 ;
 
 identifier:     pidentifier                                                             { $$ = d->get_variable(*$1); }
-                | pidentifier'('pidentifier')'
-                | pidentifier'('num')'
+                | pidentifier'('pidentifier')'                                          { $$ = d->get_variable_array_var(*$1, *$3); }
+                | pidentifier'('num')'                                                  { $$ = d->get_variable_array_num(*$1, $3); }
 ;
 %%
 

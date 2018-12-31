@@ -25,37 +25,56 @@ void code_generator::gen_costs() {
     this->costs.insert(std::pair<enum instr, int>(I_COPY, 5));
 }
 
+/**
+ * Increases offset when cmds added
+ */ 
+void code_generator::incr_offset(long long incr) {
+    this->code_offset += incr;
+}
 
 /**
- * Returns generated code
+ * Returns generated cmds
  */
 std::vector<std::string> code_generator::get_code() {
     return this->code;
 }
 
 /**
- * Writes HALT to the end of generated code
+ * Writes HALT to the end of generated cmds
  */
 void code_generator::end_prog() {
     this->code.push_back("HALT");
 }
 
 /**
+ * Sets A register to get address in memory
+ */ 
+void code_generator::set_mem_reg(long long addr) {
+    std::vector<std::string> cmds = this->gen_const(addr, "A");
+    cmds.insert(cmds.begin(), "SUB A A");
+    this->code.insert(this->code.end(), cmds.begin(), cmds.end());
+}
+
+
+/**
  * Generates constant value
  */
-void code_generator::gen_const(long long c) {
+std::vector<std::string> code_generator::gen_const(long long c, std::string reg) {
     //TODO: write to memory
-    std::vector<std::string> code;
+    std::vector<std::string> cmds;
     bool is_large = false;
     long long inc_cost = std::numeric_limits<long long>::max();
     long long mix_cost = 0;
 
+    std::string sub_cmd = "SUB " + reg + " " + reg;
+    std::string inc_cmd = "INC " + reg;
+
     if(c == 0) {
-        code.push_back("SUB B B");
+        cmds.push_back(sub_cmd);
         //TODO: STORE
     } else if(c == 1) {
-        code.push_back("SUB B B");
-        code.push_back("INC B");
+        cmds.push_back(sub_cmd);
+        cmds.push_back(inc_cmd);
     }
 
     //TODO: return @up!!!!!!!!!!!!!!!!!!!!!!!!!
@@ -65,10 +84,10 @@ void code_generator::gen_const(long long c) {
     }
     
     //Generating constant using INC and ADD instructions
-    code.push_back("SUB B B");
+    cmds.push_back(sub_cmd);
     mix_cost += this->costs[I_SUB];
-    code.push_back("INC B");
-    code.push_back("INC B");
+    cmds.push_back(inc_cmd);
+    cmds.push_back(inc_cmd);
     mix_cost += 2 * this->costs[I_SUB];
 
     //Value in register B
@@ -76,18 +95,19 @@ void code_generator::gen_const(long long c) {
 
     while(tmp + tmp < c) {
         tmp += tmp;
-        code.push_back("ADD B B");
+        //ADD B B!!!
+        cmds.push_back("ADD " + reg + " " + reg);
         mix_cost += this->costs[I_ADD];
     }
 
     //Half of value in register B
-    code.push_back("SUB C C");
+    cmds.push_back("SUB C C");
     mix_cost += this->costs[I_SUB];
 
-    code.push_back("COPY C B");
+    cmds.push_back("COPY C " + reg);
     mix_cost += this->costs[I_COPY];
 
-    code.push_back("HALF C");
+    cmds.push_back("HALF C");
     mix_cost += this->costs[I_HALF];
 
     long long half = tmp / 2;
@@ -95,7 +115,7 @@ void code_generator::gen_const(long long c) {
     while(half != 2) {
         if(tmp + half <= c) {
             tmp += half;
-            code.push_back("ADD B C");
+            cmds.push_back("ADD " + reg + " C");
             mix_cost += this->costs[I_ADD];
         }
 
@@ -103,13 +123,13 @@ void code_generator::gen_const(long long c) {
             break;
         }
 
-        code.push_back("HALF C");
+        cmds.push_back("HALF C");
         mix_cost += this->costs[I_HALF];
         half /= 2;
     }
 
     while(tmp != c) {
-        code.push_back("INC B");
+        cmds.push_back(inc_cmd);
         mix_cost += this->costs[I_INC];
         tmp++;
     }
@@ -119,14 +139,15 @@ void code_generator::gen_const(long long c) {
     }
 
     if(inc_cost < mix_cost) {
-        code.clear();
-        code.push_back("SUB B B");
+        cmds.clear();
+        cmds.push_back(sub_cmd);
 
         for(int i = 0; i < c; i++) {
-            code.push_back("INC B");
+            cmds.push_back(inc_cmd);
         }
     }
 
+    return cmds;
 }
 
 void code_generator::read_interact() {
