@@ -45,10 +45,11 @@ struct label {
     }
 };
 
+/*
 // Struct for code blocks: IF, IF-ELSE, WHILE, FOR
 // TODO: I'don't know if it is unecessarry..
 struct block {
     //TODO: implement
     long long offset;
     std::vector<std::string> cmds;
-};
+};*/

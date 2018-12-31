@@ -25,4 +25,5 @@ private:
 
 public:
     data();
+    bool check_context(std::string name);
 };

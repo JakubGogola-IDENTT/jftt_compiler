@@ -1,4 +1,3 @@
-# TODO: !!!!!!!!!!!!!!!!
 CC = g++
 FLAGS = -std=c++17 --pedantic -Wall
 

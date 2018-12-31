@@ -1,5 +1,6 @@
 #include <iostream>
 #include <fstream>
+#include <sstream>
 #include <map>
 #include <memory>
 #include <vector>
@@ -11,16 +12,22 @@
 
 code_generator::code_generator(std::shared_ptr<data> d) {
     this->d = d;
+    this->is_read = false;
+    this->is_write = false;
 }
 
 void code_generator::print_code(std::string filename) {
 
 }
 
-bool code_generator::check_context(symbol sym) {
-    
-}
-
 void code_generator::gen_const(long long constant) {
 
+}
+
+void code_generator::read_interact() {
+    this->is_read = true;
+}
+
+void code_generator::write_interact() {
+    this->is_write = true;
 }

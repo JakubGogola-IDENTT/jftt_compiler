@@ -9,33 +9,37 @@
 #include "data.hpp"
 
 int yylex();
-void yyerror(const char *s);
 int yyparse();
+void yyerror(std::string s);
 
-std::shared_ptr<data> data();
+std::shared_ptr<data> d = std::make_shared<data>();
+std::shared_ptr<code_generator> cg = std::make_shared<code_generator>(d);
 
 %}
 %union{
     std::string *pidentifier;
     long long num;
-    std::vector<std::string> *code;
     struct label *cond;
     struct symbol *sym;
 }
 
+//Tokens
 %start program
 %token DECLARE IN END
 %token <cond> IF WHILE
-%token FOR
+%token FOR //TODO: struct for FOR 
 %token THEN ELSE ENDIF FROM TO DOWNTO DO ENDFOR ENDWHILE ENDDO
 %token READ WRITE       
 %token LESS GREATER LEQ GEQ EQ NEQ
 %token ASSIGN
 %token ERROR
-
 %token <pidentifier> pidentifier
 %token <num> num
 
+//Types
+%type <sym> identifier
+
+//Operators precedence
 %left ADD SUB
 %left MUL DIV MOD
 %%      
@@ -48,7 +52,7 @@ program:        DECLARE
 ;
 
 declarations:   declarations pidentifier';'                             
-                | declarations pidentifier'('num ':' num')'';'          
+                | declarations pidentifier'('num':'num')'';'          
                 |                                                        
 ;
 
@@ -97,6 +101,6 @@ int main() {
         return yyparse();
 }
 
-void yyerror(const char *s) {
+void yyerror(std::string s) {
 
 }
