@@ -80,9 +80,16 @@ struct label {
 };
 
 struct variable {
+    long long array_addr;
     long long addr;
 
     variable(long long addr) {
+        this->array_addr = -1;
+        this->addr = addr;
+    }
+
+    variable(long long addr, long long array_addr) {
+        this->array_addr = array_addr;
         this->addr = addr;
     }
 };

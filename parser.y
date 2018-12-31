@@ -100,7 +100,7 @@ value:          num
                 | identifier                                                            {  }
 ;
 
-identifier:     pidentifier                                                             {  }
+identifier:     pidentifier                                                             { $$ = d->get_variable(*$1); }
                 | pidentifier'('pidentifier')'
                 | pidentifier'('num')'
 ;

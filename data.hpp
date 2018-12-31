@@ -29,6 +29,9 @@ private:
     //Flag - true if errors occured
     bool errors;
 
+    //Numbers of found errors
+    int errors_num;
+
 public:
     data();
 
@@ -38,6 +41,7 @@ public:
 
     void error_found();
     bool get_errors();
+    int get_errors_num();
 
     long long alloc_mem();
     long long alloc_mem_array(long long start, long long end);
@@ -47,7 +51,9 @@ public:
     long long put_value(long long value);
     symbol *get_symbol(std::string name);
 
-    
+    variable *get_variable(std::string name);
+    variable *get_variable_array_var(std::string name, std::string var_name);
+    variable *get_variable_array_num(std::string name, long long num);
 
     //TODO: long long get_value();
 };
