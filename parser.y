@@ -4,15 +4,15 @@
 #include <memory>
 #include <vector>
 
-#include "CodeGenerator.hpp"
+#include "code_generator.hpp"
 #include "defs.hpp"
-#include "Data.hpp"
+#include "data.hpp"
 
 int yylex();
 void yyerror(const char *s);
 int yyparse();
 
-std::shared_ptr<Data> Data();
+std::shared_ptr<data> data();
 
 %}
 %union{
@@ -23,10 +23,6 @@ std::shared_ptr<Data> Data();
     struct symbol *sym;
 }
 
-/*%type <code> program
-%type <code> commands
-%type <code> command
-%type <code> expression*/
 %start program
 %token DECLARE IN END
 %token <cond> IF WHILE
@@ -39,10 +35,6 @@ std::shared_ptr<Data> Data();
 
 %token <pidentifier> pidentifier
 %token <num> num
-
-//%type <num> condition
-//%type <sym> value
-//%type <sym> identifier
 
 %left ADD SUB
 %left MUL DIV MOD

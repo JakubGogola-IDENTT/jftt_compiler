@@ -7,14 +7,14 @@
 #include <vector>
 
 #include "defs.hpp"
-#include "Data.hpp"
+#include "data.hpp"
 
-class CodeGenerator {
+class code_generator {
 private:
-    std::shared_ptr<Data> data;
+    std::shared_ptr<data> d;
 
 public:
-    CodeGenerator(std::shared_ptr<Data> data);
+    code_generator(std::shared_ptr<data> d);
 
     // Write compiled program to file.
     void print_code(std::string filename);

@@ -6,7 +6,7 @@
 
 #include "defs.hpp"
 
-class Data {
+class data {
 private:
     //Memory offset
     long long mem_offset;
@@ -24,5 +24,5 @@ private:
     std::vector<long long> mem;
 
 public:
-    Data();
+    data();
 };
