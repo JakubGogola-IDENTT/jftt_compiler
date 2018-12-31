@@ -80,7 +80,7 @@ long long data::alloc_mem() {
 long long data::alloc_mem_array(long long start, long long end) {
     long long size = end - start + 2;
     this->mem_offset += size;
-    return this->mem_offset - size - 1;
+    return this->mem_offset - (size - 1);
 }
 
 /**
@@ -164,12 +164,31 @@ variable *data::get_variable(std::string name) {
  * Returns array's cell's addres - version with variable
  */
 variable *data::get_variable_array_var(std::string name, std::string var_name) {
-    symbol *array_sym = 
+    std::shared_ptr<variable> var;
+    symbol *array_sym = this->get_symbol(name);
+    symbol *var_sym = this->get_symbol(var_name);
+
+    if(array_sym == nullptr || var_sym == nullptr) {
+        return nullptr;
+    }
+
+    var = std::make_shared<variable>(array_sym->offset, var_sym->offset);
+    return var.get();
+
 }
     
 /**
  * Returns array's cell's addres - version with value
  */
 variable *data::get_variable_array_num(std::string name, long long num) {
+    std::shared_ptr<variable> var;
+    symbol *array_sym = this->get_symbol(name);
 
+    if(array_sym == nullptr) {
+        return nullptr;
+    }
+
+    long long real_addr = num - array_sym->offset + 1;
+    var = std::make_shared<variable>(real_addr);
+    return var.get();
 }

@@ -88,7 +88,7 @@ struct variable {
         this->addr = addr;
     }
 
-    variable(long long addr, long long array_addr) {
+    variable(long long array_addr, long long addr) {
         this->array_addr = array_addr;
         this->addr = addr;
     }
