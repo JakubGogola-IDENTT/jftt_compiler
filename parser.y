@@ -12,16 +12,22 @@ int yylex();
 int yyparse();
 void yyerror(std::string s);
 
+std::string input_file;
+std::string output_file;
+
 std::shared_ptr<data> d = std::make_shared<data>();
 std::shared_ptr<code_generator> cg = std::make_shared<code_generator>(d);
 
 %}
-%union{
+%union sem_rec {
     std::string *pidentifier;
     long long num;
     struct label *cond;
     struct symbol *sym;
 }
+
+//Types
+%type <sym> identifier
 
 //Tokens
 %start program
@@ -36,9 +42,6 @@ std::shared_ptr<code_generator> cg = std::make_shared<code_generator>(d);
 %token <pidentifier> pidentifier
 %token <num> num
 
-//Types
-%type <sym> identifier
-
 //Operators precedence
 %left ADD SUB
 %left MUL DIV MOD
@@ -48,7 +51,7 @@ program:        DECLARE
                         declarations
                 IN
                         commands
-                END 
+                END                                                                     { cg->print_code(output_file); }
 ;
 
 declarations:   declarations pidentifier';'                             

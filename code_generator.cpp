@@ -17,7 +17,10 @@ code_generator::code_generator(std::shared_ptr<data> d) {
 }
 
 void code_generator::print_code(std::string filename) {
+    std::cout << "Printing code..." << std::endl;
 
+    //Compilation finished
+    exit(1);
 }
 
 void code_generator::gen_const(long long constant) {

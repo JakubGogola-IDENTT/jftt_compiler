@@ -4,7 +4,9 @@
 #include <vector>
 #include <map>
 
-// Struct for symbol in symbols array
+/**
+ * Struct for symbol in symbols array
+ */ 
 struct symbol {
     std::string name;
     long long offset;
@@ -34,7 +36,9 @@ struct symbol {
     }
 };
 
-// Struct for temporary labels
+/**
+ * Struct for temporary labels
+ */
 struct label {
     long long jump_true;
     long long jump_false;
