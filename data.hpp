@@ -27,7 +27,7 @@ private:
     const std::string error_msg = "\x1b[31m error \x1b[0m: ";
 
     //Flag - true if errors occured
-    bool erros;
+    bool errors;
 
 public:
     data();
