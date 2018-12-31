@@ -27,6 +27,17 @@ bool data::check_context(std::string name) {
 }
 
 /**
+ * Sets flag of initialization in variable
+ */
+void data::init_variable(std::string name) {
+    if(this->check_context(name)) {
+        this->sym_map[name]->is_init = true;
+    } else {
+        std::cerr << this->error_msg << "variable is not defined" << std::endl;
+    }
+}
+
+/**
  * Allocates memory for variable
  */
 long long data::alloc_mem() {

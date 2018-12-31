@@ -28,9 +28,16 @@ private:
 
 public:
     data();
+
+    //Checks if variable exists
     bool check_context(std::string name);
+    void init_variable(std::string);
+
     long long put_symbol(std::string name);
     long long put_symbol_array(std::string name, long long start, long long end);
+
     long long alloc_mem();
     long long alloc_mem_array(long long start, long long end);
+
+
 };

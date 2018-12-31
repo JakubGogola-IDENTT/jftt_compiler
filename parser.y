@@ -7,16 +7,17 @@
 #include "code_generator.hpp"
 #include "defs.hpp"
 #include "data.hpp"
+#include "io_handler.hpp"
 
 int yylex();
 int yyparse();
 void yyerror(std::string s);
 
-std::string input_file;
-std::string output_file;
-
+std::shared_ptr<io_handler> in = std::make_shared<io_handler>();
 std::shared_ptr<data> d = std::make_shared<data>();
 std::shared_ptr<code_generator> cg = std::make_shared<code_generator>(d);
+
+std::vector<std::string> code = nullptr;
 
 %}
 %union sem_rec {
@@ -51,11 +52,13 @@ program:        DECLARE
                         declarations
                 IN
                         commands
-                END                                                                     { cg->print_code(output_file); }
+                END                                                                     { 
+
+                                                                                        }
 ;
 
-declarations:   declarations pidentifier';'                             
-                | declarations pidentifier'('num':'num')'';'          
+declarations:   declarations pidentifier';'                                             { d->put_symbol(*$2); }
+                | declarations pidentifier'('num':'num')'';'                            { d->put_symbol_array(*$2, $4, $6); }
                 |                                                        
 ;
 
@@ -100,8 +103,11 @@ identifier:     pidentifier                                                     
 ;
 %%
 
-int main() {
-        return yyparse();
+int main(int argc, char **argv) {
+        
+
+        yyparse();
+        return 0;
 }
 
 void yyerror(std::string s) {

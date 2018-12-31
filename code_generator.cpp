@@ -25,13 +25,24 @@ void code_generator::gen_costs() {
     this->costs.insert(std::pair<enum instr, int>(I_COPY, 5));
 }
 
-void code_generator::print_code(std::string filename) {
-    std::cout << "Printing code..." << std::endl;
 
-    //Compilation finished
-    exit(1);
+/**
+ * Returns generated code
+ */
+std::vector<std::string> code_generator::get_code() {
+    return this->code;
 }
 
+/**
+ * Writes HALT to the end of generated code
+ */
+void code_generator::end_prog() {
+    this->code.push_back("HALT");
+}
+
+/**
+ * Generates constant value
+ */
 void code_generator::gen_const(long long c) {
     //TODO: write to memory
     std::vector<std::string> code;

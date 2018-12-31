@@ -35,7 +35,7 @@ struct symbol {
         this->is_array = false;
         this->array_start = 0;
         this->array_end = 0;
-        this->size = 0;
+        this->size = 1;
     }
 
     // Array variable

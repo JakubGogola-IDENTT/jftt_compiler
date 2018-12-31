@@ -32,8 +32,8 @@ private:
 public:
     code_generator(std::shared_ptr<data> d);
 
-    // Write compiled program to file.
-    void print_code(std::string filename);
+    // Returns generated code
+    std::vector<std::string> get_code();
 
     // Generate constat value.
     void gen_const(long long c); 
@@ -44,4 +44,6 @@ public:
     // Program is writing sth to stdout
     void write_interact();
 
+    // Writes HALT to the end of generated code
+    void end_prog();
 };
