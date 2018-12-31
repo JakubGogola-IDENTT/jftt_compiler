@@ -4,11 +4,14 @@ FLAGS = -std=c++17 --pedantic -Wall
 
 all: kompilator
 
-kompilator: parser.o lexer.o actions.o 
-	$(CC) $(FLAGS) -o kompilator actions.o parser.o lexer.o
+kompilator: parser.o lexer.o CodeGenerator.o Data.o
+	$(CC) $(FLAGS) -o kompilator CodeGenerator.o parser.o lexer.o Data.o
 
-actions.o: actions.cpp
-	$(CC) $(FLAGS) -c actions.cpp
+CodeGenerator.o: CodeGenerator.cpp
+	$(CC) $(FLAGS) -c CodeGenerator.cpp
+
+Data.o: Data.cpp
+	$(CC) $(FLAGS) -c Data.cpp
 
 lexer.o: lexer.c	
 	$(CC) $(FLAGS) -c lexer.c

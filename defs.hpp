@@ -52,22 +52,3 @@ struct block {
     long long offset;
     std::vector<std::string> cmds;
 };
-
-struct utils {
-    // Memory offset
-    long long mem_offset;
-    // Code offset
-    long long code_offset;
-    // Last label
-    long long next_label;
-
-    // TODO: Check if using std::map is faster
-    std::map<std::string, symbol> sym_map;
-    std::vector<int> mem;
-
-    utils() {
-        this->mem_offset = 0;
-        this->code_offset = 0;
-        this->next_label = 0;
-    }
-};

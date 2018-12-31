@@ -4,14 +4,15 @@
 #include <memory>
 #include <vector>
 
-#include "actions.hpp"
+#include "CodeGenerator.hpp"
 #include "defs.hpp"
+#include "Data.hpp"
 
 int yylex();
 void yyerror(const char *s);
 int yyparse();
 
-std::shared_ptr<utils> data();
+std::shared_ptr<Data> Data();
 
 %}
 %union{
@@ -40,8 +41,8 @@ std::shared_ptr<utils> data();
 %token <num> num
 
 //%type <num> condition
-%type <sym> value
-%type <sym> identifier
+//%type <sym> value
+//%type <sym> identifier
 
 %left ADD SUB
 %left MUL DIV MOD
