@@ -104,7 +104,7 @@ identifier:     pidentifier                                                     
 %%
 
 int main(int argc, char** argv) {
-        std::shared_ptr<io_handler> io = std::make_shared<io_handler>(argc, argv);
+        //std::shared_ptr<io_handler> io = std::make_shared<io_handler>(argc, argv);
         yyparse();
         return 0;
 }

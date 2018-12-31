@@ -12,6 +12,8 @@ io_handler::io_handler(int argc, char** argv) {
 
     this->input_file = argv[0];
     this->output_file = argv[1];
+
+    
 }
 
 void io_handler::print_code() {

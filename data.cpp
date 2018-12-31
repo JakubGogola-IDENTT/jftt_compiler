@@ -36,6 +36,7 @@ void data::init_variable(std::string name) {
     } else {
         std::cerr << this->error_msg << "variable is not defined" << std::endl;
     }
+    //TODO: finish!!!!
 }
 
 /**
@@ -80,6 +81,7 @@ long long data::put_symbol(std::string name) {
 
     long long offset = this->alloc_mem();
     std::shared_ptr<symbol> sym = std::make_shared<symbol>(name, offset);
+    this->sym_map.insert(std::pair<std::string, std::shared_ptr<symbol>>(name, sym));
     return offset;
 }
 
@@ -98,5 +100,6 @@ long long data::put_symbol_array(std::string name, long long start, long long en
 
     long long offset = this->alloc_mem_array(start, end);
     std::shared_ptr<symbol> sym = std::make_shared<symbol>(name, offset, start, end);
+    this->sym_map.insert(std::pair<std::string, std::shared_ptr<symbol>>(name, sym));
     return offset;
 }
