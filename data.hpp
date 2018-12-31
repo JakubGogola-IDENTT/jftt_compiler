@@ -24,7 +24,7 @@ private:
     std::vector<long long> mem;
 
     //Error color message
-    const std::string error_msg = "\x1b[31m error \x1b[0m: ";
+    const std::string error_alert = "\x1b[31m error \x1b[0m: ";
 
     //Flag - true if errors occured
     bool errors;
@@ -39,9 +39,15 @@ public:
     void error_found();
     bool get_errors();
 
-    long long put_symbol(std::string name);
-    long long put_symbol_array(std::string name, long long start, long long end);
-
     long long alloc_mem();
     long long alloc_mem_array(long long start, long long end);
+
+    long long put_symbol(std::string name);
+    long long put_symbol_array(std::string name, long long start, long long end);
+    long long put_value(long long value);
+    symbol *get_symbol(std::string name);
+
+    
+
+    //TODO: long long get_value();
 };

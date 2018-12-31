@@ -24,7 +24,8 @@ std::vector<std::string> code;
     std::string *pidentifier;
     long long num;
     struct label *cond;
-    struct symbol *sym;
+    struct variable *var;
+    struct variable_value *val;
 }
 
 //Tokens
@@ -41,7 +42,8 @@ std::vector<std::string> code;
 %token <num> num
 
 //Types
-%type <sym> identifier
+%type <var> identifier
+%type <val> value
 
 //Operators precedence
 %left ADD SUB
@@ -53,7 +55,6 @@ program:        DECLARE
                 IN
                         commands
                 END                                                                     { 
-                                                                                                std::cout << "end" << std::endl;
                                                                                                 cg->end_prog();
                                                                                                 code = cg->get_code();
                                                                                         }
@@ -68,7 +69,7 @@ commands:       commands command
                 | command       
 ;
 
-command:        identifier ASSIGN expression';'
+command:        identifier ASSIGN expression';'                                         
                 | IF condition THEN commands ELSE commands ENDIF
                 | IF condition THEN commands ENDIF
                 | WHILE condition DO commands ENDWHILE
@@ -96,10 +97,10 @@ condition:      value EQ value
 ;
 
 value:          num
-                | identifier
+                | identifier                                                            {  }
 ;
 
-identifier:     pidentifier                                                             { }
+identifier:     pidentifier                                                             {  }
                 | pidentifier'('pidentifier')'
                 | pidentifier'('num')'
 ;
@@ -114,7 +115,7 @@ int main(int argc, char** argv) {
         }
 
         yyparse();
-        std::cout << "Parsing end" << std::endl;
+        std::cout << "Compilation ended succesfully" << std::endl;
         std::cout << code.size() << std::endl;
         io->print_code(code);
         return 0;

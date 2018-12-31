@@ -9,7 +9,7 @@
 
 io_handler::io_handler(int argc, char** argv) {
     if(argc != 3) {
-        std::cerr << this->error_msg << "invalid number of arguments" << std::endl;
+        std::cerr << this->error_alert << "invalid number of arguments" << std::endl;
         exit(1);
     }
 
@@ -25,7 +25,7 @@ FILE *io_handler::read_code() {
     FILE *fin = fopen(this->input_file.c_str(), "r");
 
     if(!fin) {
-        std::cerr << this->error_msg << "can't open file: " << this->input_file << std::endl;
+        std::cerr << this->error_alert << "can't open file: " << this->input_file << std::endl;
         return nullptr;
     }
 

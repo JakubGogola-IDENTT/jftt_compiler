@@ -34,7 +34,7 @@ void data::init_variable(std::string name) {
     if(this->check_context(name)) {
         this->sym_map[name]->is_init = true;
     } else {
-        std::cerr << this->error_msg << "variable is not defined" << std::endl;
+        std::cerr << this->error_alert << "variable is not defined" << std::endl;
     }
     //TODO: finish!!!!
 }
@@ -75,7 +75,7 @@ long long data::alloc_mem_array(long long start, long long end) {
  */
 long long data::put_symbol(std::string name) {
     if(this->check_context(name)) {
-        std::cerr << this->error_msg << name << " is already defined" << std::endl;
+        std::cerr << this->error_alert << name << " is already defined" << std::endl;
         return -1;
     }
 
@@ -90,12 +90,12 @@ long long data::put_symbol(std::string name) {
  */
 long long data::put_symbol_array(std::string name, long long start, long long end) {
     if(this->check_context(name)) {
-        std::cerr << this->error_msg << name << " is already defined" << std::endl;
+        std::cerr << this->error_alert << name << " is already defined" << std::endl;
         return -1;
     }
 
     if(end < start) {
-        std::cerr << this->error_msg << "ending index can't be smaller than starting index" << std::endl;
+        std::cerr << this->error_alert << "ending index can't be smaller than starting index" << std::endl;
     }
 
     long long offset = this->alloc_mem_array(start, end);
@@ -103,3 +103,29 @@ long long data::put_symbol_array(std::string name, long long start, long long en
     this->sym_map.insert(std::pair<std::string, std::shared_ptr<symbol>>(name, sym));
     return offset;
 }
+
+/**
+ * Returns symbol (pointer)
+ */
+symbol *data::get_symbol(std::string name) {
+    std::shared_ptr<symbol> sym;
+
+    if(!this->check_context(name)) {
+        std::cerr << this->error_alert << "variable is not declared" << std::endl;
+        return nullptr;
+    }
+    //TODO: CHECK IF IT WORKS!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! (if not - make pointer)
+    sym = this->sym_map[name];
+
+    if(!sym->is_array && !sym->is_init) {
+        std::cerr << this->error_alert << "variable is not initialized" << std::endl;
+    }
+
+    //TODO: CHECK!!!!!!!!!!!!!!!
+    //return this->sym_map[name].get();
+    return sym;
+}
+
+/**
+ * Returns variable's value
+ */
