@@ -26,9 +26,6 @@ std::shared_ptr<code_generator> cg = std::make_shared<code_generator>(d);
     struct symbol *sym;
 }
 
-//Types
-%type <sym> identifier
-
 //Tokens
 %start program
 %token DECLARE IN END
@@ -41,6 +38,9 @@ std::shared_ptr<code_generator> cg = std::make_shared<code_generator>(d);
 %token ERROR
 %token <pidentifier> pidentifier
 %token <num> num
+
+//Types
+%type <sym> identifier
 
 //Operators precedence
 %left ADD SUB
@@ -94,7 +94,7 @@ value:          num
                 | identifier
 ;
 
-identifier:     pidentifier
+identifier:     pidentifier                                                             { }
                 | pidentifier'('pidentifier')'
                 | pidentifier'('num')'
 ;

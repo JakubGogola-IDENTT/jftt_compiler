@@ -22,7 +22,7 @@ lexer.c: lexer.l
 	flex -o lexer.c lexer.l
 
 parser.tab.c: parser.y
-	bison -d -t parser.y
+	bison -d parser.y
 
 clean:
 	rm -f *.o *~ *.c *.tab.c *.tab.h

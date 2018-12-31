@@ -23,6 +23,12 @@ private:
     //Genearted code
     std::vector<std::string> code;
 
+    //Cost of some instructions
+    std::map<enum instr, int> costs;
+
+    //Generate costs map
+    void gen_costs();
+
 public:
     code_generator(std::shared_ptr<data> d);
 
@@ -30,11 +36,12 @@ public:
     void print_code(std::string filename);
 
     // Generate constat value.
-    void gen_const(long long constant); 
+    void gen_const(long long c); 
 
     // Program is reading sth from stdin
     void read_interact();
 
     // Program is writing sth to stdout
     void write_interact();
+
 };

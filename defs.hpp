@@ -5,6 +5,17 @@
 #include <map>
 
 /**
+ * Instructions
+ */
+enum instr {
+    I_INC,
+    I_HALF,
+    I_ADD,
+    I_SUB,
+    I_COPY
+};
+
+/**
  * Struct for symbol in symbols array
  */ 
 struct symbol {
@@ -14,6 +25,7 @@ struct symbol {
     bool is_array;
     long long array_start;
     long long array_end;
+    long long size;
 
     // Not array variable
     symbol(std::string name, long long offset) {
@@ -23,6 +35,7 @@ struct symbol {
         this->is_array = false;
         this->array_start = 0;
         this->array_end = 0;
+        this->size = 0;
     }
 
     // Array variable
@@ -33,6 +46,7 @@ struct symbol {
         this->is_array = true;
         this->array_start = array_start;
         this->array_end = array_end;
+        this->size = array_end - array_start + 2;
     }
 };
 
