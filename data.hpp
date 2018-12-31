@@ -26,12 +26,18 @@ private:
     //Error color message
     const std::string error_msg = "\x1b[31m error \x1b[0m: ";
 
+    //Flag - true if errors occured
+    bool erros;
+
 public:
     data();
 
     //Checks if variable exists
     bool check_context(std::string name);
     void init_variable(std::string);
+
+    void error_found();
+    bool get_errors();
 
     long long put_symbol(std::string name);
     long long put_symbol_array(std::string name, long long start, long long end);

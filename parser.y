@@ -13,11 +13,10 @@ int yylex();
 int yyparse();
 void yyerror(std::string s);
 
-std::shared_ptr<io_handler> in = std::make_shared<io_handler>();
 std::shared_ptr<data> d = std::make_shared<data>();
 std::shared_ptr<code_generator> cg = std::make_shared<code_generator>(d);
 
-std::vector<std::string> code = nullptr;
+std::vector<std::string> code; 
 
 %}
 %union sem_rec {
@@ -53,7 +52,8 @@ program:        DECLARE
                 IN
                         commands
                 END                                                                     { 
-
+                                                                                                cg->end_prog();
+                                                                                                code = cg->get_code();
                                                                                         }
 ;
 
@@ -103,9 +103,8 @@ identifier:     pidentifier                                                     
 ;
 %%
 
-int main(int argc, char **argv) {
-        
-
+int main(int argc, char** argv) {
+        std::shared_ptr<io_handler> io = std::make_shared<io_handler>(argc, argv);
         yyparse();
         return 0;
 }

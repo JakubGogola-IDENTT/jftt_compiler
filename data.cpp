@@ -11,6 +11,7 @@ data::data() {
     this->mem_offset = 0;
     this->code_offset = 0;
     this->next_label = 0;
+    this->erros = true;
 }
 
 /**
@@ -35,6 +36,20 @@ void data::init_variable(std::string name) {
     } else {
         std::cerr << this->error_msg << "variable is not defined" << std::endl;
     }
+}
+
+/**
+ * Set errors flag true
+ */
+void data::error_found() {
+    this->erros = true;
+}
+
+/**
+ * Returns errors flag
+ */
+bool data::get_errors() {
+    return this->erros;
 }
 
 /**
