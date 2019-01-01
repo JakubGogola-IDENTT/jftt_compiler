@@ -83,7 +83,7 @@ command:        identifier ASSIGN expression';'                                 
 expression:     value                                                                   { cg->constant($1); }
                 | value ADD value                                                       { cg->add($1, $3); }
                 | value SUB value                                                       { cg->sub($1, $3); }
-                | value MUL value
+                | value MUL value                                                       { cg->mul($1, $3); }
                 | value DIV value
                 | value MOD value
 ;
@@ -114,7 +114,7 @@ int main(int argc, char** argv) {
                 return -1;
         }
 
-        std::cout << "*** Compilation is running... ***" << std::endl;
+        std::cout << "*** \x1b[34mCompilator is running...\x1b[0m ***" << std::endl;
 
         yyparse();
 

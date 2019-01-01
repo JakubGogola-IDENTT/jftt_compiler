@@ -15,6 +15,7 @@ code_generator::code_generator(std::shared_ptr<data> d) {
     this->d = d;
     this->is_read = false;
     this->is_write = false;
+    this->code_offset = -1;
 
     this->gen_costs();
     this->gen_reg_sym();
@@ -74,7 +75,6 @@ void code_generator::end_prog() {
  */ 
 void code_generator::set_mem_reg(variable *var) {
     std::vector<std::string> cmds = this->gen_const(var->addr, A);
-    //cmds.insert(cmds.begin(), "SUB A A"); TODO: CHECK!!!!!!!!
 
     //Adress is nested: pidentifier(pidentifier)
     if(var->array_addr != -1) {
@@ -142,11 +142,52 @@ void code_generator::sub(variable *v_1, variable *v_2) {
 }
 
 /**
+ * MUL two variables. Result in register B
+ */
+void code_generator::mul(variable *v_1, variable *v_2) {
+    std::vector<std::string> cmds;
+    std::stringstream ss;
+
+    long long shift = 0;
+
+    this->single_var(v_1, B);
+    this->single_var(v_2, C);
+
+    cmds.push_back("SUB D D # mull begin");
+
+    shift = this->code_offset + 9 + cmds.size() + 1;
+    ss << shift;
+    cmds.push_back("JZERO C " + ss.str());
+    ss.str("");
+
+    shift = this->code_offset + 4 + cmds.size() + 1;
+    ss << shift;
+    cmds.push_back("JODD C " + ss.str());
+    ss.str("");
+
+    cmds.push_back("ADD B B");
+    cmds.push_back("HALF C");
+
+    shift = this->code_offset  + 2; 
+    ss << shift;
+    cmds.push_back("JUMP " + ss.str());
+    cmds.push_back("ADD D B");
+    cmds.push_back("ADD B B");
+    cmds.push_back("HALF C");
+    cmds.push_back("JUMP " + ss.str());
+    cmds.push_back("COPY B D");
+    this->code.insert(this->code.end(), cmds.begin(), cmds.end());
+    this->incr_offset(cmds.size());
+}
+
+/**
  * Assigns value to variable
  */
 void code_generator::assign(variable *var) {
     this->reg_to_mem(B, var);
 }
+
+
 
 /**
  * Puts code to handle READ
