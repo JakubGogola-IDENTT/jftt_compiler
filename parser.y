@@ -94,7 +94,7 @@ expression:     value                                                           
                 | value ADD value                                                       { cg->add($1, $3); }
                 | value SUB value                                                       { cg->sub($1, $3); }
                 | value MUL value                                                       { cg->mul($1, $3); }
-                | value DIV value
+                | value DIV value                                                       { cg->div($1, $3); }
                 | value MOD value
 ;
 

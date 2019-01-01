@@ -128,6 +128,8 @@ void code_generator::reg_to_mem(enum reg r, variable *var) {
     this->incr_offset(1);
 }
 
+
+//TODO: This could generate problems (CONSTANTS!!!!!)
 void code_generator::single_var(variable *var, enum reg r) {
     if(var->value != -1) {
         std::vector<std::string> cmds;
@@ -177,7 +179,7 @@ void code_generator::mul(variable *v_1, variable *v_2) {
     this->single_var(v_1, B);
     this->single_var(v_2, C);
 
-    cmds.push_back("SUB D D # mull begin");
+    cmds.push_back("SUB D D # mull begin"); //virtual: code_offset + 1
 
     shift = this->code_offset + 9 + cmds.size() + 1;
     ss << shift;
@@ -205,12 +207,109 @@ void code_generator::mul(variable *v_1, variable *v_2) {
 }
 
 /**
+ * DIV two variables. Result in register B
+ */
+void code_generator::div(variable *v_1, variable *v_2) {
+    std::vector<std::string> cmds;
+    std::stringstream ss;
+
+    long long shift = 0;
+
+    this->single_var(v_1, B);
+    this->single_var(v_2, C);
+
+    cmds.push_back("SUB D D");
+    cmds.push_back("SUB E E");
+    cmds.push_back("INC E");
+    cmds.push_back("COPY F B");
+
+    shift = this->code_offset + 27 + cmds.size() + 1;
+    ss << shift;
+    cmds.push_back("JZERO C " + ss.str()); //TODO:
+    ss.str("");
+
+    cmds.push_back("COPY H C");
+    cmds.push_back("INC H");
+    cmds.push_back("SUB H B");
+ 
+    shift = this->code_offset + 2 + cmds.size() + 1;
+    ss << shift;
+    cmds.push_back("JZERO H " + ss.str()); // TODO:
+    ss.str("");
+
+    shift = this->code_offset + 4 + cmds.size() + 1;
+    ss << shift;
+    cmds.push_back("JUMP " + ss.str()); //TODO:
+    ss.str("");
+
+    cmds.push_back("ADD C C");
+    cmds.push_back("ADD E E");
+
+    shift = this->code_offset + 6;
+    ss << shift;
+    cmds.push_back("JUMP " + ss.str()); //TODO:
+    ss.str("");
+
+    cmds.push_back("COPY H C");
+    cmds.push_back("SUB H F");
+
+    shift = this->code_offset + 2 + cmds.size() + 1;
+    ss << shift;
+    cmds.push_back("JZERO H " + ss.str()); //TODO:
+    ss.str("");
+
+    shift = this->code_offset + 3 + cmds.size() + 1;
+    ss << shift;
+    cmds.push_back("JUMP " + ss.str()); //TODO:
+    ss.str("");
+
+
+    cmds.push_back("SUB F C");
+    cmds.push_back("ADD D E");
+    cmds.push_back("HALF C");
+    cmds.push_back("HALF E");
+
+    shift = this->code_offset + 10 + cmds.size() + 1;
+    ss << shift;
+    cmds.push_back("JZERO E " + ss.str()); //TODO:
+    ss.str("");
+
+    cmds.push_back("COPY H C");
+    cmds.push_back("SUB H F");
+
+    shift = this->code_offset + 2 + cmds.size() + 1;
+    ss << shift;
+    cmds.push_back("JZERO H " + ss.str()); //TODO:
+    ss.str("");
+
+    shift = this->code_offset + 3 + cmds.size() + 1;
+    ss << shift;
+    cmds.push_back("JUMP " + ss.str()); //TODO:
+    ss.str("");
+
+    cmds.push_back("SUB F C");
+    cmds.push_back("ADD D E");
+    cmds.push_back("HALF C");
+    cmds.push_back("HALF E");
+
+    shift = this->code_offset + 22;
+    ss << shift;
+    cmds.push_back("JUMP " + ss.str());//TODO:
+    ss.str("");
+    
+    cmds.push_back("COPY B D");
+
+    this->code.insert(this->code.end(), cmds.begin(), cmds.end());
+    this->incr_offset(cmds.size());
+}
+
+
+/**
  * Assigns value to variable
  */
 void code_generator::assign(variable *var) {
     this->reg_to_mem(B, var);
 }
-
 
 
 /**
