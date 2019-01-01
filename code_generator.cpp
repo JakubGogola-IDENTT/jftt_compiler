@@ -104,21 +104,29 @@ void code_generator::reg_to_mem(enum reg r, variable *var) {
     this->incr_offset(1);
 }
 
+void code_generator::single_var(variable *var, enum reg r) {
+    if(var->value != -1) {
+        std::vector<std::string> cmds;
+        cmds = this->gen_const(var->value, r);
+        this->code.insert(this->code.end(), cmds.begin(), cmds.end());
+        this->incr_offset(cmds.size());
+    } else {
+        this->mem_to_reg(var, r);
+    }
+}
+
 /***** OPERATIONS *****/
 
 void code_generator::constant(variable *var) {
-    std::vector<std::string> cmds;
-    cmds = this->gen_const(var->value, B);
-    this->code.insert(this->code.end(), cmds.begin(), cmds.end());
-    this->incr_offset(cmds.size());
+    this->single_var(var, B);
 }
 
 /**
  * ADD two variables. Result in register B
  */
 void code_generator::add(variable *v_1, variable *v_2) {
-    this->mem_to_reg(v_1, B);
-    this->mem_to_reg(v_2, C);
+    this->single_var(v_1, B);
+    this->single_var(v_2, C);
     this->code.push_back("ADD B C");
     this->incr_offset(1);
 }
@@ -127,8 +135,8 @@ void code_generator::add(variable *v_1, variable *v_2) {
  * SUB two variables. Result in register B
  */
 void code_generator::sub(variable *v_1, variable *v_2) {
-    this->mem_to_reg(v_1, B);
-    this->mem_to_reg(v_2, C);
+    this->single_var(v_1, B);
+    this->single_var(v_2, C);
     this->code.push_back("SUB B C");
     this->incr_offset(1);
 }

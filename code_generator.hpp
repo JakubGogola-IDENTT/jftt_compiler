@@ -45,12 +45,13 @@ private:
     void incr_offset(long long incr);
 
     void set_mem_reg(variable *var);
+    void single_var(variable *var, enum reg r);
 
 public:
     code_generator(std::shared_ptr<data> d);
 
-     std::vector<std::string> get_code();
-     void end_prog();
+    std::vector<std::string> get_code();
+    void end_prog();
 
     void mem_to_reg(variable *var, enum reg r);
     void reg_to_mem(enum reg r, variable *var);
@@ -60,7 +61,7 @@ public:
     //operations
     void assign(variable *var);
     void constant(variable *var);
-    
+
     void add(variable *v_1, variable *v_2);
     void sub(variable *v_1, variable *v_2);
     void mul(variable *v_1, variable *v_2);

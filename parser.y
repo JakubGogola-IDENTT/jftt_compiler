@@ -114,10 +114,18 @@ int main(int argc, char** argv) {
                 return -1;
         }
 
+        std::cout << "*** Compilation is running... ***" << std::endl;
+
         yyparse();
-        std::cout << "Compilation ended succesfully" << std::endl;
-        std::cout << code.size() << std::endl;
-        io->print_code(code);
+
+
+        if (!d->get_errors()) {
+                std::cout << "*** \x1b[32mCompilation completed succesfully\x1b[0m ***" << std::endl;
+                io->print_code(code);
+        } else {
+                std::cerr << "*** \x1b[31mErrors occured\x1b[0m ***" << std::endl;
+        }
+        
         return 0;
 }
 
