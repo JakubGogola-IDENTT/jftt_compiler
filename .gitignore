@@ -2,6 +2,8 @@
 *.tab.h
 *.c
 *.imp
+*.o
+kompilator
 labor4.zip
 maszyna_rejestrowa/**/*.o
 
