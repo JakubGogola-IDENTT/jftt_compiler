@@ -1,5 +1,5 @@
 CC = g++
-FLAGS = -std=c++17 --pedantic -Wall
+FLAGS = -std=c++17 --pedantic -Wall -Wextra
 
 all: kompilator
 

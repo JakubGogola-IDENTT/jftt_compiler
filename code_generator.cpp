@@ -76,6 +76,7 @@ void code_generator::set_mem_reg(long long addr) {
     std::vector<std::string> cmds = this->gen_const(addr, A);
     cmds.insert(cmds.begin(), "SUB A A");
     this->code.insert(this->code.end(), cmds.begin(), cmds.end());
+    this->incr_offset(cmds.size());
 }
 
 /**
@@ -84,6 +85,7 @@ void code_generator::set_mem_reg(long long addr) {
 void code_generator::set_mem_reg_nested_addr(long long addr) {
     this->set_mem_reg(addr);
     this->code.push_back("STORE A");
+    this->incr_offset(1);
 }
 
 /**
@@ -135,7 +137,7 @@ std::vector<std::string> code_generator::gen_const(long long c, enum reg r) {
     cmds.push_back("COPY " + this->reg_sym[C] + " " + this->reg_sym[r]);
     add_cost += this->costs[I_COPY];
 
-    cmds.push_back("HALF " + this.reg_sym[C]);
+    cmds.push_back("HALF " + this->reg_sym[C]);
     add_cost += this->costs[I_HALF];
 
     long long half = tmp / 2;

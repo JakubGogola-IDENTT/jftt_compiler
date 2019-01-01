@@ -26,6 +26,8 @@ private:
     //Numbers of found errors
     int errors_num;
 
+    std::vector<std::shared_ptr<variable>> variables;
+
 public:
     data();
 

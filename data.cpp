@@ -225,7 +225,6 @@ variable *data::get_variable_array_var(std::string name, std::string var_name) {
 
     var = std::make_shared<variable>(array_sym->offset, var_sym->offset);
     return var.get();
-
 }
     
 /**

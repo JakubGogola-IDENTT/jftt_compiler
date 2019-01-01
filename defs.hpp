@@ -114,16 +114,6 @@ struct variable {
     }
 };
 
-/**
- * Wrapper for address 
- */
-struct variable_value {
-    long long addr;
-
-    variable_value(long long addr) {
-        this->addr = addr;
-    }
-};
 
 /*
 // Struct for code blocks: IF, IF-ELSE, WHILE, FOR

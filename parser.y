@@ -25,7 +25,7 @@ std::vector<std::string> code;
     long long num;
     struct label *cond;
     struct variable *var;
-
+    struct variable *id;
 }
 
 //Tokens
@@ -42,8 +42,8 @@ std::vector<std::string> code;
 %token <num> num
 
 //Types
-%type <var> identifier
 %type <var> value
+%type <id> identifier
 
 //Operators precedence
 %left ADD SUB
@@ -69,7 +69,7 @@ commands:       commands command
                 | command       
 ;
 
-command:        identifier ASSIGN expression';'                                         
+command:        identifier ASSIGN expression';'                                         { std::cout << "assign"<< $1->addr << std::endl; }             
                 | IF condition THEN commands ELSE commands ENDIF
                 | IF condition THEN commands ENDIF
                 | WHILE condition DO commands ENDWHILE
@@ -77,11 +77,11 @@ command:        identifier ASSIGN expression';'
                 | FOR pidentifier FROM value TO value DO commands ENDFOR
                 | FOR pidentifier FROM value DOWNTO value DO commands ENDFOR
                 | READ identifier';'
-                | WRITE value';'
+                | WRITE value';'                                                        {  }
 ;
 
-expression:     value                                                                   {  }
-                | value ADD value
+expression:     value                                                                   { std::cout <<"expr" << $1->addr <<std::endl; }
+                | value ADD value                                                       {  }
                 | value SUB value
                 | value MUL value
                 | value DIV value
@@ -96,11 +96,15 @@ condition:      value EQ value
                 | value GEQ value
 ;
 
-value:          num                                                                     { $$ = d->get_value_num($1); }
+value:          num                                                                     { //$$ = d->get_value_num($1); std::cout << $$ <<std::endl; 
+                                                                                                variable *v = d->get_value_num($1);
+                                                                                                $$ = new variable(v->array_addr, v->addr);
+                                                                                        }
                 | identifier                                                            { $$ = d->get_value($1); }
 ;
 
-identifier:     pidentifier                                                             { $$ = d->get_variable(*$1); }
+identifier:     pidentifier                                                             { variable *v = d->get_variable(*$1);
+                                                                                                $$ = new variable(v->array_addr, v->addr); }
                 | pidentifier'('pidentifier')'                                          { $$ = d->get_variable_array_var(*$1, *$3); }
                 | pidentifier'('num')'                                                  { $$ = d->get_variable_array_num(*$1, $3); }
 ;
@@ -115,8 +119,8 @@ int main(int argc, char** argv) {
         }
 
         yyparse();
-        std::cout << "Compilation ended succesfully" << std::endl;
-        std::cout << code.size() << std::endl;
+        //std::cout << "Compilation ended succesfully" << std::endl;
+        //std::cout << code.size() << std::endl;
         io->print_code(code);
         return 0;
 }
