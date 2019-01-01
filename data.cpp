@@ -10,8 +10,6 @@
 
 data::data() {
     this->mem_offset = 0;
-    //this->code_offset = 0;
-    //this->next_label = 0;
     this->errors = false;
     this->errors_num = 0;
 }
