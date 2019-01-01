@@ -89,6 +89,20 @@ void code_generator::set_mem_reg_nested_addr(long long addr) {
 }
 
 /**
+ * Value from memory to register
+ */ 
+void code_generator::mem_to_reg(long long addr, enum reg r) {
+
+}
+
+/**
+ * Value from register to memory
+ */
+void code_generator::reg_to_mem(enum reg r, long long addr) {
+
+}
+
+/**
  * Generates constant value
  */
 std::vector<std::string> code_generator::gen_const(long long c, enum reg r) {
@@ -178,6 +192,13 @@ std::vector<std::string> code_generator::gen_const(long long c, enum reg r) {
     }
 
     return cmds;
+}
+
+/**
+ * Puts code to handle READ
+ */
+void code_generator::read() {
+
 }
 
 void code_generator::read_interact() {

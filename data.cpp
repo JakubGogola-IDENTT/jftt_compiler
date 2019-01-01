@@ -202,6 +202,7 @@ variable *data::get_variable(std::string name) {
     }
 
     var = std::make_shared<variable>(sym->offset);
+    this->variables.push_back(var);
     return var.get();
 }
 
@@ -224,6 +225,7 @@ variable *data::get_variable_array_var(std::string name, std::string var_name) {
     }
 
     var = std::make_shared<variable>(array_sym->offset, var_sym->offset);
+    this->variables.push_back(var);
     return var.get();
 }
     
@@ -240,6 +242,7 @@ variable *data::get_variable_array_num(std::string name, long long num) {
 
     long long real_addr = num - array_sym->offset + 1;
     var = std::make_shared<variable>(real_addr);
+    this->variables.push_back(var);
     return var.get();
 }
 
@@ -253,7 +256,7 @@ variable *data::get_value_num(long long value) {
 
     offset = this->put_value(value);
     val = std::make_shared<variable>(offset);
-
+    this->variables.push_back(val);
     return val.get();
 }
 
@@ -261,5 +264,13 @@ variable *data::get_value_num(long long value) {
  * Syntactic sugar 
  */ 
 variable *data::get_value(variable *var) {
-    return var;
+    std::shared_ptr<variable> val;
+
+    if(var == nullptr) {
+        return nullptr;
+    }
+
+    val = std::make_shared<variable>(var->array_addr, var->addr);
+    this->variables.push_back(val);
+    return val.get();
 }

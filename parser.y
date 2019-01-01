@@ -69,8 +69,8 @@ commands:       commands command
                 | command       
 ;
 
-command:        identifier ASSIGN expression';'                                         { std::cout << "assign"<< $1->addr << std::endl; }             
-                | IF condition THEN commands ELSE commands ENDIF
+command:        identifier ASSIGN expression';'                                         {  }             
+                | IF condition THEN commands ELSE commands ENDIF                        {  }
                 | IF condition THEN commands ENDIF
                 | WHILE condition DO commands ENDWHILE
                 | DO commands WHILE condition ENDWHILE
@@ -80,7 +80,7 @@ command:        identifier ASSIGN expression';'                                 
                 | WRITE value';'                                                        {  }
 ;
 
-expression:     value                                                                   { std::cout <<"expr" << $1->addr <<std::endl; }
+expression:     value                                                                   {  }
                 | value ADD value                                                       {  }
                 | value SUB value
                 | value MUL value
@@ -96,15 +96,11 @@ condition:      value EQ value
                 | value GEQ value
 ;
 
-value:          num                                                                     { //$$ = d->get_value_num($1); std::cout << $$ <<std::endl; 
-                                                                                                variable *v = d->get_value_num($1);
-                                                                                                $$ = new variable(v->array_addr, v->addr);
-                                                                                        }
+value:          num                                                                     { $$ = d->get_value_num($1); }
                 | identifier                                                            { $$ = d->get_value($1); }
 ;
 
-identifier:     pidentifier                                                             { variable *v = d->get_variable(*$1);
-                                                                                                $$ = new variable(v->array_addr, v->addr); }
+identifier:     pidentifier                                                             { $$ = d->get_variable(*$1); }
                 | pidentifier'('pidentifier')'                                          { $$ = d->get_variable_array_var(*$1, *$3); }
                 | pidentifier'('num')'                                                  { $$ = d->get_variable_array_num(*$1, $3); }
 ;

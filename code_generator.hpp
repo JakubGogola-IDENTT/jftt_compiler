@@ -53,13 +53,30 @@ public:
     void set_mem_reg(long long addr);
     void set_mem_reg_nested_addr(long long addr);
 
-    void mem_to_reg();
-    void reg_to_mem();
+    void mem_to_reg(long long addr, enum reg r);
+    void reg_to_mem(enum reg r, long long addr);
 
     std::vector<std::string> gen_const(long long c, enum reg r); 
 
     //operations
     void assign();
+    void add();
+    void sub();
+    void mul();
+    void div();
+    void rem();
+    
+    //conditions
+    void eq();
+    void neq();
+    void greater();
+    void less();
+    void geq();
+    void leq();
+
+    //IO
+    void write();
+    void read();
 
     void read_interact();
     void write_interact();
