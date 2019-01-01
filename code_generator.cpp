@@ -225,7 +225,7 @@ void code_generator::div(variable *v_1, variable *v_2) {
 
     shift = this->code_offset + 27 + cmds.size() + 1;
     ss << shift;
-    cmds.push_back("JZERO C " + ss.str()); //TODO:
+    cmds.push_back("JZERO C " + ss.str()); 
     ss.str("");
 
     cmds.push_back("COPY H C");
@@ -234,12 +234,12 @@ void code_generator::div(variable *v_1, variable *v_2) {
  
     shift = this->code_offset + 2 + cmds.size() + 1;
     ss << shift;
-    cmds.push_back("JZERO H " + ss.str()); // TODO:
+    cmds.push_back("JZERO H " + ss.str()); 
     ss.str("");
 
     shift = this->code_offset + 4 + cmds.size() + 1;
     ss << shift;
-    cmds.push_back("JUMP " + ss.str()); //TODO:
+    cmds.push_back("JUMP " + ss.str()); 
     ss.str("");
 
     cmds.push_back("ADD C C");
@@ -247,7 +247,7 @@ void code_generator::div(variable *v_1, variable *v_2) {
 
     shift = this->code_offset + 6;
     ss << shift;
-    cmds.push_back("JUMP " + ss.str()); //TODO:
+    cmds.push_back("JUMP " + ss.str()); 
     ss.str("");
 
     cmds.push_back("COPY H C");
@@ -255,12 +255,12 @@ void code_generator::div(variable *v_1, variable *v_2) {
 
     shift = this->code_offset + 2 + cmds.size() + 1;
     ss << shift;
-    cmds.push_back("JZERO H " + ss.str()); //TODO:
+    cmds.push_back("JZERO H " + ss.str()); 
     ss.str("");
 
     shift = this->code_offset + 3 + cmds.size() + 1;
     ss << shift;
-    cmds.push_back("JUMP " + ss.str()); //TODO:
+    cmds.push_back("JUMP " + ss.str()); 
     ss.str("");
 
 
@@ -271,7 +271,7 @@ void code_generator::div(variable *v_1, variable *v_2) {
 
     shift = this->code_offset + 10 + cmds.size() + 1;
     ss << shift;
-    cmds.push_back("JZERO E " + ss.str()); //TODO:
+    cmds.push_back("JZERO E " + ss.str()); 
     ss.str("");
 
     cmds.push_back("COPY H C");
@@ -279,12 +279,12 @@ void code_generator::div(variable *v_1, variable *v_2) {
 
     shift = this->code_offset + 2 + cmds.size() + 1;
     ss << shift;
-    cmds.push_back("JZERO H " + ss.str()); //TODO:
+    cmds.push_back("JZERO H " + ss.str()); 
     ss.str("");
 
     shift = this->code_offset + 3 + cmds.size() + 1;
     ss << shift;
-    cmds.push_back("JUMP " + ss.str()); //TODO:
+    cmds.push_back("JUMP " + ss.str()); 
     ss.str("");
 
     cmds.push_back("SUB F C");
@@ -294,7 +294,7 @@ void code_generator::div(variable *v_1, variable *v_2) {
 
     shift = this->code_offset + 22;
     ss << shift;
-    cmds.push_back("JUMP " + ss.str());//TODO:
+    cmds.push_back("JUMP " + ss.str());
     ss.str("");
     
     cmds.push_back("COPY B D");
@@ -303,6 +303,109 @@ void code_generator::div(variable *v_1, variable *v_2) {
     this->incr_offset(cmds.size());
 }
 
+/**
+ * REM of dividing two variables. Result in register B
+ */
+void code_generator::rem(variable *v_1, variable *v_2) {
+    std::vector<std::string> cmds;
+    std::stringstream ss;
+
+    long long shift = 0;
+
+    this->single_var(v_1, B);
+    this->single_var(v_2, C);
+
+    cmds.push_back("SUB D D");
+    cmds.push_back("SUB E E");
+    cmds.push_back("INC E");
+    cmds.push_back("COPY F B");
+
+    shift = this->code_offset + 28 + cmds.size() + 1;
+    ss << shift;
+    cmds.push_back("JZERO C " + ss.str()); 
+    ss.str("");
+
+    cmds.push_back("COPY H C");
+    cmds.push_back("INC H");
+    cmds.push_back("SUB H B");
+ 
+    shift = this->code_offset + 2 + cmds.size() + 1;
+    ss << shift;
+    cmds.push_back("JZERO H " + ss.str()); 
+    ss.str("");
+
+    shift = this->code_offset + 4 + cmds.size() + 1;
+    ss << shift;
+    cmds.push_back("JUMP " + ss.str()); 
+    ss.str("");
+
+    cmds.push_back("ADD C C");
+    cmds.push_back("ADD E E");
+
+    shift = this->code_offset + 6;
+    ss << shift;
+    cmds.push_back("JUMP " + ss.str()); 
+    ss.str("");
+
+    cmds.push_back("COPY H C");
+    cmds.push_back("SUB H F");
+
+    shift = this->code_offset + 2 + cmds.size() + 1;
+    ss << shift;
+    cmds.push_back("JZERO H " + ss.str()); 
+    ss.str("");
+
+    shift = this->code_offset + 3 + cmds.size() + 1;
+    ss << shift;
+    cmds.push_back("JUMP " + ss.str()); 
+    ss.str("");
+
+
+    cmds.push_back("SUB F C");
+    cmds.push_back("ADD D E");
+    cmds.push_back("HALF C");
+    cmds.push_back("HALF E");
+
+    shift = this->code_offset + 10 + cmds.size() + 1;
+    ss << shift;
+    cmds.push_back("JZERO E " + ss.str()); 
+    ss.str("");
+
+    cmds.push_back("COPY H C");
+    cmds.push_back("SUB H F");
+
+    shift = this->code_offset + 2 + cmds.size() + 1;
+    ss << shift;
+    cmds.push_back("JZERO H " + ss.str()); 
+    ss.str("");
+
+    shift = this->code_offset + 3 + cmds.size() + 1;
+    ss << shift;
+    cmds.push_back("JUMP " + ss.str()); 
+    ss.str("");
+
+    cmds.push_back("SUB F C");
+    cmds.push_back("ADD D E");
+    cmds.push_back("HALF C");
+    cmds.push_back("HALF E");
+
+    shift = this->code_offset + 22;
+    ss << shift;
+    cmds.push_back("JUMP " + ss.str());
+    ss.str("");
+    
+    shift = this->code_offset + 2 + cmds.size() + 1;
+    ss << shift;
+    cmds.push_back("JUMP " + ss.str());
+    ss.str("");
+
+    cmds.push_back("SUB F F");
+    cmds.push_back("COPY B F");
+
+
+    this->code.insert(this->code.end(), cmds.begin(), cmds.end());
+    this->incr_offset(cmds.size());
+}
 
 /**
  * Assigns value to variable
