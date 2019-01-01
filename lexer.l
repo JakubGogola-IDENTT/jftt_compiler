@@ -6,6 +6,7 @@
 #include <string>
 #include <vector>
 #include <memory>
+#include <cstring>
 #include "parser.tab.h"
 %}
 
@@ -52,7 +53,7 @@ PUNCT                   [\(\)\:\;]
 "%"                     { return MOD; }
 "*"                     { return MUL; }
 {IDENTIFIER}+           { 
-                            yylval.pidentifier = std::make_shared<std::string>(yytext).get();
+                            yylval.pidentifier = new std::string(yytext);
                             return pidentifier;
                         }
 {DIGIT}+                { yylval.num = std::stoll(yytext); return num; }

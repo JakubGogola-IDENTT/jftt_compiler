@@ -81,8 +81,6 @@ void code_generator::array_offset(long long addr, long long offset) {
     cmds.clear();
     cmds = this->gen_const(offset, B);
     cmds.push_back("STORE B");
-    cmds.push_back("PUT A");
-    cmds.push_back("PUT B");
     this->code.insert(this->code.end(), cmds.begin(), cmds.end());
     this->incr_offset(cmds.size());
 }
@@ -93,11 +91,20 @@ void code_generator::array_offset(long long addr, long long offset) {
  */ 
 void code_generator::set_mem_reg(variable *var) {
     std::vector<std::string> cmds = this->gen_const(var->addr, A);
-    
     //Adress is nested: pidentifier(pidentifier)
     if(var->array_addr != -1) {
-        std::cout << "p(p): " << var->addr << " " << var->array_addr << std::endl;
-        cmds.push_back("LOAD A");
+         std::cout << "set_mem_reg: " << var->array_addr << std::endl;   
+        cmds.push_back("LOAD B");
+        this->code.insert(this->code.end(), cmds.begin(), cmds.end());
+        this->incr_offset(cmds.size());
+
+        cmds.clear();
+        cmds = this->gen_const(var->array_addr, A);
+        cmds.push_back("LOAD C");
+        cmds.push_back("SUB B C");
+        cmds.push_back("ADD B A");
+        cmds.push_back("INC B");
+        cmds.push_back("COPY A B");
     }
     
     this->code.insert(this->code.end(), cmds.begin(), cmds.end());

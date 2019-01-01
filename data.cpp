@@ -240,7 +240,7 @@ variable *data::get_variable_array_num(std::string name, long long num) {
         return nullptr;
     }
 
-    long long real_addr = num - array_sym->offset + 1;
+    long long real_addr = num + array_sym->offset - array_sym->array_start + 1;
     var = std::make_shared<variable>(real_addr);
     this->variables.push_back(var);
     return var.get();

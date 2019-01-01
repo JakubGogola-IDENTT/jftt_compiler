@@ -111,7 +111,7 @@ value:          num                                                             
 ;
 
 identifier:     pidentifier                                                             { $$ = d->get_variable(*$1); current_id = *$1; }
-                | pidentifier'('pidentifier')'                                          { $$ = d->get_variable_array_var(*$1, *$3); std::cout << "I'm here" << std::endl; }
+                | pidentifier '(' pidentifier ')'                                       { $$ = d->get_variable_array_var(*$1, *$3); }
                 | pidentifier'('num')'                                                  { $$ = d->get_variable_array_num(*$1, $3); }
 ;
 %%
@@ -124,16 +124,16 @@ int main(int argc, char** argv) {
                 return -1;
         }
 
-        std::cout << "*** \x1b[34mCompilator is running...\x1b[0m ***" << std::endl;
+        std::cout << "### \x1b[34mCompilator is running...\x1b[0m ###" << std::endl;
 
         yyparse();
 
 
         if (!d->get_errors()) {
-                std::cout << "*** \x1b[32mCompilation completed succesfully\x1b[0m ***" << std::endl;
+                std::cout << "### \x1b[32mCompilation completed succesfully\x1b[0m ###" << std::endl;
                 io->print_code(code);
         } else {
-                std::cerr << "*** \x1b[31mErrors occured\x1b[0m ***" << std::endl;
+                std::cerr << "### \x1b[31mErrors occured\x1b[0m ###" << std::endl;
         }
         
         return 0;
