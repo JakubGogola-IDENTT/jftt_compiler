@@ -25,7 +25,7 @@ std::vector<std::string> code;
     long long num;
     struct label *cond;
     struct variable *var;
-    struct variable_value *val;
+
 }
 
 //Tokens
@@ -43,7 +43,7 @@ std::vector<std::string> code;
 
 //Types
 %type <var> identifier
-%type <val> value
+%type <var> value
 
 //Operators precedence
 %left ADD SUB
@@ -80,7 +80,7 @@ command:        identifier ASSIGN expression';'
                 | WRITE value';'
 ;
 
-expression:     value
+expression:     value                                                                   {  }
                 | value ADD value
                 | value SUB value
                 | value MUL value
@@ -96,8 +96,8 @@ condition:      value EQ value
                 | value GEQ value
 ;
 
-value:          num                                                                     {  }
-                | identifier                                                            { $$ = d->get_value($1); }
+value:          num                                                                     { $$ = d->get_value_num($1); }
+                | identifier                                                            { $$ = $1; }
 ;
 
 identifier:     pidentifier                                                             { $$ = d->get_variable(*$1); }

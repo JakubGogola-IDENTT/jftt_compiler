@@ -49,7 +49,6 @@ public:
     variable *get_variable_array_var(std::string name, std::string var_name);
     variable *get_variable_array_num(std::string name, long long num);
 
-    variable_value *get_value(variable *var);
-    variable_value *get_value_num();
-    //TODO: long long get_value();
+    //variable *get_value(variable *var);
+    variable *get_value_num(long long value);
 };

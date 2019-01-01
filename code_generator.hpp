@@ -37,29 +37,20 @@ private:
     //Generate costs map
     void gen_costs();
 
-    //Gets label
     long long get_label();
-
-    //Increases offset when code added
     void incr_offset(long long incr);
 
 public:
     code_generator(std::shared_ptr<data> d);
 
+     std::vector<std::string> get_code();
+     void end_prog();
+
     void set_mem_reg(long long addr);
+    void set_mem_reg_nested_addr(long long addr);
 
-    // Returns generated code
-    std::vector<std::string> get_code();
-
-    // Generate constat value.
     std::vector<std::string> gen_const(long long c, std::string reg); 
 
-    // Program is reading sth from stdin
     void read_interact();
-
-    // Program is writing sth to stdout
     void write_interact();
-
-    // Writes HALT to the end of generated code
-    void end_prog();
 };

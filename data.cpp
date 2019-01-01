@@ -1,5 +1,6 @@
 #include <iostream>
 #include <string>
+#include <sstream>
 #include <vector>
 #include <map>
 #include <memory>
@@ -120,6 +121,30 @@ long long data::put_symbol_array(std::string name, long long start, long long en
     return offset;
 }
 
+
+/**
+ * Puts variable which is only value
+ */ 
+long long data::put_value(long long value) {
+    std::shared_ptr<symbol> sym;
+    std::stringstream ss;
+    std::string name;
+    long long offset;
+
+    ss << value;
+    name = ss.str();
+
+    if(this->check_context(name)) {
+        return this->get_symbol(name)->offset;
+    } 
+
+    offset = this->alloc_mem();
+    sym = std::make_shared<symbol>(name, offset);
+    this->sym_map.insert(std::pair<std::string, std::shared_ptr<symbol>>(name, sym));
+
+    return offset;
+}
+
 /**
  * Returns symbol (pointer)
  */
@@ -200,21 +225,32 @@ variable *data::get_variable_array_num(std::string name, long long num) {
     return var.get();
 }
 
+variable *data::get_value_num(long long value) {
+    std::shared_ptr<variable> val;
+    long long offset;
+
+    offset = this->put_value(value);
+    val = std::make_shared<variable>(offset);
+
+    return val.get();
+}
+
 /**
  * Returns specific addres to value
+ * TODO: PROBABLY UNNECESSARY
  */
-variable_value *data::get_value(variable *var) {
-    std::shared_ptr<variable_value> val;
+/*variable *data::get_value(variable *var) {
+    std::shared_ptr<variable> val;
 
     if(var == nullptr) {
         return nullptr;
     }
 
     if(var->array_addr == -1) {
-        val = std::make_shared<variable_value>(var->addr);
+        val = var;
     } else {
-        
+
     }
 
     return val.get();
-}
+}*/

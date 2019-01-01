@@ -55,6 +55,13 @@ void code_generator::set_mem_reg(long long addr) {
     this->code.insert(this->code.end(), cmds.begin(), cmds.end());
 }
 
+/**
+ * Used in case: pidentifier(pididentifier)
+ */ 
+void code_generator::set_mem_reg_nested_addr(long long addr) {
+    this->set_mem_reg(addr);
+    this->code.push_back("STORE A");
+}
 
 /**
  * Generates constant value
