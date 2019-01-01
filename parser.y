@@ -69,20 +69,20 @@ commands:       commands command
                 | command       
 ;
 
-command:        identifier ASSIGN expression';'                                         {  }             
+command:        identifier ASSIGN expression';'                                         { cg->assign($1); }             
                 | IF condition THEN commands ELSE commands ENDIF                        {  }
                 | IF condition THEN commands ENDIF
                 | WHILE condition DO commands ENDWHILE
                 | DO commands WHILE condition ENDWHILE
                 | FOR pidentifier FROM value TO value DO commands ENDFOR
                 | FOR pidentifier FROM value DOWNTO value DO commands ENDFOR
-                | READ identifier';'
-                | WRITE value';'                                                        {  }
+                | READ identifier';'                                                    {  }
+                | WRITE value';'                                                        { cg->write($2); }
 ;
 
-expression:     value                                                                   {  }
-                | value ADD value                                                       {  }
-                | value SUB value
+expression:     value                                                                   { cg->constant($1); }
+                | value ADD value                                                       { cg->add($1, $3); }
+                | value SUB value                                                       { cg->sub($1, $3); }
                 | value MUL value
                 | value DIV value
                 | value MOD value

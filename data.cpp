@@ -255,7 +255,7 @@ variable *data::get_value_num(long long value) {
     long long offset;
 
     offset = this->put_value(value);
-    val = std::make_shared<variable>(offset);
+    val = std::make_shared<variable>(-1, offset, value);
     this->variables.push_back(val);
     return val.get();
 }

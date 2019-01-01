@@ -72,34 +72,90 @@ void code_generator::end_prog() {
 /**
  * Sets A register to get address in memory
  */ 
-void code_generator::set_mem_reg(long long addr) {
-    std::vector<std::string> cmds = this->gen_const(addr, A);
-    cmds.insert(cmds.begin(), "SUB A A");
-    this->code.insert(this->code.end(), cmds.begin(), cmds.end());
-    this->incr_offset(cmds.size());
-}
+void code_generator::set_mem_reg(variable *var) {
+    std::cout << "set_mem_reg" << std::endl;
+    std::vector<std::string> cmds = this->gen_const(var->addr, A);
+    //cmds.insert(cmds.begin(), "SUB A A"); TODO: CHECK!!!!!!!!
 
-/**
- * Used in case: pidentifier(pididentifier)
- */ 
-void code_generator::set_mem_reg_nested_addr(long long addr) {
-    this->set_mem_reg(addr);
-    this->code.push_back("STORE A");
-    this->incr_offset(1);
+    //Adress is nested: pidentifier(pidentifier)
+    if(var->array_addr != -1) {
+        cmds.push_back("LOAD A");
+    }
+    
+    std::cout << "Size before: " << this->code.size() << std::endl;;
+    this->code.insert(this->code.end(), cmds.begin(), cmds.end());
+    std::cout << "Size after: " << this->code.size() << std::endl;
+    this->incr_offset(cmds.size());
 }
 
 /**
  * Value from memory to register
  */ 
-void code_generator::mem_to_reg(long long addr, enum reg r) {
-
+void code_generator::mem_to_reg(variable *var, enum reg r) {
+    this->set_mem_reg(var);
+    this->code.push_back("LOAD " + this->reg_sym[r]);
+    this->incr_offset(1);
 }
 
 /**
  * Value from register to memory
  */
-void code_generator::reg_to_mem(enum reg r, long long addr) {
+void code_generator::reg_to_mem(enum reg r, variable *var) {
+    this->set_mem_reg(var);
+    this->code.push_back("STORE "+ this->reg_sym[r]);
+    this->incr_offset(1);
+}
 
+/***** OPERATIONS *****/
+
+void code_generator::constant(variable *var) {
+    std::vector<std::string> cmds;
+    cmds = this->gen_const(var->value, B);
+    this->code.insert(this->code.end(), cmds.begin(), cmds.end());
+    this->incr_offset(cmds.size());
+}
+
+/**
+ * ADD two variables. Result in register B
+ */
+void code_generator::add(variable *v_1, variable *v_2) {
+    this->mem_to_reg(v_1, B);
+    this->mem_to_reg(v_2, C);
+    this->code.push_back("ADD B C");
+    this->incr_offset(1);
+}
+
+/**
+ * SUB two variables. Result in register B
+ */
+void code_generator::sub(variable *v_1, variable *v_2) {
+    this->mem_to_reg(v_1, B);
+    this->mem_to_reg(v_2, C);
+    this->code.push_back("SUB B C");
+    this->incr_offset(1);
+}
+
+/**
+ * Assigns value to variable
+ */
+void code_generator::assign(variable *var) {
+    this->reg_to_mem(B, var);
+}
+
+/**
+ * Puts code to handle READ
+ */
+void code_generator::read() {
+
+}
+
+/**
+ * Puts code to handle WRITE
+ */
+void code_generator::write(variable *var) {
+    this->mem_to_reg(var, B);
+    this->code.push_back("PUT " + this->reg_sym[B]);
+    this->incr_offset(1);
 }
 
 /**
@@ -191,14 +247,8 @@ std::vector<std::string> code_generator::gen_const(long long c, enum reg r) {
         }
     }
 
+    std::cout << "Const: " << c << std::endl;
     return cmds;
-}
-
-/**
- * Puts code to handle READ
- */
-void code_generator::read() {
-
 }
 
 void code_generator::read_interact() {
@@ -208,3 +258,4 @@ void code_generator::read_interact() {
 void code_generator::write_interact() {
     this->is_write = true;
 }
+

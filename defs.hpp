@@ -101,17 +101,28 @@ struct variable {
     //Number of array cell
     long long addr;
 
+    //Value for constant variable
+    long long value;
+
     //Single variable
     variable(long long addr) {
         this->array_addr = -1;
         this->addr = addr;
+        this->value = -1;
     }
 
     //Array cell
     variable(long long array_addr, long long addr) {
         this->array_addr = array_addr;
         this->addr = addr;
+        this->value = -1;
     }
+
+    variable(long long array_addr, long long addr, long long value) {
+        this->array_addr = array_addr;
+        this->addr = addr;
+        this->value = value;
+    }  
 };
 
 

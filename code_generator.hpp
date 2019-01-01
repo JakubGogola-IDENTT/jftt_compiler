@@ -44,27 +44,28 @@ private:
     long long get_label();
     void incr_offset(long long incr);
 
+    void set_mem_reg(variable *var);
+
 public:
     code_generator(std::shared_ptr<data> d);
 
      std::vector<std::string> get_code();
      void end_prog();
 
-    void set_mem_reg(long long addr);
-    void set_mem_reg_nested_addr(long long addr);
-
-    void mem_to_reg(long long addr, enum reg r);
-    void reg_to_mem(enum reg r, long long addr);
+    void mem_to_reg(variable *var, enum reg r);
+    void reg_to_mem(enum reg r, variable *var);
 
     std::vector<std::string> gen_const(long long c, enum reg r); 
 
     //operations
-    void assign();
-    void add();
-    void sub();
-    void mul();
-    void div();
-    void rem();
+    void assign(variable *var);
+    void constant(variable *var);
+    
+    void add(variable *v_1, variable *v_2);
+    void sub(variable *v_1, variable *v_2);
+    void mul(variable *v_1, variable *v_2);
+    void div(variable *v_1, variable *v_2);
+    void rem(variable *v_1, variable *v_2);
     
     //conditions
     void eq();
@@ -75,8 +76,10 @@ public:
     void leq();
 
     //IO
-    void write();
+    void write(variable *var);
     void read();
+
+
 
     void read_interact();
     void write_interact();
