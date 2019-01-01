@@ -86,7 +86,7 @@ command:        identifier ASSIGN expression';'                                 
                 | DO commands WHILE condition ENDWHILE
                 | FOR pidentifier FROM value TO value DO commands ENDFOR
                 | FOR pidentifier FROM value DOWNTO value DO commands ENDFOR
-                | READ identifier';'                                                    {  }
+                | READ identifier';'                                                    { cg->read($2); }
                 | WRITE value';'                                                        { cg->write($2); }
 ;
 

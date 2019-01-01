@@ -79,7 +79,7 @@ public:
 
     //IO
     void write(variable *var);
-    void read();
+    void read(variable *var);
 
 
 

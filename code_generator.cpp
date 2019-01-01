@@ -92,8 +92,7 @@ void code_generator::array_offset(long long addr, long long offset) {
 void code_generator::set_mem_reg(variable *var) {
     std::vector<std::string> cmds = this->gen_const(var->addr, A);
     //Adress is nested: pidentifier(pidentifier)
-    if(var->array_addr != -1) {
-         std::cout << "set_mem_reg: " << var->array_addr << std::endl;   
+    if(var->array_addr != -1) { 
         cmds.push_back("LOAD B");
         this->code.insert(this->code.end(), cmds.begin(), cmds.end());
         this->incr_offset(cmds.size());
@@ -217,8 +216,10 @@ void code_generator::assign(variable *var) {
 /**
  * Puts code to handle READ
  */
-void code_generator::read() {
-
+void code_generator::read(variable *var) {
+    this->code.push_back("GET B");
+    this->reg_to_mem(B, var);
+    this->incr_offset(1);
 }
 
 /**
