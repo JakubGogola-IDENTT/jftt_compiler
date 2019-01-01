@@ -97,7 +97,7 @@ condition:      value EQ value
 ;
 
 value:          num                                                                     { $$ = d->get_value_num($1); }
-                | identifier                                                            { $$ = $1; }
+                | identifier                                                            { $$ = d->get_value($1); }
 ;
 
 identifier:     pidentifier                                                             { $$ = d->get_variable(*$1); }

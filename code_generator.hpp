@@ -32,10 +32,14 @@ private:
     //Cost of some instructions
     std::map<enum instr, int> costs;
 
+    //Std::string symbols of registers
+    std::map<enum reg, std::string> reg_sym;
+
     /*FUNCTIONS*/
 
     //Generate costs map
     void gen_costs();
+    void gen_reg_sym();
 
     long long get_label();
     void incr_offset(long long incr);
@@ -49,7 +53,7 @@ public:
     void set_mem_reg(long long addr);
     void set_mem_reg_nested_addr(long long addr);
 
-    std::vector<std::string> gen_const(long long c, std::string reg); 
+    std::vector<std::string> gen_const(long long c, enum reg r); 
 
     void read_interact();
     void write_interact();

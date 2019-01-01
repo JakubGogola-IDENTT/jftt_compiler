@@ -42,6 +42,7 @@ public:
 
     long long put_symbol(std::string name);
     long long put_symbol_array(std::string name, long long start, long long end);
+    long long put_symbol_iterator(std::string name);
     long long put_value(long long value);
     symbol *get_symbol(std::string name);
 
@@ -49,6 +50,6 @@ public:
     variable *get_variable_array_var(std::string name, std::string var_name);
     variable *get_variable_array_num(std::string name, long long num);
 
-    //variable *get_value(variable *var);
+    variable *get_value(variable *var);
     variable *get_value_num(long long value);
 };

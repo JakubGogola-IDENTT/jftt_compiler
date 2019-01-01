@@ -15,6 +15,17 @@ enum instr {
     I_COPY
 };
 
+enum reg {
+    A,
+    B,
+    C,
+    D,
+    E,
+    F,
+    G,
+    H
+};
+
 /**
  * Struct for symbol in symbols array
  */ 
@@ -25,6 +36,7 @@ struct symbol {
     bool is_init;
     bool is_const;
     bool is_array;
+    bool is_iterator;
     long long array_start;
     long long array_end;
     long long size;
@@ -34,6 +46,7 @@ struct symbol {
         this->name = name;
         this->offset = offset;
         this->is_init = false;
+        this->is_iterator = false;
         this->is_const = false;
         this->is_array = false;
         this->array_start = 0;
@@ -46,6 +59,7 @@ struct symbol {
         this->name = name;
         this->offset = offset;
         this->is_init = true; //TODO: CHECK THIS SHIT!!!!!!
+        this->is_iterator = false;
         this->is_const = false;
         this->is_array = true;
         this->array_start = array_start;
@@ -58,6 +72,7 @@ struct symbol {
         this->name = name;
         this->offset = offset;
         this->is_init = true;
+        this->is_iterator = false;
         this->is_const = is_const;
         this->is_array = false;
         this->array_start = 0;

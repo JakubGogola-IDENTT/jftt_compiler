@@ -123,6 +123,27 @@ long long data::put_symbol_array(std::string name, long long start, long long en
 
 
 /**
+ * Puts valus which is iterator
+ */
+long long data::put_symbol_iterator(std::string name) {
+    if(this->check_context(name)) {
+        //Variable exists but is not iterator
+        if(!this->get_symbol(name)->is_iterator) {
+            std::cerr << this->error_alert << name << " - can't be local operator in for loop" << std::endl;
+            return -1;
+        } else {
+            return this->get_symbol(name)->offset;
+        }
+    }
+
+    long long offset = this->alloc_mem();
+    std::shared_ptr<symbol> sym = std::make_shared<symbol>(name, offset);
+    sym->is_iterator = true;
+    this->sym_map.insert(std::pair<std::string, std::shared_ptr<symbol>>(name, sym));
+    return offset;
+}
+
+/**
  * Puts variable which is only value
  */ 
 long long data::put_value(long long value) {
@@ -225,6 +246,10 @@ variable *data::get_variable_array_num(std::string name, long long num) {
     return var.get();
 }
 
+
+/**
+ * Returns constant variable
+ */ 
 variable *data::get_value_num(long long value) {
     std::shared_ptr<variable> val;
     long long offset;
@@ -236,21 +261,8 @@ variable *data::get_value_num(long long value) {
 }
 
 /**
- * Returns specific addres to value
- * TODO: PROBABLY UNNECESSARY
- */
-/*variable *data::get_value(variable *var) {
-    std::shared_ptr<variable> val;
-
-    if(var == nullptr) {
-        return nullptr;
-    }
-
-    if(var->array_addr == -1) {
-        val = var;
-    } else {
-
-    }
-
-    return val.get();
-}*/
+ * Syntactic sugar 
+ */ 
+variable *data::get_value(variable *var) {
+    return var;
+}
