@@ -51,6 +51,7 @@ public:
     code_generator(std::shared_ptr<data> d);
 
     std::vector<std::string> get_code();
+    void array_offset(long long addr, long long offset);
     void end_prog();
 
     void mem_to_reg(variable *var, enum reg r);

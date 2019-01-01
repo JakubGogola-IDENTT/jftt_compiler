@@ -71,14 +71,32 @@ void code_generator::end_prog() {
 }
 
 /**
+ * Puts array offset to memory in first array cell
+ */
+void code_generator::array_offset(long long addr, long long offset) {
+    std::vector<std::string> cmds;
+    cmds = this->gen_const(addr, A);
+    this->code.insert(this->code.end(), cmds.begin(), cmds.end());
+    this->incr_offset(cmds.size());
+    cmds.clear();
+    cmds = this->gen_const(offset, B);
+    cmds.push_back("STORE B");
+    cmds.push_back("PUT A");
+    cmds.push_back("PUT B");
+    this->code.insert(this->code.end(), cmds.begin(), cmds.end());
+    this->incr_offset(cmds.size());
+}
+
+
+/**
  * Sets A register to get address in memory
  */ 
 void code_generator::set_mem_reg(variable *var) {
     std::vector<std::string> cmds = this->gen_const(var->addr, A);
-
+    
     //Adress is nested: pidentifier(pidentifier)
     if(var->array_addr != -1) {
-        std::cout << "is nested!!!!" << std::endl;
+        std::cout << "p(p): " << var->addr << " " << var->array_addr << std::endl;
         cmds.push_back("LOAD A");
     }
     

@@ -79,7 +79,7 @@ long long data::alloc_mem() {
 long long data::alloc_mem_array(long long start, long long end) {
     long long size = end - start + 2;
     this->mem_offset += size;
-    return this->mem_offset - (size - 1);
+    return this->mem_offset - size + 1;
 }
 
 /**

@@ -18,6 +18,11 @@ std::shared_ptr<data> d = std::make_shared<data>();
 std::shared_ptr<code_generator> cg = std::make_shared<code_generator>(d);
 
 std::vector<std::string> code; 
+std::string current_id;
+std::string old_id;
+std::vector<std::string> vars;
+
+int addr;
 
 %}
 %union sem_rec {
@@ -61,7 +66,12 @@ program:        DECLARE
 ;
 
 declarations:   declarations pidentifier';'                                             { d->put_symbol(*$2); }
-                | declarations pidentifier'('num':'num')'';'                            { d->put_symbol_array(*$2, $4, $6); }
+                | declarations pidentifier'('num':'num')'';'                            { 
+                                                                                                addr = d->put_symbol_array(*$2, $4, $6);  
+                                                                                                if(addr != -1) {
+                                                                                                        cg->array_offset(addr, $4);
+                                                                                                }
+                                                                                        }
                 |                                                        
 ;
 
@@ -69,7 +79,7 @@ commands:       commands command
                 | command       
 ;
 
-command:        identifier ASSIGN expression';'                                         { cg->assign($1); }             
+command:        identifier ASSIGN expression';'                                         { cg->assign($1); d->init_variable(current_id); }             
                 | IF condition THEN commands ELSE commands ENDIF                        {  }
                 | IF condition THEN commands ENDIF
                 | WHILE condition DO commands ENDWHILE
@@ -100,8 +110,8 @@ value:          num                                                             
                 | identifier                                                            { $$ = d->get_value($1); }
 ;
 
-identifier:     pidentifier                                                             { $$ = d->get_variable(*$1); }
-                | pidentifier'('pidentifier')'                                          { $$ = d->get_variable_array_var(*$1, *$3); }
+identifier:     pidentifier                                                             { $$ = d->get_variable(*$1); current_id = *$1; }
+                | pidentifier'('pidentifier')'                                          { $$ = d->get_variable_array_var(*$1, *$3); std::cout << "I'm here" << std::endl; }
                 | pidentifier'('num')'                                                  { $$ = d->get_variable_array_num(*$1, $3); }
 ;
 %%

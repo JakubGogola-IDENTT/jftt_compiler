@@ -8,8 +8,7 @@
 
 class data {
 private:
-    //Memory offset
-    long long mem_offset;
+    
 
     //Symbols table
     std::map<std::string, std::shared_ptr<symbol>> sym_map;
@@ -29,6 +28,9 @@ private:
     std::vector<std::shared_ptr<variable>> variables;
 
 public:
+    //Memory offset
+    long long mem_offset;
+
     data();
 
     //Checks if variable exists
