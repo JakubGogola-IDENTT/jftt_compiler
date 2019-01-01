@@ -73,18 +73,16 @@ void code_generator::end_prog() {
  * Sets A register to get address in memory
  */ 
 void code_generator::set_mem_reg(variable *var) {
-    std::cout << "set_mem_reg" << std::endl;
     std::vector<std::string> cmds = this->gen_const(var->addr, A);
     //cmds.insert(cmds.begin(), "SUB A A"); TODO: CHECK!!!!!!!!
 
     //Adress is nested: pidentifier(pidentifier)
     if(var->array_addr != -1) {
+        std::cout << "is nested!!!!" << std::endl;
         cmds.push_back("LOAD A");
     }
     
-    std::cout << "Size before: " << this->code.size() << std::endl;;
     this->code.insert(this->code.end(), cmds.begin(), cmds.end());
-    std::cout << "Size after: " << this->code.size() << std::endl;
     this->incr_offset(cmds.size());
 }
 
@@ -165,11 +163,11 @@ std::vector<std::string> code_generator::gen_const(long long c, enum reg r) {
     std::vector<std::string> cmds;
     std::string sub_cmd = "SUB " + this->reg_sym[r] + " " + this->reg_sym[r];
     std::string inc_cmd = "INC " + this->reg_sym[r];
-    std::string add_cmd = "ADD " + this->reg_sym[r] + " " + this->reg_sym[C];
+    std::string add_cmd = "ADD " + this->reg_sym[r] + " " + this->reg_sym[r];
     
     bool is_large = false;
-    int inc_cost = 0;
-    int add_cost = 0;
+    long long inc_cost = std::numeric_limits<long long>::max();
+    long long add_cost = 0;
 
     //Set 0 to given register r
     cmds.push_back(sub_cmd);
@@ -195,7 +193,7 @@ std::vector<std::string> code_generator::gen_const(long long c, enum reg r) {
     //Value in given register
     long long tmp = 2;
 
-    while(tmp + tmp < c) {
+    while(tmp + tmp <= c) {
         tmp += tmp;
         cmds.push_back(add_cmd);
         add_cost += this->costs[I_ADD];
@@ -247,7 +245,6 @@ std::vector<std::string> code_generator::gen_const(long long c, enum reg r) {
         }
     }
 
-    std::cout << "Const: " << c << std::endl;
     return cmds;
 }
 

@@ -115,8 +115,8 @@ int main(int argc, char** argv) {
         }
 
         yyparse();
-        //std::cout << "Compilation ended succesfully" << std::endl;
-        //std::cout << code.size() << std::endl;
+        std::cout << "Compilation ended succesfully" << std::endl;
+        std::cout << code.size() << std::endl;
         io->print_code(code);
         return 0;
 }
