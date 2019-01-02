@@ -37,9 +37,9 @@ int addr;
 //Tokens
 %start program
 %token DECLARE IN END
-%token <lbl> IF WHILE
+%token <lbl> IF WHILE DO
 %token FOR //TODO: struct for FOR 
-%token THEN ELSE ENDIF FROM TO DOWNTO DO ENDFOR ENDWHILE ENDDO
+%token THEN ELSE ENDIF FROM TO DOWNTO  ENDFOR ENDWHILE ENDDO
 %token READ WRITE       
 %token LT GT LEQ GEQ EQ NEQ
 %token ASSIGN
@@ -86,7 +86,7 @@ command:        identifier ASSIGN expression';'                                 
                 /*### IF_ELSE ###*/
                 | IF condition THEN commands                                            { 
                                                                                                 $1 = d->get_label(0, 0);
-                                                                                                $1->go_to = cg->if_else_block_first($2);
+                                                                                                cg->if_else_block_first($1, $2);
                                                                                         }                   
                   ELSE commands ENDIF                                                   { cg->if_else_block_second($1->go_to); }               
 
@@ -94,20 +94,20 @@ command:        identifier ASSIGN expression';'                                 
                 | IF condition THEN commands ENDIF                                      { cg->if_block($2); }             
 
                 /*### WHILE ###*/
-                | WHILE                                                                 
-                        condition                                                       
-                  DO 
-                        commands 
-                  ENDWHILE
+                | WHILE condition DO                                                                                                         
+                  commands ENDWHILE                                                         
 
-                /*### DO-WHILE ###*/
-                | DO 
-                        commands 
-                  WHILE 
-                        condition 
-                  ENDWHILE
+                /*### DO_WHILE ###*/
+                | DO                                                                    { 
+                                                                                                $1 = d->get_label(0, 0); 
+                                                                                                cg->do_while_block_first($1);
+                                                                                        }
+                  commands WHILE condition ENDDO                                        {
+                                                                                                std::cout << $5 << std::endl;
+                                                                                                cg->do_while_block_second($1, $5);
+                                                                                        }
 
-                /*### FOR-FROM-TO ###*/
+                /*### FOR_FROM_TO ###*/
                 | FOR 
                         pidentifier 
                   FROM 
@@ -118,14 +118,8 @@ command:        identifier ASSIGN expression';'                                 
                         commands 
                   ENDFOR
 
-                /*### FOR-FROM-DOWNTO ###*/
-                | FOR 
-                        pidentifier                                                     
-                  FROM 
-                        value                                                           
-                  DOWNTO 
-                        value 
-                  DO 
+                /*### FOR_FROM_DOWNTO ###*/
+                | FOR pidentifier FROM value DOWNTO value DO 
                         commands 
                   ENDFOR
 

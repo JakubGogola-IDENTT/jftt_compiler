@@ -9,6 +9,7 @@
 #include <cstring>
 #include "parser.tab.h"
 
+
 %}
 
 IDENTIFIER              [_a-z]

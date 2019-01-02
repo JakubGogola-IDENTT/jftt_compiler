@@ -87,7 +87,7 @@ std::string code_generator::get_operation(long long index) {
 /**
  * Adds single operation to code
  */
-void code_generator::add_operation(long long index, std::string operation) {
+void code_generator::add_operation(std::string operation) {
     this->code.push_back(operation);
     this->incr_offset(1);
 }
@@ -454,7 +454,7 @@ void code_generator::read(variable *var) {
  * Puts code to handle WRITE
  */
 void code_generator::write(variable *var) {
-    this->mem_to_reg(var, B);
+    this->single_var(var, B);
     this->code.push_back("PUT " + this->reg_sym[B]);
     this->incr_offset(1);
 }
@@ -754,19 +754,40 @@ void code_generator::if_block(long long go_to) {
     this->change_operation(go_to, op);
 }
 
-long long code_generator::if_else_block_first(long long go_to) {
-    long long addr;
+void code_generator::if_else_block_first(label *lab, long long go_to) {
     this->code.push_back("JUMP addr");
     this->incr_offset(1);
-    addr = this->code_offset;
+    lab->go_to = this->code_offset;
 
     this->if_block(go_to);
-    return addr;
 }
 
 void code_generator::if_else_block_second(long long go_to) {
     this->if_block(go_to);
 }
+
+//WHILE, DO_WHILE blocks
+
+/**
+ * Jump true address for DO_WHILE
+ */
+void code_generator::do_while_block_first(label *lab) {
+    lab->go_to = this->code_offset + 1;
+}
+
+void code_generator::do_while_block_second(label *lab, long long go_to) {
+    std::stringstream ss;
+    long long shift;
+
+    ss << lab->go_to;
+    this->code.push_back("JUMP " + ss.str());
+    ss.str("");
+    this->incr_offset(1);
+
+    this->if_block(go_to);
+}
+
+
 
 void code_generator::read_interact() {
     this->is_read = true;
