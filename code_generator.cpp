@@ -437,6 +437,61 @@ void code_generator::write(variable *var) {
     this->incr_offset(1);
 }
 
+
+//CONDITIONS
+
+/**
+ * Checks if two variables are EQUAL
+ */
+long long code_generator::eq(variable *v_1, variable *v_2) {
+    long long addr;
+
+    this->mem_to_reg(v_1, G);
+    this->mem_to_reg(v_2, H);
+    this->code.push_back("INC H");
+    this->code.push_back("SUB H G");
+
+    //jump if false
+    this->code.push_back("JZERO H addr");
+    this->incr_offset(3);
+    addr = this->code_offset;
+
+    this->code.push_back("DEC H");
+
+    //jump if true
+    this->code.push_back("JZERO H addr");
+    this->incr_offset(2);
+
+    return addr;
+}
+
+/**
+ * Checks if two variables are NOT EQUAL
+ */
+long long code_generator::eq(variable *v_1, variable *v_2) {
+    long long addr;
+
+    this->mem_to_reg(v_1, G);
+    this->mem_to_reg(v_2, H);
+    this->code.push_back("INC H");
+    this->code.push_back("SUB H G");
+
+    //jump if false
+    this->code.push_back("JZERO H addr");
+    this->incr_offset(3);
+    addr = this->code_offset;
+
+    this->code.push_back("DEC H");
+
+    //jump if true
+    this->code.push_back("JZERO H addr");
+    this->incr_offset(2);
+
+    return addr;
+}
+
+
+
 /**
  * Generates constant value
  */

@@ -28,7 +28,8 @@ int addr;
 %union sem_rec {
     std::string *pidentifier;
     long long num;
-    struct label *cond;
+    long long cond;
+    struct label *lbl;
     struct variable *var;
     struct variable *id;
 }
@@ -36,7 +37,7 @@ int addr;
 //Tokens
 %start program
 %token DECLARE IN END
-%token <cond> IF WHILE
+%token <lbl> IF WHILE
 %token FOR //TODO: struct for FOR 
 %token THEN ELSE ENDIF FROM TO DOWNTO DO ENDFOR ENDWHILE ENDDO
 %token READ WRITE       
@@ -49,6 +50,7 @@ int addr;
 //Types
 %type <var> value
 %type <id> identifier
+%type <cond> condition;
 
 //Operators precedence
 %left ADD SUB
@@ -81,26 +83,25 @@ commands:       commands command
 
 command:        identifier ASSIGN expression';'                                         { cg->assign($1); d->init_variable(current_id); }             
 
-                /* ################################################################################# */
                 /*### IF ###*/
                 | IF                                                                    
-                        condition 
-                  THEN 
-                        commands 
+                        condition                                                       
+                  THEN                                                                          
+                        commands                                                        
                   ELSE 
                         commands 
-                  ENDIF          
+                  ENDIF                                                                 
 
                 /*### IF-ELSE ###*/
                 | IF                                                                                                                                        
-                        condition                                                                                                                                   
-                  THEN 
-                        commands 
-                  ENDIF                                                                 { std::cout << "ENDIF" << std::endl; }                                                   
+                        condition                                                                                                                                                                                                
+                  THEN                                                                  
+                        commands                                                        { }      
+                  ENDIF                                                                 { }                                                   
 
                 /*### WHILE ###*/
-                | WHILE 
-                        condition               
+                | WHILE                                                                 
+                        condition                                                       
                   DO 
                         commands 
                   ENDWHILE
@@ -125,15 +126,14 @@ command:        identifier ASSIGN expression';'                                 
 
                 /*### FOR-FROM-DOWNTO ###*/
                 | FOR 
-                        pidentifier 
+                        pidentifier                                                     
                   FROM 
-                        value 
+                        value                                                           
                   DOWNTO 
                         value 
                   DO 
                         commands 
                   ENDFOR
-                /* ################################################################################# */
 
                 | READ identifier';'                                                    { cg->read($2); }
                 | WRITE value';'                                                        { cg->write($2); }
@@ -147,7 +147,7 @@ expression:     value                                                           
                 | value MOD value                                                       { cg->rem($1, $3); }
 ;
 
-condition:      value EQ value                                                          {  }
+condition:      value EQ value                                                          { $$ = cg->get_code_offset(); }
                 | value NEQ value                                                       {  }
                 | value LT value                                                        {  }
                 | value GT value                                                        {  }

@@ -52,6 +52,8 @@ public:
 
     std::vector<std::string> get_code();
     void array_offset(long long addr, long long offset);
+
+    void change_operation(long long index);
     void end_prog();
 
     long long get_code_offset();
@@ -72,18 +74,16 @@ public:
     void rem(variable *v_1, variable *v_2);
     
     //conditions
-    void eq();
-    void neq();
-    void gt();
-    void lt();
-    void geq();
-    void leq();
+    long long eq(variable *v_1, variable *v_2);
+    long long neq(variable *v_1, variable *v_2);
+    long long gt(variable *v_1, variable *v_2);
+    long long lt(variable *v_1, variable *v_2);
+    long long geq(variable *v_1, variable *v_2);
+    long long leq(variable *v_1, variable *v_2);
 
     //IO
     void write(variable *var);
     void read(variable *var);
-
-
 
     void read_interact();
     void write_interact();
