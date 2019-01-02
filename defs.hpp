@@ -45,7 +45,7 @@ struct symbol {
     symbol(std::string name, long long offset) {
         this->name = name;
         this->offset = offset;
-        this->is_init = false;
+        this->is_init = true; //SHOULD BE FALSE!!!!!!!!!
         this->is_iterator = false;
         this->is_const = false;
         this->is_array = false;
