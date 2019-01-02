@@ -179,5 +179,5 @@ int main(int argc, char** argv) {
 }
 
 void yyerror(std::string s) {
-
+        std::cerr << s << std::endl;
 }
