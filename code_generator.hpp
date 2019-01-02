@@ -47,13 +47,15 @@ private:
     void set_mem_reg(variable *var);
     void single_var(variable *var, enum reg r);
 
+    void change_operation(long long index, std::string operation);
+    std::string get_operation(long long index);
+
 public:
     code_generator(std::shared_ptr<data> d);
 
     std::vector<std::string> get_code();
     void array_offset(long long addr, long long offset);
 
-    void change_operation(long long index);
     void end_prog();
 
     long long get_code_offset();
@@ -71,7 +73,7 @@ public:
     void sub(variable *v_1, variable *v_2);
     void mul(variable *v_1, variable *v_2);
     void div(variable *v_1, variable *v_2);
-    void rem(variable *v_1, variable *v_2);
+    void mod(variable *v_1, variable *v_2);
     
     //conditions
     long long eq(variable *v_1, variable *v_2);
@@ -80,6 +82,14 @@ public:
     long long lt(variable *v_1, variable *v_2);
     long long geq(variable *v_1, variable *v_2);
     long long leq(variable *v_1, variable *v_2);
+
+    //IF, IF_ELSE blocks
+    void if_block(long long go_to);
+    void if_else_block(long long jump_addr);
+
+    //WHILE, DO_WHILE loops
+
+    //FOR_TO, FOR_DOWNTO loops
 
     //IO
     void write(variable *var);

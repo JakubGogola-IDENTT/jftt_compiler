@@ -310,7 +310,7 @@ void code_generator::div(variable *v_1, variable *v_2) {
 /**
  * REM of dividing two variables. Result in register B
  */
-void code_generator::rem(variable *v_1, variable *v_2) {
+void code_generator::mod(variable *v_1, variable *v_2) {
     std::vector<std::string> cmds;
     std::stringstream ss;
 
@@ -446,8 +446,8 @@ void code_generator::write(variable *var) {
 long long code_generator::eq(variable *v_1, variable *v_2) {
     long long addr;
 
-    this->mem_to_reg(v_1, G);
-    this->mem_to_reg(v_2, H);
+    this->single_var(v_1, G);
+    this->single_var(v_2, H);
     this->code.push_back("INC H");
     this->code.push_back("SUB H G");
 
@@ -468,11 +468,12 @@ long long code_generator::eq(variable *v_1, variable *v_2) {
 /**
  * Checks if two variables are NOT EQUAL
  */
-long long code_generator::eq(variable *v_1, variable *v_2) {
+long long code_generator::neq(variable *v_1, variable *v_2) {
     long long addr;
 
-    this->mem_to_reg(v_1, G);
-    this->mem_to_reg(v_2, H);
+
+    this->single_var(v_1, G);
+    this->single_var(v_2, H);
 
     this->code.push_back("INC H");
     this->code.push_back("SUB H G");
@@ -499,8 +500,8 @@ long long code_generator::gt(variable *v_1, variable *v_2) {
     long long shift;
     std::stringstream ss;
 
-    this->mem_to_reg(v_1, G);
-    this->mem_to_reg(v_2, H);
+    this->single_var(v_1, G);
+    this->single_var(v_2, H);
 
     this->code.push_back("INC H");
     this->code.push_back("SUB H G");
@@ -530,14 +531,14 @@ long long code_generator::lt(variable *v_1, variable *v_2) {
     std::stringstream ss;
 
     //Shift ->GREATER
-    this->mem_to_reg(v_2, G);
-    this->mem_to_reg(v_1, H);
+    this->single_var(v_2, G);
+    this->single_var(v_1, H);
 
     this->code.push_back("INC H");
     this->code.push_back("SUB H G");
 
     //Jump if true
-    shift = this->code_offset + 5;
+    shift = this->code_offset + 5 ;
     ss << shift;
     this->code.push_back("JZERO H " + ss.str());
     this->incr_offset(3);
@@ -554,21 +555,21 @@ long long code_generator::lt(variable *v_1, variable *v_2) {
 /**
  * Checks if v_1 is GREATER OR EQUAL than v_2
  */
-long long code_generator::lt(variable *v_1, variable *v_2) {
+long long code_generator::geq(variable *v_1, variable *v_2) {
     long long addr;
     long long shift;
     std::stringstream ss;
 
     //Shift ->GREATER
-    this->mem_to_reg(v_1, G);
-    this->mem_to_reg(v_2, H);
+    this->single_var(v_1, G);
+    this->single_var(v_2, H);
 
     this->code.push_back("SUB H G");
 
     //Jump if true
     shift = this->code_offset + 4;
     ss << shift;
-    this->code.push_back("JZERO H "  + ss.str();
+    this->code.push_back("JZERO H "  + ss.str());
     this->incr_offset(2);
 
     //Jump if false
@@ -583,21 +584,21 @@ long long code_generator::lt(variable *v_1, variable *v_2) {
 /**
  * Checks if v_1 is LESS OR EQUAL than v_2
  */
-long long code_generator::lt(variable *v_1, variable *v_2) {
+long long code_generator::leq(variable *v_1, variable *v_2) {
     long long addr;
     long long shift;
     std::stringstream ss;
 
     //Shift ->GREATER
-    this->mem_to_reg(v_2, G);
-    this->mem_to_reg(v_1, H);
+    this->single_var(v_2, G);
+    this->single_var(v_1, H);
 
     this->code.push_back("SUB H G");
 
     //Jump if true
     shift = this->code_offset + 4;
     ss << shift;
-    this->code.push_back("JZERO H "  + ss.str();
+    this->code.push_back("JZERO H "  + ss.str());
     this->incr_offset(2);
 
     //Jump if false
@@ -699,6 +700,37 @@ std::vector<std::string> code_generator::gen_const(long long c, enum reg r) {
     }
 
     return cmds;
+}
+
+//IF, IF_ELSE blocks
+
+/**
+ * Geneartes IF block
+ */
+void code_generator::if_block(long long go_to) {
+    std::stringstream ss;
+    std::string op;
+
+    op = this->get_operation(go_to);
+    ss << (this->code_offset + 1);
+
+    //Replace 'addr' phrase
+    op.replace(op.end() - 4, op.end(), ss.str());
+    this->change_operation(go_to, op);
+}
+
+/**
+ * Changes code on given index
+ */
+void code_generator::change_operation(long long index, std::string operation) {
+    this->code[index] = operation;
+}
+
+/**
+ * Returns operation on given index
+ */ 
+std::string code_generator::get_operation(long long index) {
+    return this->code.at(index);
 }
 
 void code_generator::read_interact() {

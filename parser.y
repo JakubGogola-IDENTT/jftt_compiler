@@ -83,21 +83,12 @@ commands:       commands command
 
 command:        identifier ASSIGN expression';'                                         { cg->assign($1); d->init_variable(current_id); }             
 
-                /*### IF ###*/
-                | IF                                                                    
-                        condition                                                       
-                  THEN                                                                          
-                        commands                                                        
-                  ELSE 
-                        commands 
-                  ENDIF                                                                 
+                /*### IF_ELSE ###*/
+                | IF condition THEN commands                                                        
+                  ELSE commands ENDIF                                                                 
 
-                /*### IF-ELSE ###*/
-                | IF                                                                                                                                        
-                        condition                                                                                                                                                                                                
-                  THEN                                                                  
-                        commands                                                        { }      
-                  ENDIF                                                                 { }                                                   
+                /*### IF ###*/
+                | IF condition THEN commands ENDIF                                      { cg->if_block($2); }             
 
                 /*### WHILE ###*/
                 | WHILE                                                                 
@@ -144,15 +135,15 @@ expression:     value                                                           
                 | value SUB value                                                       { cg->sub($1, $3); }
                 | value MUL value                                                       { cg->mul($1, $3); }
                 | value DIV value                                                       { cg->div($1, $3); }
-                | value MOD value                                                       { cg->rem($1, $3); }
+                | value MOD value                                                       { cg->mod($1, $3); }
 ;
 
-condition:      value EQ value                                                          { $$ = cg->get_code_offset(); }
-                | value NEQ value                                                       {  }
-                | value LT value                                                        {  }
-                | value GT value                                                        {  }
-                | value LEQ value                                                       {  }
-                | value GEQ value                                                       {  }
+condition:      value EQ value                                                          { $$ = cg->eq($1, $3); }
+                | value NEQ value                                                       { $$ = cg->neq($1, $3); }
+                | value LT value                                                        { $$ = cg->lt($1, $3); }
+                | value GT value                                                        { $$ = cg->gt($1, $3); }
+                | value LEQ value                                                       { $$ = cg->leq($1, $3); }
+                | value GEQ value                                                       { $$ = cg->geq($1, $3); }
 ;
 
 value:          num                                                                     { $$ = d->get_value_num($1); }
