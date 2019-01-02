@@ -94,7 +94,8 @@ command:        identifier ASSIGN expression';'                                 
                 | IF condition THEN commands ENDIF                                      { cg->if_block($2); }             
 
                 /*### WHILE ###*/
-                | WHILE condition DO                                                                                                         
+                | WHILE {std::cout << "dupa" << std::endl;}
+                condition DO                                                                                                         
                   commands ENDWHILE                                                         
 
                 /*### DO_WHILE ###*/
@@ -102,10 +103,7 @@ command:        identifier ASSIGN expression';'                                 
                                                                                                 $1 = d->get_label(0, 0); 
                                                                                                 cg->do_while_block_first($1);
                                                                                         }
-                  commands WHILE condition ENDDO                                        {
-                                                                                                std::cout << $5 << std::endl;
-                                                                                                cg->do_while_block_second($1, $5);
-                                                                                        }
+                  commands WHILE condition ENDDO                                        { cg->do_while_block_second($1, $5); }
 
                 /*### FOR_FROM_TO ###*/
                 | FOR 
