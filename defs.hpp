@@ -85,11 +85,11 @@ struct symbol {
  * Struct for temporary labels (IF, WHILE)
  */
 struct label {
-    long long jump_true;
+    long long go_to;
     long long jump_false;
 
-    label(long long jump_true, long long jump_false) {
-        this->jump_true = jump_true;
+    label(long long go_to, long long jump_false) {
+        this->go_to = go_to;
         this->jump_false = jump_false;
     }
 };

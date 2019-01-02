@@ -8,13 +8,8 @@
 
 class data {
 private:
-    
-
     //Symbols table
     std::map<std::string, std::shared_ptr<symbol>> sym_map;
-
-    //Memory
-    std::vector<long long> mem;
 
     //Error color message
     const std::string error_alert = "\x1b[31merror\x1b[0m: ";
@@ -26,6 +21,7 @@ private:
     int errors_num;
 
     std::vector<std::shared_ptr<variable>> variables;
+    std::vector<std::shared_ptr<label>> labels;
 
 public:
     //Memory offset
@@ -56,4 +52,6 @@ public:
 
     variable *get_value(variable *var);
     variable *get_value_num(long long value);
+
+    label *get_label(long long go_to, long long jump_false);
 };

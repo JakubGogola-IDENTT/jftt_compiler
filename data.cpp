@@ -274,3 +274,19 @@ variable *data::get_value(variable *var) {
     this->variables.push_back(val);
     return val.get();
 }
+
+
+/**
+ * Returns new label struct
+ */
+label *data::get_label(long long go_to, long long jump_false) {
+    /*std::shared_ptr<labal> lab;
+
+    lab = std::make_shared<label>(go_to, jump_false);
+    this->labels.push_back(lab);
+
+    return lab.get();*/
+
+    //TODO: POPRAW TO KURWA!!!!!!!!!!!
+    return new label(go_to, jump_false);
+}

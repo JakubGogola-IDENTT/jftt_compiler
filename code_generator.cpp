@@ -71,6 +71,28 @@ void code_generator::end_prog() {
 }
 
 /**
+ * Changes code on given index
+ */
+void code_generator::change_operation(long long index, std::string operation) {
+    this->code[index] = operation;
+}
+
+/**
+ * Returns operation on given index
+ */ 
+std::string code_generator::get_operation(long long index) {
+    return this->code.at(index);
+}
+
+/**
+ * Adds single operation to code
+ */
+void code_generator::add_operation(long long index, std::string operation) {
+    this->code.push_back(operation);
+    this->incr_offset(1);
+}
+
+/**
  * Puts array offset to memory in first array cell
  */
 void code_generator::array_offset(long long addr, long long offset) {
@@ -732,18 +754,18 @@ void code_generator::if_block(long long go_to) {
     this->change_operation(go_to, op);
 }
 
-/**
- * Changes code on given index
- */
-void code_generator::change_operation(long long index, std::string operation) {
-    this->code[index] = operation;
+long long code_generator::if_else_block_first(long long go_to) {
+    long long addr;
+    this->code.push_back("JUMP addr");
+    this->incr_offset(1);
+    addr = this->code_offset;
+
+    this->if_block(go_to);
+    return addr;
 }
 
-/**
- * Returns operation on given index
- */ 
-std::string code_generator::get_operation(long long index) {
-    return this->code.at(index);
+void code_generator::if_else_block_second(long long go_to) {
+    this->if_block(go_to);
 }
 
 void code_generator::read_interact() {

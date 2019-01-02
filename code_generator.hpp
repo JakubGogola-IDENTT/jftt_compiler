@@ -56,6 +56,7 @@ public:
     std::vector<std::string> get_code();
     void array_offset(long long addr, long long offset);
 
+    void add_operation(long long index, std::string operation);
     void end_prog();
 
     long long get_code_offset();
@@ -85,7 +86,8 @@ public:
 
     //IF, IF_ELSE blocks
     void if_block(long long go_to);
-    void if_else_block(long long jump_addr);
+    long long if_else_block_first(long long go_to);
+    void if_else_block_second(long long go_to);
 
     //WHILE, DO_WHILE loops
 

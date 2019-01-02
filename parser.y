@@ -84,8 +84,11 @@ commands:       commands command
 command:        identifier ASSIGN expression';'                                         { cg->assign($1); d->init_variable(current_id); }             
 
                 /*### IF_ELSE ###*/
-                | IF condition THEN commands                                                        
-                  ELSE commands ENDIF                                                                 
+                | IF condition THEN commands                                            { 
+                                                                                                $1 = d->get_label(0, 0);
+                                                                                                $1->go_to = cg->if_else_block_first($2);
+                                                                                        }                   
+                  ELSE commands ENDIF                                                   { cg->if_else_block_second($1->go_to); }               
 
                 /*### IF ###*/
                 | IF condition THEN commands ENDIF                                      { cg->if_block($2); }             
