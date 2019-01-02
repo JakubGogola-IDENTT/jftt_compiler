@@ -473,24 +473,97 @@ long long code_generator::eq(variable *v_1, variable *v_2) {
 
     this->mem_to_reg(v_1, G);
     this->mem_to_reg(v_2, H);
+
     this->code.push_back("INC H");
     this->code.push_back("SUB H G");
 
-    //jump if false
+    //jump if true
     this->code.push_back("JZERO H addr");
     this->incr_offset(3);
-    addr = this->code_offset;
 
     this->code.push_back("DEC H");
 
-    //jump if true
+    //jump if false
     this->code.push_back("JZERO H addr");
     this->incr_offset(2);
+    addr = this->code_offset;
+
+    return addr;
+}
+
+/**
+ * Checks if v_1 is GREATER than v_2
+ */
+long long code_generator::gt(variable *v_1, variable *v_2) {
+    long long addr;
+
+    this->mem_to_reg(v_1, G);
+    this->mem_to_reg(v_2, H);
+
+    this->code.push_back("INC H");
+    this->code.push_back("SUB H G");
+    this->code.push_back("JZERO H addr");
+    this->incr_offset(3);
+    addr = this->code_offset;
 
     return addr;
 }
 
 
+/**
+ * Checks if v_1 is LESS than v_2
+ */
+long long code_generator::lt(variable *v_1, variable *v_2) {
+    long long addr;
+
+    //Shift ->GREATER
+    this->mem_to_reg(v_2, G);
+    this->mem_to_reg(v_1, H);
+
+    this->code.push_back("INC H");
+    this->code.push_back("SUB H G");
+    this->code.push_back("JZERO H addr");
+    this->incr_offset(3);
+    addr = this->code_offset;
+
+    return addr;
+}
+
+/**
+ * Checks if v_1 is GREATER OR EQUAL than v_2
+ */
+long long code_generator::lt(variable *v_1, variable *v_2) {
+    long long addr;
+
+    //Shift ->GREATER
+    this->mem_to_reg(v_1, G);
+    this->mem_to_reg(v_2, H);
+
+    this->code.push_back("SUB H G");
+    this->code.push_back("JZERO H addr");
+    this->incr_offset(2);
+    addr = this->code_offset;
+
+    return addr;
+}
+
+/**
+ * Checks if v_1 is LESS OR EQUAL than v_2
+ */
+long long code_generator::lt(variable *v_1, variable *v_2) {
+    long long addr;
+
+    //Shift ->GREATER OR EQUAL
+    this->mem_to_reg(v_2, G);
+    this->mem_to_reg(v_1, H);
+
+    this->code.push_back("SUB H G");
+    this->code.push_back("JZERO H addr");
+    this->incr_offset(2);
+    addr = this->code_offset;
+
+    return addr;
+}
 
 /**
  * Generates constant value
