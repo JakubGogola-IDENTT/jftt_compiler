@@ -94,8 +94,8 @@ command:        identifier ASSIGN expression';'                                 
                 | IF condition THEN commands ENDIF                                      { cg->if_block($2->go_to); }             
 
                 /*### WHILE ###*/
-                | WHILE condition DO                                                    {  }                                                                                                         
-                  commands ENDWHILE                                                         
+                | WHILE condition DO                                                                                                                                                             
+                  commands ENDWHILE                                                     { cg->while_block($2); }    
 
                 /*### DO_WHILE ###*/
                 | DO                                                                    { 

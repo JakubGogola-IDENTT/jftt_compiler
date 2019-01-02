@@ -95,6 +95,8 @@ public:
     void do_while_block_first(label *lab);
     void do_while_block_second(label *lab, long long go_to);
 
+    void while_block(cond_label *cond);
+
     //FOR_TO, FOR_DOWNTO loops
 
     //IO

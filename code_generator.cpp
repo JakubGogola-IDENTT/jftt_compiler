@@ -817,7 +817,15 @@ void code_generator::do_while_block_second(label *lab, long long go_to) {
     this->if_block(go_to);
 }
 
+void code_generator::while_block(cond_label *cond) {
+    std::stringstream ss;
 
+    ss << cond->start;
+    this->code.push_back("JUMP " + ss.str());
+    this->incr_offset(1);
+
+    this->if_block(cond->go_to);
+}
 
 void code_generator::read_interact() {
     this->is_read = true;
