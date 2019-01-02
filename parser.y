@@ -164,7 +164,7 @@ int main(int argc, char** argv) {
                 return -1;
         }
 
-        std::cout << "### \x1b[34mCompilator is running...\x1b[0m ###" << std::endl;
+        std::cout << "### \x1b[34mCompiler is running...\x1b[0m ###" << std::endl;
 
         yyparse();
 

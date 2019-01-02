@@ -445,22 +445,31 @@ void code_generator::write(variable *var) {
  */
 long long code_generator::eq(variable *v_1, variable *v_2) {
     long long addr;
+    long long shift;
+    std::stringstream ss;
 
     this->single_var(v_1, G);
     this->single_var(v_2, H);
     this->code.push_back("INC H");
     this->code.push_back("SUB H G");
 
-    //jump if false
-    this->code.push_back("JZERO H addr");
-    this->incr_offset(3);
-    addr = this->code_offset;
+    shift = this->code_offset + 6;
+    ss << shift;
+    this->code.push_back("JZERO H "+ ss.str());
+    ss.str("");
 
     this->code.push_back("DEC H");
+    this->incr_offset(4);
 
     //jump if true
-    this->code.push_back("JZERO H addr");
+    shift++;
+    ss << shift;
+    this->code.push_back("JZERO H " + ss.str());
+
+    //jump if false
+    this->code.push_back("JUMP addr");
     this->incr_offset(2);
+    addr = this->code_offset;
 
     return addr;
 }
@@ -470,23 +479,27 @@ long long code_generator::eq(variable *v_1, variable *v_2) {
  */
 long long code_generator::neq(variable *v_1, variable *v_2) {
     long long addr;
-
+    long long shift;
+    std::stringstream ss;
 
     this->single_var(v_1, G);
     this->single_var(v_2, H);
-
     this->code.push_back("INC H");
     this->code.push_back("SUB H G");
 
     //jump if true
-    this->code.push_back("JZERO H addr");
-    this->incr_offset(3);
+    shift = this->code_offset + 6;
+    ss << shift;
+    this->code.push_back("JZERO H "+ ss.str());
+    ss.str("");
 
     this->code.push_back("DEC H");
+    this->incr_offset(4);
 
     //jump if false
     this->code.push_back("JZERO H addr");
-    this->incr_offset(2);
+
+    this->incr_offset(1);
     addr = this->code_offset;
 
     return addr;
