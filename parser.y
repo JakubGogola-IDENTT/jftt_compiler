@@ -145,7 +145,7 @@ value:          num                                                             
 ;
 
 identifier:     pidentifier                                                             { $$ = d->get_variable(*$1); current_id = *$1; }
-                | pidentifier '(' pidentifier ')'                                       { $$ = d->get_variable_array_var(*$1, *$3); }
+                | pidentifier'('pidentifier')'                                          { $$ = d->get_variable_array_var(*$1, *$3); }
                 | pidentifier'('num')'                                                  { $$ = d->get_variable_array_num(*$1, $3); }
 ;
 %%

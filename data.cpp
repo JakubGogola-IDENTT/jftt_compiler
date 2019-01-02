@@ -223,7 +223,7 @@ variable *data::get_variable_array_var(std::string name, std::string var_name) {
         this->error_found();
         return nullptr;
     }
-
+    
     var = std::make_shared<variable>(array_sym->offset, var_sym->offset);
     this->variables.push_back(var);
     return var.get();
@@ -269,7 +269,11 @@ variable *data::get_value(variable *var) {
     if(var == nullptr) {
         return nullptr;
     }
+    if(var->array_addr != -1) {
+        std::cout << var->array_addr << " " << var->addr << std::endl;
+    }
 
+    
     val = std::make_shared<variable>(var->array_addr, var->addr);
     this->variables.push_back(val);
     return val.get();

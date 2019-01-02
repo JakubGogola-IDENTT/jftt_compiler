@@ -115,17 +115,17 @@ void code_generator::set_mem_reg(variable *var) {
     std::vector<std::string> cmds = this->gen_const(var->addr, A);
     //Adress is nested: pidentifier(pidentifier)
     if(var->array_addr != -1) { 
-        cmds.push_back("LOAD B");
+        cmds.push_back("LOAD C");
         this->code.insert(this->code.end(), cmds.begin(), cmds.end());
         this->incr_offset(cmds.size());
 
         cmds.clear();
         cmds = this->gen_const(var->array_addr, A);
-        cmds.push_back("LOAD C");
-        cmds.push_back("SUB B C");
-        cmds.push_back("ADD B A");
-        cmds.push_back("INC B");
-        cmds.push_back("COPY A B");
+        cmds.push_back("LOAD D");
+        cmds.push_back("SUB C D");
+        cmds.push_back("ADD C A");
+        cmds.push_back("INC C");
+        cmds.push_back("COPY A C");
     }
     
     this->code.insert(this->code.end(), cmds.begin(), cmds.end());
