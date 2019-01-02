@@ -101,6 +101,16 @@ struct for_label {
 
 };
 
+struct cond_label {
+    long long start;
+    long long go_to;
+
+    cond_label(long long start, long long go_to) {
+        this->start = start;
+        this->go_to = go_to;
+    }
+};
+
 /**
  * Struct to pass variable addres
  */

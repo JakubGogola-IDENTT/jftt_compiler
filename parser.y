@@ -28,7 +28,7 @@ int addr;
 %union sem_rec {
     std::string *pidentifier;
     long long num;
-    long long cond;
+    struct cond_label *cond;
     struct label *lbl;
     struct variable *var;
     struct variable *id;
@@ -86,16 +86,15 @@ command:        identifier ASSIGN expression';'                                 
                 /*### IF_ELSE ###*/
                 | IF condition THEN commands                                            { 
                                                                                                 $1 = d->get_label(0, 0);
-                                                                                                cg->if_else_block_first($1, $2);
+                                                                                                cg->if_else_block_first($1, $2->go_to);
                                                                                         }                   
                   ELSE commands ENDIF                                                   { cg->if_else_block_second($1->go_to); }               
 
                 /*### IF ###*/
-                | IF condition THEN commands ENDIF                                      { cg->if_block($2); }             
+                | IF condition THEN commands ENDIF                                      { cg->if_block($2->go_to); }             
 
                 /*### WHILE ###*/
-                | WHILE {std::cout << "dupa" << std::endl;}
-                condition DO                                                                                                         
+                | WHILE condition DO                                                    {  }                                                                                                         
                   commands ENDWHILE                                                         
 
                 /*### DO_WHILE ###*/
@@ -103,7 +102,7 @@ command:        identifier ASSIGN expression';'                                 
                                                                                                 $1 = d->get_label(0, 0); 
                                                                                                 cg->do_while_block_first($1);
                                                                                         }
-                  commands WHILE condition ENDDO                                        { cg->do_while_block_second($1, $5); }
+                  commands WHILE condition ENDDO                                        { cg->do_while_block_second($1, $5->go_to); }
 
                 /*### FOR_FROM_TO ###*/
                 | FOR 

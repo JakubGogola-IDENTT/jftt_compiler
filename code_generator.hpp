@@ -35,6 +35,8 @@ private:
     //Std::string symbols of registers
     std::map<enum reg, std::string> reg_sym;
 
+    std::vector<std::shared_ptr<cond_label>> conditions;
+
     /*FUNCTIONS*/
 
     //Generate costs map
@@ -77,12 +79,12 @@ public:
     void mod(variable *v_1, variable *v_2);
     
     //conditions
-    long long eq(variable *v_1, variable *v_2);
-    long long neq(variable *v_1, variable *v_2);
-    long long gt(variable *v_1, variable *v_2);
-    long long lt(variable *v_1, variable *v_2);
-    long long geq(variable *v_1, variable *v_2);
-    long long leq(variable *v_1, variable *v_2);
+    cond_label *eq(variable *v_1, variable *v_2);
+    cond_label *neq(variable *v_1, variable *v_2);
+    cond_label *gt(variable *v_1, variable *v_2);
+    cond_label *lt(variable *v_1, variable *v_2);
+    cond_label *geq(variable *v_1, variable *v_2);
+    cond_label *leq(variable *v_1, variable *v_2);
 
     //IF, IF_ELSE blocks
     void if_block(long long go_to);

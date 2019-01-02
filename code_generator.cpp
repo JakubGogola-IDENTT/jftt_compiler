@@ -465,11 +465,14 @@ void code_generator::write(variable *var) {
 /**
  * Checks if two variables are EQUAL
  */
-long long code_generator::eq(variable *v_1, variable *v_2) {
+cond_label *code_generator::eq(variable *v_1, variable *v_2) {
+    std::shared_ptr<cond_label> cond;
     long long addr;
+    long long cond_start;
     long long shift;
     std::stringstream ss;
 
+    cond_start = this->code_offset + 1;
     this->single_var(v_1, G);
     this->single_var(v_2, H);
     this->code.push_back("INC H");
@@ -493,17 +496,22 @@ long long code_generator::eq(variable *v_1, variable *v_2) {
     this->incr_offset(2);
     addr = this->code_offset;
 
-    return addr;
+    cond = std::make_shared<cond_label>(cond_start, addr);
+    this->conditions.push_back(cond);
+    return cond.get();
 }
 
 /**
  * Checks if two variables are NOT EQUAL
  */
-long long code_generator::neq(variable *v_1, variable *v_2) {
+cond_label *code_generator::neq(variable *v_1, variable *v_2) {
+    std::shared_ptr<cond_label> cond;
     long long addr;
+    long long cond_start;
     long long shift;
     std::stringstream ss;
 
+    cond_start = this->code_offset + 1;
     this->single_var(v_1, G);
     this->single_var(v_2, H);
     this->code.push_back("INC H");
@@ -524,17 +532,22 @@ long long code_generator::neq(variable *v_1, variable *v_2) {
     this->incr_offset(1);
     addr = this->code_offset;
 
-    return addr;
+    cond = std::make_shared<cond_label>(cond_start, addr);
+    this->conditions.push_back(cond);
+    return cond.get();
 }
 
 /**
  * Checks if v_1 is GREATER than v_2
  */
-long long code_generator::gt(variable *v_1, variable *v_2) {
+cond_label *code_generator::gt(variable *v_1, variable *v_2) {
+    std::shared_ptr<cond_label> cond;
     long long addr;
+    long long cond_start;
     long long shift;
     std::stringstream ss;
 
+    cond_start = this->code_offset + 1;
     this->single_var(v_1, G);
     this->single_var(v_2, H);
 
@@ -553,19 +566,24 @@ long long code_generator::gt(variable *v_1, variable *v_2) {
 
     addr = this->code_offset;
 
-    return addr;
+    cond = std::make_shared<cond_label>(cond_start, addr);
+    this->conditions.push_back(cond);
+    return cond.get();
 }
 
 
 /**
  * Checks if v_1 is LESS than v_2
  */
-long long code_generator::lt(variable *v_1, variable *v_2) {
+cond_label *code_generator::lt(variable *v_1, variable *v_2) {
+    std::shared_ptr<cond_label> cond;
     long long addr;
+    long long cond_start;
     long long shift;
     std::stringstream ss;
 
     //Shift ->GREATER
+    cond_start = this->code_offset + 1;
     this->single_var(v_2, G);
     this->single_var(v_1, H);
 
@@ -584,18 +602,23 @@ long long code_generator::lt(variable *v_1, variable *v_2) {
 
     addr = this->code_offset;
 
-    return addr;
+    cond = std::make_shared<cond_label>(cond_start, addr);
+    this->conditions.push_back(cond);
+    return cond.get();
 }
 
 /**
  * Checks if v_1 is GREATER OR EQUAL than v_2
  */
-long long code_generator::geq(variable *v_1, variable *v_2) {
+cond_label *code_generator::geq(variable *v_1, variable *v_2) {
+    std::shared_ptr<cond_label> cond;
     long long addr;
+    long long cond_start;
     long long shift;
     std::stringstream ss;
 
     //Shift ->GREATER
+    cond_start = this->code_offset + 1;
     this->single_var(v_1, G);
     this->single_var(v_2, H);
 
@@ -613,18 +636,23 @@ long long code_generator::geq(variable *v_1, variable *v_2) {
 
     addr = this->code_offset;
 
-    return addr;
+    cond = std::make_shared<cond_label>(cond_start, addr);
+    this->conditions.push_back(cond);
+    return cond.get();
 }
 
 /**
  * Checks if v_1 is LESS OR EQUAL than v_2
  */
-long long code_generator::leq(variable *v_1, variable *v_2) {
+cond_label *code_generator::leq(variable *v_1, variable *v_2) {
+    std::shared_ptr<cond_label> cond;
     long long addr;
+    long long cond_start;
     long long shift;
     std::stringstream ss;
 
     //Shift ->GREATER
+    cond_start = this->code_offset + 1;
     this->single_var(v_2, G);
     this->single_var(v_1, H);
 
@@ -642,7 +670,9 @@ long long code_generator::leq(variable *v_1, variable *v_2) {
 
     addr = this->code_offset;
 
-    return addr;
+    cond = std::make_shared<cond_label>(cond_start, addr);
+    this->conditions.push_back(cond);
+    return cond.get();
 }
 
 /**
