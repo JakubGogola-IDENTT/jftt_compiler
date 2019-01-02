@@ -82,7 +82,7 @@ struct symbol {
 };
 
 /**
- * Struct for temporary labels
+ * Struct for temporary labels (IF, WHILE)
  */
 struct label {
     long long jump_true;
@@ -94,6 +94,16 @@ struct label {
     }
 };
 
+/**
+ * 
+ */
+struct for_label {
+
+};
+
+/**
+ * Struct to pass variable addres
+ */
 struct variable {
     //Array cell
     long long array_addr;
@@ -125,12 +135,3 @@ struct variable {
     }  
 };
 
-
-/*
-// Struct for code blocks: IF, IF-ELSE, WHILE, FOR
-// TODO: I'don't know if it is unecessarry..
-struct block {
-    //TODO: implement
-    long long offset;
-    std::vector<std::string> cmds;
-};*/

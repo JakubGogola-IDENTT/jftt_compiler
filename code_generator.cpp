@@ -110,6 +110,10 @@ void code_generator::set_mem_reg(variable *var) {
     this->incr_offset(cmds.size());
 }
 
+long long code_generator::get_code_offset() {
+    return this->code_offset;
+}
+
 /**
  * Value from memory to register
  */ 

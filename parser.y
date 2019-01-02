@@ -40,7 +40,7 @@ int addr;
 %token FOR //TODO: struct for FOR 
 %token THEN ELSE ENDIF FROM TO DOWNTO DO ENDFOR ENDWHILE ENDDO
 %token READ WRITE       
-%token LESS GREATER LEQ GEQ EQ NEQ
+%token LT GT LEQ GEQ EQ NEQ
 %token ASSIGN
 %token ERROR
 %token <pidentifier> pidentifier
@@ -55,9 +55,9 @@ int addr;
 %left MUL DIV MOD
 %%      
 
-program:        DECLARE
+program:        DECLARE                                                                 
                         declarations
-                IN
+                IN                                                                    
                         commands
                 END                                                                     { 
                                                                                                 cg->end_prog();
@@ -80,12 +80,61 @@ commands:       commands command
 ;
 
 command:        identifier ASSIGN expression';'                                         { cg->assign($1); d->init_variable(current_id); }             
-                | IF condition THEN commands ELSE commands ENDIF                        {  }
-                | IF condition THEN commands ENDIF
-                | WHILE condition DO commands ENDWHILE
-                | DO commands WHILE condition ENDWHILE
-                | FOR pidentifier FROM value TO value DO commands ENDFOR
-                | FOR pidentifier FROM value DOWNTO value DO commands ENDFOR
+
+                /* ################################################################################# */
+                /*### IF ###*/
+                | IF                                                                    
+                        condition 
+                  THEN 
+                        commands 
+                  ELSE 
+                        commands 
+                  ENDIF          
+
+                /*### IF-ELSE ###*/
+                | IF                                                                                                                                        
+                        condition                                                                                                                                   
+                  THEN 
+                        commands 
+                  ENDIF                                                                 { std::cout << "ENDIF" << std::endl; }                                                   
+
+                /*### WHILE ###*/
+                | WHILE 
+                        condition               
+                  DO 
+                        commands 
+                  ENDWHILE
+
+                /*### DO-WHILE ###*/
+                | DO 
+                        commands 
+                  WHILE 
+                        condition 
+                  ENDWHILE
+
+                /*### FOR-FROM-TO ###*/
+                | FOR 
+                        pidentifier 
+                  FROM 
+                        value 
+                  TO 
+                        value 
+                  DO 
+                        commands 
+                  ENDFOR
+
+                /*### FOR-FROM-DOWNTO ###*/
+                | FOR 
+                        pidentifier 
+                  FROM 
+                        value 
+                  DOWNTO 
+                        value 
+                  DO 
+                        commands 
+                  ENDFOR
+                /* ################################################################################# */
+
                 | READ identifier';'                                                    { cg->read($2); }
                 | WRITE value';'                                                        { cg->write($2); }
 ;
@@ -98,12 +147,12 @@ expression:     value                                                           
                 | value MOD value                                                       { cg->rem($1, $3); }
 ;
 
-condition:      value EQ value
-                | value NEQ value
-                | value LESS value
-                | value GREATER value
-                | value LEQ value
-                | value GEQ value
+condition:      value EQ value                                                          {  }
+                | value NEQ value                                                       {  }
+                | value LT value                                                        {  }
+                | value GT value                                                        {  }
+                | value LEQ value                                                       {  }
+                | value GEQ value                                                       {  }
 ;
 
 value:          num                                                                     { $$ = d->get_value_num($1); }

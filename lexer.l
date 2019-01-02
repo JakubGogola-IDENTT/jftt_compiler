@@ -25,7 +25,7 @@ PUNCT                   [\(\)\:\;]
 "IF"                    { return IF; }
 "THEN"                  { return THEN; }
 "ELSE"                  { return ELSE; }
-"ENDIf"                 { return ENDIF; }
+"ENDIF"                 { return ENDIF; }
 
 "WHILE"                 { return WHILE; }
 "DO"                    { return DO; }
@@ -42,8 +42,8 @@ PUNCT                   [\(\)\:\;]
 
 "="                     { return EQ; }
 "!="                    { return NEQ; }
-"<"                     { return LESS; }
-">"                     { return GREATER; }
+"<"                     { return LT; }
+">"                     { return GT; }
 "<="                    { return LEQ; }
 ">="                    { return GEQ; }
 

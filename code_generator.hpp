@@ -54,6 +54,8 @@ public:
     void array_offset(long long addr, long long offset);
     void end_prog();
 
+    long long get_code_offset();
+
     void mem_to_reg(variable *var, enum reg r);
     void reg_to_mem(enum reg r, variable *var);
 
@@ -72,8 +74,8 @@ public:
     //conditions
     void eq();
     void neq();
-    void greater();
-    void less();
+    void gt();
+    void lt();
     void geq();
     void leq();
 
