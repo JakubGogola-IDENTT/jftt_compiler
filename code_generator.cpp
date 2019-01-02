@@ -849,7 +849,7 @@ void code_generator::for_to_block_second(for_label *label) {
 void code_generator::for_downto_block_first(for_label *label) {
     this->constant(label->start);
     this->assign(label->iterator);
-    label->cond = this->geq(label->iterator, label->end);
+    label->cond = this->neq(label->iterator, label->end);
 }
 
 
