@@ -269,11 +269,7 @@ variable *data::get_value(variable *var) {
     if(var == nullptr) {
         return nullptr;
     }
-    if(var->array_addr != -1) {
-        std::cout << var->array_addr << " " << var->addr << std::endl;
-    }
 
-    
     val = std::make_shared<variable>(var->array_addr, var->addr);
     this->variables.push_back(val);
     return val.get();
@@ -293,4 +289,11 @@ label *data::get_label(long long go_to, long long jump_false) {
 
     //TODO: POPRAW TO KURWA!!!!!!!!!!!
     return new label(go_to, jump_false);
+}
+
+for_label *data::get_for_label(std::string iterator_name, variable *start, variable *end) {
+    //TODO: TO TEŻ KURWA POPRAW (w razie potrzeby oczywiscie...)
+    variable *var = this->get_variable(iterator_name);
+    variable *skip = this->get_value_num(1);
+    return new for_label(var, start, end, skip);
 }

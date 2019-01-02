@@ -98,6 +98,11 @@ public:
     void while_block(cond_label *cond);
 
     //FOR_TO, FOR_DOWNTO loops
+    void for_to_block_first(for_label *label);
+    void for_to_block_second(for_label *label);
+
+    void for_downto_block_first(for_label *label);
+    void for_downto_block_second(for_label *label);
 
     //IO
     void write(variable *var);

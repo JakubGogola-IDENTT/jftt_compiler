@@ -115,17 +115,17 @@ void code_generator::set_mem_reg(variable *var) {
     std::vector<std::string> cmds = this->gen_const(var->addr, A);
     //Adress is nested: pidentifier(pidentifier)
     if(var->array_addr != -1) { 
-        cmds.push_back("LOAD C");
+        cmds.push_back("LOAD D");
         this->code.insert(this->code.end(), cmds.begin(), cmds.end());
         this->incr_offset(cmds.size());
 
         cmds.clear();
         cmds = this->gen_const(var->array_addr, A);
-        cmds.push_back("LOAD D");
-        cmds.push_back("SUB C D");
-        cmds.push_back("ADD C A");
-        cmds.push_back("INC C");
-        cmds.push_back("COPY A C");
+        cmds.push_back("LOAD E");
+        cmds.push_back("SUB D E");
+        cmds.push_back("ADD D A");
+        cmds.push_back("INC D");
+        cmds.push_back("COPY A D");
     }
     
     this->code.insert(this->code.end(), cmds.begin(), cmds.end());
@@ -718,13 +718,13 @@ std::vector<std::string> code_generator::gen_const(long long c, enum reg r) {
         add_cost += this->costs[I_ADD];
     }
 
-    cmds.push_back("SUB " + this->reg_sym[C] + " " + this->reg_sym[C]);
+    cmds.push_back("SUB " + this->reg_sym[F] + " " + this->reg_sym[F]);
     add_cost += this->costs[I_SUB];
 
-    cmds.push_back("COPY " + this->reg_sym[C] + " " + this->reg_sym[r]);
+    cmds.push_back("COPY " + this->reg_sym[F] + " " + this->reg_sym[r]);
     add_cost += this->costs[I_COPY];
 
-    cmds.push_back("HALF " + this->reg_sym[C]);
+    cmds.push_back("HALF " + this->reg_sym[F]);
     add_cost += this->costs[I_HALF];
 
     long long half = tmp / 2;
@@ -732,7 +732,7 @@ std::vector<std::string> code_generator::gen_const(long long c, enum reg r) {
     while(half != 2) {
         if(tmp + half <= c) {
             tmp += half;
-            cmds.push_back("ADD " + this->reg_sym[r] + " " + this->reg_sym[C]);
+            cmds.push_back("ADD " + this->reg_sym[r] + " " + this->reg_sym[F]);
             add_cost += this->costs[I_ADD];
         }
 
@@ -740,7 +740,7 @@ std::vector<std::string> code_generator::gen_const(long long c, enum reg r) {
             break;
         }
 
-        cmds.push_back("HALF " + this->reg_sym[C]);
+        cmds.push_back("HALF " + this->reg_sym[F]);
         add_cost += this->costs[I_HALF];
         half /= 2;
     }
@@ -753,7 +753,6 @@ std::vector<std::string> code_generator::gen_const(long long c, enum reg r) {
 
     if(!is_large) {
         inc_cost = c * this->costs[I_INC] + this->costs[I_SUB];
-
         if(inc_cost < add_cost) {
             cmds.clear();
             cmds.push_back(sub_cmd);
@@ -807,7 +806,6 @@ void code_generator::do_while_block_first(label *lab) {
 
 void code_generator::do_while_block_second(label *lab, long long go_to) {
     std::stringstream ss;
-    long long shift;
 
     ss << lab->go_to;
     this->code.push_back("JUMP " + ss.str());
@@ -825,6 +823,47 @@ void code_generator::while_block(cond_label *cond) {
     this->incr_offset(1);
 
     this->if_block(cond->go_to);
+}
+
+/****FOR_TO***/
+
+void code_generator::for_to_block_first(for_label *label) {
+    this->constant(label->start);
+    this->assign(label->iterator);
+    label->cond = this->leq(label->iterator, label->end);
+}
+
+void code_generator::for_to_block_second(for_label *label) {
+    std::stringstream ss;
+
+    this->add(label->iterator, label->skip);
+    this->reg_to_mem(B, label->iterator);
+
+    ss << label->cond->start;
+    this->code.push_back("JUMP " + ss.str());
+    this->incr_offset(1);
+
+    this->if_block(label->cond->go_to);
+}
+
+void code_generator::for_downto_block_first(for_label *label) {
+    this->constant(label->start);
+    this->assign(label->iterator);
+    label->cond = this->geq(label->iterator, label->end);
+}
+
+
+void code_generator::for_downto_block_second(for_label *label) {
+    std::stringstream ss;
+
+    this->sub(label->iterator, label->skip);
+    this->reg_to_mem(B, label->iterator);
+
+    ss << label->cond->start;
+    this->code.push_back("JUMP " + ss.str());
+    this->incr_offset(1);
+
+    this->if_block(label->cond->go_to);
 }
 
 void code_generator::read_interact() {

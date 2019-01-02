@@ -28,6 +28,7 @@ int addr;
 %union sem_rec {
     std::string *pidentifier;
     long long num;
+    struct for_label *lfor;
     struct cond_label *cond;
     struct label *lbl;
     struct variable *var;
@@ -38,7 +39,7 @@ int addr;
 %start program
 %token DECLARE IN END
 %token <lbl> IF WHILE DO
-%token FOR //TODO: struct for FOR 
+%token <lfor> FOR 
 %token THEN ELSE ENDIF FROM TO DOWNTO  ENDFOR ENDWHILE ENDDO
 %token READ WRITE       
 %token LT GT LEQ GEQ EQ NEQ
@@ -105,20 +106,24 @@ command:        identifier ASSIGN expression';'                                 
                   commands WHILE condition ENDDO                                        { cg->do_while_block_second($1, $5->go_to); }
 
                 /*### FOR_FROM_TO ###*/
-                | FOR 
-                        pidentifier 
-                  FROM 
-                        value 
-                  TO 
-                        value 
-                  DO 
+                | FOR pidentifier FROM value TO value DO                                {  
+                                                                                                d->put_symbol_iterator(*$2);
+                                                                                                d->init_variable(*$2);
+                                                                                                $1 = d->get_for_label(*$2, $4, $6);
+                                                                                                cg->for_to_block_first($1);
+                                                                                        }
                         commands 
-                  ENDFOR
+                  ENDFOR                                                                { cg->for_to_block_second($1); }
 
                 /*### FOR_FROM_DOWNTO ###*/
-                | FOR pidentifier FROM value DOWNTO value DO 
+                | FOR pidentifier FROM value DOWNTO value DO                            { 
+                                                                                                d->put_symbol_iterator(*$2);
+                                                                                                d->init_variable(*$2);
+                                                                                                $1 = d->get_for_label(*$2, $4, $6);
+                                                                                                cg->for_downto_block_first($1);
+                                                                                        }
                         commands 
-                  ENDFOR
+                  ENDFOR                                                                { cg->for_downto_block_second($1); }
 
                 | READ identifier';'                                                    { cg->read($2); }
                 | WRITE value';'                                                        { cg->write($2); }

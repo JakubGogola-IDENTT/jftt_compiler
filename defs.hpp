@@ -95,23 +95,6 @@ struct label {
 };
 
 /**
- * 
- */
-struct for_label {
-
-};
-
-struct cond_label {
-    long long start;
-    long long go_to;
-
-    cond_label(long long start, long long go_to) {
-        this->start = start;
-        this->go_to = go_to;
-    }
-};
-
-/**
  * Struct to pass variable addres
  */
 struct variable {
@@ -143,5 +126,34 @@ struct variable {
         this->addr = addr;
         this->value = value;
     }  
+};
+
+struct cond_label {
+    long long start;
+    long long go_to;
+
+    cond_label(long long start, long long go_to) {
+        this->start = start;
+        this->go_to = go_to;
+    }
+};
+
+/**
+ * Struct for FOR
+ */
+struct for_label {
+    variable *iterator;
+    variable *start;
+    variable *end;
+    cond_label *cond;
+    variable *skip;
+
+    for_label(variable *iterator, variable *start, variable *end, variable *skip) {
+        this->iterator = iterator;
+        this->start = start;
+        this->end = end;
+        this->skip = skip;
+        this->cond = nullptr;
+    }
 };
 

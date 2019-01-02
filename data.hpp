@@ -54,4 +54,5 @@ public:
     variable *get_value_num(long long value);
 
     label *get_label(long long go_to, long long jump_false);
+    for_label *get_for_label(std::string iterator_name, variable *start, variable *end);
 };
