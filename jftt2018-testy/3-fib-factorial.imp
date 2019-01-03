@@ -1,0 +1,23 @@
+[ Silnia + Fibonacci
+? 20
+> 2432902008176640000
+> 17711
+]
+DECLARE
+    f(0:100); s(0:100); i(0:100); n; k; l;
+IN
+    READ n;
+    f(0):=1;
+    s(0):=1;
+    i(0):=0;
+    FOR j FROM 1 TO n DO
+	k:=j-1;
+        l:=k-1;
+	i(j):=i(k)+1;
+	f(j):=f(k)+f(l);
+        s(j):=s(k)*i(j);
+    ENDFOR
+    WRITE s(n);
+    WRITE f(n);
+END
+

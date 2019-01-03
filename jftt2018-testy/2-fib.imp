@@ -1,0 +1,39 @@
+[ Fibonacci 26
+? 1
+> 121393
+]
+DECLARE
+  tab(987654321:1234567890); 
+  a; b; c; d; e; f; g; h; i; j; k; l; m; n; o; p; q; r; s; t; u; v; w; x; y; z;
+IN
+  READ tab(1212121212);
+  a:=tab(1212121212);
+  b:=a;
+  c:=b+a;
+  d:=c+b;
+  e:=d+c;
+  f:=e+d;
+  g:=f+e;
+  h:=g+f;
+  i:=h+g;
+  j:=i+h;
+  k:=j+i;
+  l:=k+j;
+  m:=l+k;
+  n:=m+l;
+  o:=n+m;
+  p:=o+n;
+  q:=p+o;
+  r:=q+p;
+  s:=r+q;
+  t:=s+r;
+  u:=t+s;
+  v:=u+t;
+  w:=v+u;
+  x:=w+v;
+  y:=x+w;
+  z:=y+x;
+  a:=100000*a;
+  tab(a):=z;
+  WRITE tab(a);
+END

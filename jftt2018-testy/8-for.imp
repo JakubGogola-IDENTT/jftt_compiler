@@ -1,0 +1,24 @@
+[ for.imp 
+  12 23 34
+  507 4379 0
+]
+DECLARE
+	a; b; c;
+IN
+	READ a;
+	READ b;
+	READ c;
+	FOR i FROM 9 DOWNTO 0 DO
+		FOR j FROM 0 TO i DO
+			FOR k FROM 0 TO j DO
+				a := a + k;
+				c := k * j;
+				c := c + i;
+				b := b + c;
+			ENDFOR
+		ENDFOR
+	ENDFOR
+	WRITE a;
+	WRITE b;
+	WRITE c;
+END

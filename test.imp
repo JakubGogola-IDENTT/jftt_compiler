@@ -1,0 +1,29 @@
+DECLARE
+    zmienna; a; b; c(301:305); d; e(400:500); f;
+IN
+    a := 301;
+    b := 6;
+    c(302) := 300;
+    c(303) := 300;
+    WRITE a;
+    zmienna := c(302) + 3;
+    WRITE zmienna;
+    zmienna := zmienna + a;
+    zmienna := zmienna - zmienna;
+    zmienna := zmienna - 1;
+    zmienna := a + b;
+    WRITE zmienna;
+    c(304) := c(302) + c(303);
+    WRITE c(304);
+    d := c(302) * 3;
+    d:= d    +   5;
+    WRITE d;
+    
+    c(301) := 9;
+    c(302) := 10;
+    c(303) := 11;
+    c(304) := 12;
+    c(305) := 9988;
+    a := 305;
+    WRITE c(a);
+END

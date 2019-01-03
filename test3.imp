@@ -1,0 +1,27 @@
+[Nested loops]
+DECLARE
+        i; j; k; l; m;
+IN
+        i := 0;
+        j := 0;
+        k := 0;
+        l := 0;
+        m := 0;
+
+        WHILE i <= 10 DO
+                WHILE j <= 20 DO
+                        WHILE k <= 30 DO
+                                WHILE l <= 40 DO
+                                        WHILE m <= 5 DO
+                                                WRITE 2137;
+                                                m := m + 1;
+                                        ENDWHILE
+                                        l := l + 1;
+                                ENDWHILE
+                                k := k + 1;
+                        ENDWHILE
+                        j := j + 1;
+                ENDWHILE
+                i := i + 1;
+        ENDWHILE
+END

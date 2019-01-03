@@ -1,0 +1,26 @@
+[ a ^ b mod c 
+? 1234567890
+? 1234567890987654321
+? 987654321
+> 674106858
+]
+DECLARE
+    a; b; c; wynik; pot; wybor;
+IN
+    READ a;
+    READ b;
+    READ c;
+    wynik:=1;
+    pot:=a%c;
+    WHILE b>0 DO
+		wybor:=b%2;
+		IF wybor=1 THEN
+			wynik:=wynik*pot;
+			wynik:=wynik%c;
+		ENDIF
+		b:=b/2;
+		pot:=pot*pot;
+		pot:=pot%c;
+    ENDWHILE
+    WRITE wynik;
+END
