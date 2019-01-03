@@ -66,6 +66,8 @@ public:
     void mem_to_reg(variable *var, enum reg r);
     void reg_to_mem(enum reg r, variable *var);
     variable *copy_variable(variable *var);
+    void inc_reg(variable *var, enum reg r);
+    void dec_reg(variable *var, enum reg r);
 
     std::vector<std::string> gen_const(long long c, enum reg r); 
 
@@ -78,6 +80,9 @@ public:
     void mul(variable *v_1, variable *v_2);
     void div(variable *v_1, variable *v_2);
     void mod(variable *v_1, variable *v_2);
+
+    void inc(variable *var);
+    void dec(variable *var);
     
     //conditions
     cond_label *eq(variable *v_1, variable *v_2);

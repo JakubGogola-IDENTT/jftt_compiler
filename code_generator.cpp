@@ -453,6 +453,23 @@ void code_generator::mod(variable *v_1, variable *v_2) {
 }
 
 /**
+ * Adds 1 to given variable
+ */
+void code_generator::inc(variable *var) {
+    this->single_var(var, B);
+    this->code.push_back("INC " + this->reg_sym[B]);
+}
+
+
+/**
+ * Subs 1 from given variable
+ */
+void code_generator::dec(variable *var) {
+    this->single_var(var, B);
+    this->code.push_back("DEC " + this->reg_sym[B]);
+}
+
+/**
  * Assigns value to variable
  */
 void code_generator::assign(variable *var) {
@@ -858,7 +875,7 @@ void code_generator::for_to_block_first(for_label *label) {
 void code_generator::for_to_block_second(for_label *label) {
     std::stringstream ss;
 
-    this->add(label->iterator, label->skip);
+    this->inc(label->iterator);
     this->reg_to_mem(B, label->iterator);
 
     ss << label->cond->start;
@@ -888,7 +905,7 @@ void code_generator::for_downto_block_second(for_label *label) {
     this->incr_offset(1);
     go_to = this->code_offset;
 
-    this->sub(label->iterator, label->skip);
+    this->dec(label->iterator);
     this->reg_to_mem(B, label->iterator);
 
     shift = this->code_offset + 3;
