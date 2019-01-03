@@ -65,6 +65,7 @@ public:
 
     void mem_to_reg(variable *var, enum reg r);
     void reg_to_mem(enum reg r, variable *var);
+    variable *copy_variable(variable *var);
 
     std::vector<std::string> gen_const(long long c, enum reg r); 
 
@@ -107,7 +108,4 @@ public:
     //IO
     void write(variable *var);
     void read(variable *var);
-
-    void read_interact();
-    void write_interact();
 };

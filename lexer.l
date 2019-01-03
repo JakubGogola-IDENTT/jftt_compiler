@@ -16,6 +16,8 @@ IDENTIFIER              [_a-z]
 DIGIT                   [0-9]
 PUNCT                   [\(\)\:\;]
 
+%x COMMENT
+
 %%
 "DECLARE"               { return DECLARE; }
 "IN"                    { return IN; }
@@ -61,6 +63,12 @@ PUNCT                   [\(\)\:\;]
 {DIGIT}+                { yylval.num = std::stoll(yytext); return num; }
 {PUNCT}                 { return yytext[0]; }
 \[.*\]                  { /*ignore comments TODO: make comments better again*/ }
+"["                     { BEGIN(COMMENT); }
+<COMMENT>{
+    [^\]]               ;
+    "]"                 BEGIN(INITIAL);
+}
+
 [ \t\n]+                { /*ignore whitespaces*/ }
 .                       { return ERROR; }
 %%

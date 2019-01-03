@@ -12,6 +12,7 @@ data::data() {
     this->mem_offset = 0;
     this->errors = false;
     this->errors_num = 0;
+    this->border_symbol = 0;
 }
 
 /**
@@ -96,6 +97,21 @@ long long data::put_symbol(std::string name) {
     std::shared_ptr<symbol> sym = std::make_shared<symbol>(name, offset);
     this->sym_map.insert(std::pair<std::string, std::shared_ptr<symbol>>(name, sym));
     return offset;
+}
+
+
+/**
+ * Puts border symbol for FOR loop
+ */ 
+std::string data::put_border_symbol() {
+    std::stringstream ss;
+
+    ss << "!" << this->border_symbol;
+    border_symbol++;
+
+    this->put_symbol(ss.str());
+
+    return ss.str();
 }
 
 /**

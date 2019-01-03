@@ -20,12 +20,14 @@ private:
     //Numbers of found errors
     int errors_num;
 
-    std::vector<std::shared_ptr<variable>> variables;
     std::vector<std::shared_ptr<label>> labels;
+
+    long long border_symbol;
 
 public:
     //Memory offset
     long long mem_offset;
+    std::vector<std::shared_ptr<variable>> variables;
 
     data();
 
@@ -43,6 +45,7 @@ public:
     long long put_symbol(std::string name);
     long long put_symbol_array(std::string name, long long start, long long end);
     long long put_symbol_iterator(std::string name);
+    std::string put_border_symbol();
     long long put_value(long long value);
     symbol *get_symbol(std::string name);
 

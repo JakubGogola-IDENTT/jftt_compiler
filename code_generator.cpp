@@ -109,6 +109,25 @@ void code_generator::array_offset(long long addr, long long offset) {
 
 
 /**
+ * Copies value of one variable to another
+ */
+variable *code_generator::copy_variable(variable *var) {
+    std::string name;
+    variable *new_var;
+
+    name = d->put_border_symbol();
+    new_var = d->get_variable(name);
+
+    //TODO: check this shit
+    this->single_var(var, G);
+    //this->code.push_back("PUT G");
+    //this->incr_offset(1);
+    this->reg_to_mem(G, new_var);
+
+    return new_var;
+}
+
+/**
  * Sets A register to get address in memory
  */ 
 void code_generator::set_mem_reg(variable *var) {
@@ -828,6 +847,9 @@ void code_generator::while_block(cond_label *cond) {
 /****FOR_TO***/
 
 void code_generator::for_to_block_first(for_label *label) {
+    label->start = this->copy_variable(label->start);
+    label->end = this->copy_variable(label->end);
+
     this->constant(label->start);
     this->assign(label->iterator);
     label->cond = this->leq(label->iterator, label->end);
@@ -847,30 +869,40 @@ void code_generator::for_to_block_second(for_label *label) {
 }
 
 void code_generator::for_downto_block_first(for_label *label) {
+    label->start = this->copy_variable(label->start);
+    label->end = this->copy_variable(label->end);
+
     this->constant(label->start);
     this->assign(label->iterator);
-    label->cond = this->neq(label->iterator, label->end);
+    label->cond = this->geq(label->iterator, label->end);
 }
 
 
 void code_generator::for_downto_block_second(for_label *label) {
     std::stringstream ss;
+    long long shift;
+    long long go_to; 
+
+    this->single_var(label->iterator, G);
+    this->code.push_back("JZERO G addr");
+    this->incr_offset(1);
+    go_to = this->code_offset;
 
     this->sub(label->iterator, label->skip);
     this->reg_to_mem(B, label->iterator);
+
+    shift = this->code_offset + 3;
+    ss << shift;
+    
+    ss.str("");
 
     ss << label->cond->start;
     this->code.push_back("JUMP " + ss.str());
     this->incr_offset(1);
 
+    this->if_block(go_to);
+
     this->if_block(label->cond->go_to);
 }
 
-void code_generator::read_interact() {
-    this->is_read = true;
-}
-
-void code_generator::write_interact() {
-    this->is_write = true;
-}
 
