@@ -458,6 +458,7 @@ void code_generator::mod(variable *v_1, variable *v_2) {
 void code_generator::inc(variable *var) {
     this->single_var(var, B);
     this->code.push_back("INC " + this->reg_sym[B]);
+    this->incr_offset(1);
 }
 
 
@@ -467,6 +468,7 @@ void code_generator::inc(variable *var) {
 void code_generator::dec(variable *var) {
     this->single_var(var, B);
     this->code.push_back("DEC " + this->reg_sym[B]);
+    this->incr_offset(1);
 }
 
 /**

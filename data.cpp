@@ -297,19 +297,10 @@ variable *data::get_value(variable *var) {
  * Returns new label struct
  */
 label *data::get_label(long long go_to, long long jump_false) {
-    /*std::shared_ptr<labal> lab;
-
-    lab = std::make_shared<label>(go_to, jump_false);
-    this->labels.push_back(lab);
-
-    return lab.get();*/
-
-    //TODO: POPRAW TO KURWA!!!!!!!!!!!
     return new label(go_to, jump_false);
 }
 
 for_label *data::get_for_label(std::string iterator_name, variable *start, variable *end) {
-    //TODO: TO TEŻ KURWA POPRAW (w razie potrzeby oczywiscie...)
     variable *var = this->get_variable(iterator_name);
     variable *skip = this->get_value_num(1);
     return new for_label(var, start, end, skip);
