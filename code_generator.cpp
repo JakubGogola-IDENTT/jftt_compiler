@@ -47,7 +47,6 @@ void code_generator::gen_reg_sym() {
     this->reg_sym.insert(std::pair<enum reg, std::string>(H, "H"));
 }
 
-//TODO: ADD INCREMENTING
 /**
  * Increases offset when cmds added
  */ 

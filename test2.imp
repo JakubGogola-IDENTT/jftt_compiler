@@ -1,26 +1,18 @@
 DECLARE
     i; j; k; l;
 IN
-    i := 0;
-    j := 0;
+    i := 10;
+    j := 20;
     k := 0;
     l := 0;
+
+	IF i != j THEN
+		k := i * j;
+		l := j / i;
+	ENDIF
+
+	WRITE k;
+	WRITE l;
     
-    WHILE i <= 10 DO
-        i := i + 1;
-        WRITE i;
-        WHILE j <= 10 DO
-            j := j + 1;
-            WRITE j;
-            WHILE k <= 10 DO
-                k := k  + 1;
-                WRITE k;
-                WHILE l <= 10 DO
-                    l := l + 1;
-                    WRITE l;
-                ENDWHILE
-            ENDWHILE
-        ENDWHILE
-    ENDWHILE
     
 END

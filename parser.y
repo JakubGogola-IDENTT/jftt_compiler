@@ -82,7 +82,7 @@ commands:       commands command
                 | command       
 ;
 
-command:        identifier ASSIGN expression';'                                         { cg->assign($1); d->init_variable(current_id); }             
+command:        identifier ASSIGN expression';'                                         { cg->assign($1); /*TODO: d->init_variable(current_id);*/ }             
 
                 /*### IF_ELSE ###*/
                 | IF condition THEN commands                                            { 
