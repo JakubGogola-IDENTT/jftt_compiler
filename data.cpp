@@ -305,3 +305,7 @@ for_label *data::get_for_label(std::string iterator_name, variable *start, varia
     variable *skip = this->get_value_num(1);
     return new for_label(var, start, end, skip);
 }
+
+std::shared_ptr<variable> data::nop() {
+    return std::make_shared<variable>();
+}

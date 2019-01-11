@@ -107,6 +107,13 @@ struct variable {
     //Value for constant variable
     long long value;
 
+    //NOP
+    variable() {
+        this->array_addr = -1;
+        this->addr = 0;
+        this->value = 0;
+    }
+
     //Single variable
     variable(long long addr) {
         this->array_addr = -1;

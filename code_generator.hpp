@@ -70,6 +70,7 @@ public:
     void dec_reg(variable *var, enum reg r);
 
     std::vector<std::string> gen_const(long long c, enum reg r); 
+    std::vector<std::string> gen_const_slow(long long c, enum reg r);
 
     //operations
     void assign(variable *var);
