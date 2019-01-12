@@ -20,6 +20,9 @@ private:
     //Numbers of found errors
     int errors_num;
 
+    //Current line
+    int line;
+
     std::vector<std::shared_ptr<label>> labels;
 
     long long border_symbol;
@@ -38,13 +41,17 @@ public:
     void error_found();
     bool get_errors();
     int get_errors_num();
+    void set_line(int line);
+    std::string put_line();
 
     long long alloc_mem();
     long long alloc_mem_array(long long start, long long end);
+    void free_mem();
 
     long long put_symbol(std::string name);
     long long put_symbol_array(std::string name, long long start, long long end);
     long long put_symbol_iterator(std::string name);
+    void remove_iterator_symbol(std::string name);
     std::string put_border_symbol();
     long long put_value(long long value);
     symbol *get_symbol(std::string name);
@@ -53,7 +60,7 @@ public:
     variable *get_variable_array_var(std::string name, std::string var_name);
     variable *get_variable_array_num(std::string name, long long num);
 
-    variable *get_value(variable *var);
+    variable *get_value(variable *var, std::string name);
     variable *get_value_num(long long value);
 
     label *get_label(long long go_to, long long jump_false);

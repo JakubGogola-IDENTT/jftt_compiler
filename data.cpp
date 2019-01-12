@@ -13,6 +13,7 @@ data::data() {
     this->errors = false;
     this->errors_num = 0;
     this->border_symbol = 0;
+    this->line = 0;
 }
 
 /**
@@ -33,9 +34,14 @@ bool data::check_context(std::string name) {
  */
 void data::init_variable(std::string name) {
     if(this->check_context(name)) {
-        this->sym_map[name]->is_init = true;
+        if(this->sym_map[name]->is_iterator) {
+            std::cerr << this->error_alert << name << " - iterator can't be modified" << this->put_line() << std::endl;
+            this->error_found();
+        } else {
+            this->sym_map[name]->is_init = true;
+        }
     } else {
-        std::cerr << this->error_alert << name << " - variable is not defined" << std::endl;
+        std::cerr << this->error_alert << name << " - variable is not defined" << this->put_line() << std::endl;
         this->error_found();
     }
 }
@@ -56,6 +62,22 @@ void data::error_found() {
  */
 bool data::get_errors() {
     return this->errors;
+}
+
+/**
+ * Sets number of current line;
+ */
+void data::set_line(int line) {
+    this->line = line;
+}
+
+/**
+ * Puts info about line number
+ */
+std::string data::put_line() {
+    std::stringstream ss;
+    ss << " (line " << this->line << ")";
+    return ss.str();
 }
 
 /**
@@ -83,11 +105,18 @@ long long data::alloc_mem_array(long long start, long long end) {
 }
 
 /**
+ * Frees memory allocated for iterator
+ */
+void data::free_mem() {
+    this->mem_offset--;
+}
+
+/**
  * Puts symbol into symbol table
  */
 long long data::put_symbol(std::string name) {
     if(this->check_context(name)) {
-        std::cerr << this->error_alert << name << " - is already defined" << std::endl;
+        std::cerr << this->error_alert << name << " - is already defined" << this->put_line() << std::endl;
         this->error_found();
         return -1;
     }
@@ -118,14 +147,15 @@ std::string data::put_border_symbol() {
  */
 long long data::put_symbol_array(std::string name, long long start, long long end) {
     if(this->check_context(name)) {
-        std::cerr << this->error_alert << name << " - is already defined" << std::endl;
+        std::cerr << this->error_alert << name << " - is already defined" << this->put_line() << std::endl;
         this->error_found();
         return -1;
     }
 
     if(end < start) {
-        std::cerr << this->error_alert << "ending index can't be smaller than starting index" << std::endl;
+        std::cerr << this->error_alert << "ending index can't be smaller than starting index" << this->put_line() << std::endl;
         this->error_found();
+        return -1;
     }
 
     long long offset = this->alloc_mem_array(start, end);
@@ -153,8 +183,14 @@ long long data::put_symbol_iterator(std::string name) {
     long long offset = this->alloc_mem();
     std::shared_ptr<symbol> sym = std::make_shared<symbol>(name, offset);
     sym->is_iterator = true;
+    sym->is_init = true;
     this->sym_map.insert(std::pair<std::string, std::shared_ptr<symbol>>(name, sym));
     return offset;
+}
+
+void data::remove_iterator_symbol(std::string name) {
+    this->sym_map.erase(name);
+    this->free_mem();
 }
 
 /**
@@ -187,7 +223,7 @@ symbol *data::get_symbol(std::string name) {
     symbol *sym;
 
     if(!this->check_context(name)) {
-        std::cerr << this->error_alert << name << " - variable is not declared" << std::endl;
+        std::cerr << this->error_alert << name << " - variable is not declared" << this->put_line() << std::endl;
         this->error_found();
         return nullptr;
     }
@@ -205,6 +241,10 @@ variable *data::get_variable(std::string name) {
 
     if(sym == nullptr) {
         return nullptr;
+    } else if (sym->is_array) {
+        std::cerr << this->error_alert << name << " - invalid use of array variable" << this->put_line() << std::endl;
+        this->error_found();
+        return nullptr;
     }
 
     var = std::make_shared<variable>(sym->offset);
@@ -219,16 +259,19 @@ variable *data::get_variable_array_var(std::string name, std::string var_name) {
     std::shared_ptr<variable> var;
     symbol *array_sym = this->get_symbol(name);
     symbol *var_sym = this->get_symbol(var_name);
-
     if(array_sym == nullptr || var_sym == nullptr) {
         return nullptr;
-    }
-
-    if(!var_sym->is_init) {
-        std::cerr << this->error_alert << name << " - variable is not initialized" << std::endl;
+    } else if(var_sym->is_array) {
+        std::cerr << this->error_alert << var_name << " - invalid use of array variable" << this->put_line() << std::endl;
         this->error_found();
         return nullptr;
     }
+
+    /*if(!var_sym->is_init) {
+        std::cerr << this->error_alert << name << " - variable is not initialized" << this->put_line() << std::endl;
+        this->error_found();
+        return nullptr;
+    }*/
     
     var = std::make_shared<variable>(array_sym->offset, var_sym->offset);
     this->variables.push_back(var);
@@ -269,13 +312,21 @@ variable *data::get_value_num(long long value) {
 /**
  * Syntactic sugar 
  */ 
-variable *data::get_value(variable *var) {
+variable *data::get_value(variable *var, std::string name) {
     std::shared_ptr<variable> val;
 
     if(var == nullptr) {
-        return nullptr;
+        //return nullptr; TODO: could make problem
+        val = std::make_shared<variable>();
+        this->variables.push_back(val);
+        return val.get();
     }
 
+    if(!this->sym_map[name]->is_init) {
+        std::cerr << this->error_alert << name << " - variable is not initialized" << this->put_line() << std::endl;
+        this->error_found();
+    }
+    
     val = std::make_shared<variable>(var->array_addr, var->addr);
     this->variables.push_back(val);
     return val.get();
@@ -296,5 +347,8 @@ for_label *data::get_for_label(std::string iterator_name, variable *start, varia
 }
 
 std::shared_ptr<variable> data::nop() {
-    return std::make_shared<variable>();
+    std::shared_ptr<variable> var;
+    var = std::make_shared<variable>();
+    this->variables.push_back(var);
+    return var;
 }

@@ -69,8 +69,12 @@ program:        DECLARE
                                                                                         }
 ;
 
-declarations:   declarations pidentifier';'                                             { d->put_symbol(*$2); }
+declarations:   declarations pidentifier';'                                             { 
+                                                                                                d->set_line(yylineno);
+                                                                                                d->put_symbol(*$2); 
+                                                                                        }
                 | declarations pidentifier'('num':'num')'';'                            { 
+                                                                                                d->set_line(yylineno);
                                                                                                 addr = d->put_symbol_array(*$2, $4, $6);  
                                                                                                 if(addr != -1) {
                                                                                                         cg->array_offset(addr, $4);
@@ -83,7 +87,8 @@ commands:       commands command
                 | command       
 ;
 
-command:        identifier ASSIGN expression';'                                         { cg->assign($1); /*TODO: d->init_variable(current_id);*/ }             
+command:        identifier                                                              { d->init_variable(current_id); }
+                ASSIGN expression';'                                                    { cg->assign($1); }             
 
                 /*### IF_ELSE ###*/
                 | IF condition THEN commands                                            { 
@@ -109,24 +114,30 @@ command:        identifier ASSIGN expression';'                                 
                 /*### FOR_FROM_TO ###*/
                 | FOR pidentifier FROM value TO value DO                                {  
                                                                                                 d->put_symbol_iterator(*$2);
-                                                                                                d->init_variable(*$2);
+                                                                                                //d->init_variable(*$2);
                                                                                                 $1 = d->get_for_label(*$2, $4, $6);
                                                                                                 cg->for_to_block_first($1);
                                                                                         }
                         commands 
-                  ENDFOR                                                                { cg->for_to_block_second($1); }
+                  ENDFOR                                                                { 
+                                                                                                cg->for_to_block_second($1); 
+                                                                                                d->remove_iterator_symbol(*$2);
+                                                                                        }
 
                 /*### FOR_FROM_DOWNTO ###*/
                 | FOR pidentifier FROM value DOWNTO value DO                            { 
                                                                                                 d->put_symbol_iterator(*$2);
-                                                                                                d->init_variable(*$2);
+                                                                                                //d->init_variable(*$2);
                                                                                                 $1 = d->get_for_label(*$2, $4, $6);
                                                                                                 cg->for_downto_block_first($1);
                                                                                         }
                         commands 
-                  ENDFOR                                                                { cg->for_downto_block_second($1); }
+                  ENDFOR                                                                { 
+                                                                                                cg->for_downto_block_second($1); 
+                                                                                                d->remove_iterator_symbol(*$2);
+                                                                                        }
 
-                | READ identifier';'                                                    { cg->read($2); }
+                | READ identifier';'                                                    { d->init_variable(current_id); cg->read($2); }
                 | WRITE value';'                                                        { cg->write($2); }
 ;
 
@@ -147,12 +158,23 @@ condition:      value EQ value                                                  
 ;
 
 value:          num                                                                     { $$ = d->get_value_num($1); }
-                | identifier                                                            { $$ = d->get_value($1); }
+                | identifier                                                            { $$ = d->get_value($1, current_id); }
 ;
 
-identifier:     pidentifier                                                             { $$ = d->get_variable(*$1); }
-                | pidentifier'('pidentifier')'                                          { $$ = d->get_variable_array_var(*$1, *$3); current_id = *$3; }
-                | pidentifier'('num')'                                                  { $$ = d->get_variable_array_num(*$1, $3); }
+identifier:     pidentifier                                                             { 
+                                                                                                d->set_line(yylineno);
+                                                                                                $$ = d->get_variable(*$1); 
+                                                                                                current_id = *$1; 
+                                                                                        }
+                | pidentifier'('pidentifier')'                                          {  
+                                                                                                d->set_line(yylineno);
+                                                                                                $$ = d->get_variable_array_var(*$1, *$3); 
+                                                                                                current_id = *$3; 
+                                                                                        }
+                | pidentifier'('num')'                                                  { 
+                                                                                                d->set_line(yylineno);
+                                                                                                $$ = d->get_variable_array_num(*$1, $3); 
+                                                                                        }
 ;
 
 

@@ -15,7 +15,6 @@ io_handler::io_handler(int argc, char** argv) {
 
     this->input_file = argv[1];
     this->output_file = argv[2];
-    
 }
 
 FILE *io_handler::read_code() {

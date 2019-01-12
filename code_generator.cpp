@@ -119,8 +119,6 @@ variable *code_generator::copy_variable(variable *var) {
 
     //TODO: check this shit
     this->single_var(var, G);
-    //this->code.push_back("PUT G");
-    //this->incr_offset(1);
     this->reg_to_mem(G, new_var);
 
     return new_var;
@@ -172,8 +170,6 @@ void code_generator::reg_to_mem(enum reg r, variable *var) {
     this->incr_offset(1);
 }
 
-
-//TODO: This could generate problems (CONSTANTS!!!!!)
 void code_generator::single_var(variable *var, enum reg r) {
     if(var->value != -1) {
         std::vector<std::string> cmds;
