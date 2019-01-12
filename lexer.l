@@ -70,5 +70,5 @@ PUNCT                   [\(\)\:\;]
 }
 
 [ \t\n]+                { /*ignore whitespaces*/ }
-.                       { return ERROR; }
+.                       { std::cerr << "Syntax error" << std::endl; return ERROR; }
 %%

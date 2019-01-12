@@ -45,7 +45,7 @@ struct symbol {
     symbol(std::string name, long long offset) {
         this->name = name;
         this->offset = offset;
-        this->is_init = true; //SHOULD BE FALSE!!!!!!!!!
+        this->is_init = false; //SHOULD BE FALSE!!!!!!!!!
         this->is_iterator = false;
         this->is_const = false;
         this->is_array = false;
@@ -58,7 +58,7 @@ struct symbol {
     symbol(std::string name, long long offset, long long array_start, long long array_end) {
         this->name = name;
         this->offset = offset;
-        this->is_init = true; //TODO: CHECK THIS SHIT!!!!!!
+        this->is_init = true;
         this->is_iterator = false;
         this->is_const = false;
         this->is_array = true;
@@ -111,7 +111,7 @@ struct variable {
     variable() {
         this->array_addr = -1;
         this->addr = 0;
-        this->value = 0;
+        this->value = -1;
     }
 
     //Single variable
