@@ -42,10 +42,10 @@ variable *data::init_variable(variable *var, std::string name) {
             this->sym_map[name]->is_init = true;
         }
 
-    } else if(var->value != -1) {
+    } /*else if(var->value != -1) {
         std::cerr << this->error_alert << name << " - variable is not declared" << this->put_line() << std::endl;
         this->error_found();
-    }
+    }*/
 
     if(var == nullptr) {
         return this->nop().get();
@@ -280,6 +280,7 @@ variable *data::get_variable_array_var(std::string name, std::string var_name) {
         this->error_found();
         return nullptr;
     }
+
     
     var = std::make_shared<variable>(array_sym->offset, var_sym->offset);
     this->variables.push_back(var);
