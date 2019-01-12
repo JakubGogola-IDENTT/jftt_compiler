@@ -32,18 +32,24 @@ bool data::check_context(std::string name) {
 /**
  * Sets flag of initialization in variable
  */
-void data::init_variable(std::string name) {
+variable *data::init_variable(variable *var, std::string name) {
     if(this->check_context(name)) {
-        if(this->sym_map[name]->is_iterator) {
+        if(this->sym_map[name]->is_iterator && var->array_addr == -1) {
             std::cerr << this->error_alert << name << " - iterator can't be modified" << this->put_line() << std::endl;
             this->error_found();
         } else {
             this->sym_map[name]->is_init = true;
         }
-    } else {
-        std::cerr << this->error_alert << name << " - variable is not defined" << this->put_line() << std::endl;
+    } else if(var->value != -1) {
+        std::cerr << this->error_alert << name << " - variable is not declared" << this->put_line() << std::endl;
         this->error_found();
     }
+
+    if(var == nullptr) {
+        return this->nop().get();
+    }
+
+    return var;
 }
 
 /**
@@ -241,7 +247,7 @@ variable *data::get_variable(std::string name) {
 
     if(sym == nullptr) {
         return nullptr;
-    } else if (sym->is_array) {
+    } else if(sym->is_array) {
         std::cerr << this->error_alert << name << " - invalid use of array variable" << this->put_line() << std::endl;
         this->error_found();
         return nullptr;
@@ -261,17 +267,15 @@ variable *data::get_variable_array_var(std::string name, std::string var_name) {
     symbol *var_sym = this->get_symbol(var_name);
     if(array_sym == nullptr || var_sym == nullptr) {
         return nullptr;
+    } else if(!array_sym->is_array) {
+        std::cerr << this->error_alert << var_name << " - variable is not array" << this->put_line() << std::endl;
+        this->error_found();
+        return nullptr;
     } else if(var_sym->is_array) {
         std::cerr << this->error_alert << var_name << " - invalid use of array variable" << this->put_line() << std::endl;
         this->error_found();
         return nullptr;
     }
-
-    /*if(!var_sym->is_init) {
-        std::cerr << this->error_alert << name << " - variable is not initialized" << this->put_line() << std::endl;
-        this->error_found();
-        return nullptr;
-    }*/
     
     var = std::make_shared<variable>(array_sym->offset, var_sym->offset);
     this->variables.push_back(var);
@@ -286,6 +290,12 @@ variable *data::get_variable_array_num(std::string name, long long num) {
     symbol *array_sym = this->get_symbol(name);
 
     if(array_sym == nullptr) {
+        return nullptr;
+    }
+
+    if(!array_sym->is_array) {
+        std::cerr << this->error_alert << name << " - variable is not array" << this->put_line() << std::endl;
+        this->error_found();
         return nullptr;
     }
 
@@ -316,15 +326,17 @@ variable *data::get_value(variable *var, std::string name) {
     std::shared_ptr<variable> val;
 
     if(var == nullptr) {
-        //return nullptr; TODO: could make problem
-        val = std::make_shared<variable>();
-        this->variables.push_back(val);
-        return val.get();
+        //return nullptr; FIXME: could make problem
+        //val = std::make_shared<variable>();
+        //this->variables.push_back(val);
+        //return val.get();
+        return this->nop().get();
     }
 
     if(!this->sym_map[name]->is_init) {
         std::cerr << this->error_alert << name << " - variable is not initialized" << this->put_line() << std::endl;
         this->error_found();
+        return this->nop().get();
     }
     
     val = std::make_shared<variable>(var->array_addr, var->addr);
