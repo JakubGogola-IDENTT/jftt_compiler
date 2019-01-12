@@ -14,6 +14,7 @@ int yyparse();
 void yyerror(char const *s);
 extern FILE *yyin;
 extern int yylineno;
+
 const std::string error_alert = "\x1b[31merror\x1b[0m: ";
 
 std::shared_ptr<data> d = std::make_shared<data>();
@@ -88,6 +89,7 @@ commands:       commands command
                 | command       
 ;
 
+
 command:        identifier                                                              { $1 = d->init_variable($1, current_id); }
                 ASSIGN expression';'                                                    { cg->assign($1); }             
 
@@ -137,6 +139,7 @@ command:        identifier                                                      
                                                                                                 cg->for_downto_block_second($1); 
                                                                                                 d->remove_iterator_symbol(*$2);
                                                                                         }
+
 
                 | READ identifier';'                                                    { 
                                                                                                 $2 = d->init_variable($2, current_id); 
