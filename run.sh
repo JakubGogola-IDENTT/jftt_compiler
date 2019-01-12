@@ -1,5 +1,5 @@
 #!/bin/bash
 
 clear
-./kompilator $1 $2
-./maszyna_rejestrowa/maszyna-rejestrowa-cln $2
+./kompilator $1
+./maszyna_rejestrowa/maszyna-rejestrowa-cln res.mr

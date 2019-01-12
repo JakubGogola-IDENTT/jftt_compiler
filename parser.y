@@ -13,6 +13,7 @@ int yylex();
 int yyparse();
 void yyerror(std::string s);
 extern FILE *yyin;
+extern int yylineno;
 
 std::shared_ptr<data> d = std::make_shared<data>();
 std::shared_ptr<code_generator> cg = std::make_shared<code_generator>(d);
@@ -149,8 +150,8 @@ value:          num                                                             
                 | identifier                                                            { $$ = d->get_value($1); }
 ;
 
-identifier:     pidentifier                                                             { $$ = d->get_variable(*$1); current_id = *$1; }
-                | pidentifier'('pidentifier')'                                          { $$ = d->get_variable_array_var(*$1, *$3); }
+identifier:     pidentifier                                                             { $$ = d->get_variable(*$1); }
+                | pidentifier'('pidentifier')'                                          { $$ = d->get_variable_array_var(*$1, *$3); current_id = *$3; }
                 | pidentifier'('num')'                                                  { $$ = d->get_variable_array_num(*$1, $3); }
 ;
 

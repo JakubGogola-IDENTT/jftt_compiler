@@ -38,7 +38,6 @@ void data::init_variable(std::string name) {
         std::cerr << this->error_alert << name << " - variable is not defined" << std::endl;
         this->error_found();
     }
-    //TODO: finish!!!!
 }
 
 /**
@@ -144,7 +143,7 @@ long long data::put_symbol_iterator(std::string name) {
     if(this->check_context(name)) {
         //Variable exists but is not iterator
         if(!this->get_symbol(name)->is_iterator) {
-            std::cerr << this->error_alert << name << " - can't be local operator in for loop" << std::endl;
+            std::cerr << this->error_alert << name << " - variable already defined and can't be local operator in for loop" << std::endl;
             return -1;
         } else {
             return this->get_symbol(name)->offset;
@@ -192,18 +191,8 @@ symbol *data::get_symbol(std::string name) {
         this->error_found();
         return nullptr;
     }
-    //TODO: CHECK IF IT WORKS!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! (if not - make pointer)
     sym = this->sym_map[name].get();
 
-    //TODO: UNECESSARRY CODE!!!!! NOT HERE
-    /*if(!sym->is_array && !sym->is_init) {
-        std::cerr << this->error_alert << name << " - variable is not initialized" << std::endl;
-        this->error_found();
-        return nullptr;
-    }*/
-
-    //TODO: CHECK!!!!!!!!!!!!!!!
-    //return this->sym_map[name].get();
     return sym;
 }
 
