@@ -36,7 +36,7 @@ public:
 
     //Checks if variable exists
     bool check_context(std::string name);
-    void init_variable(std::string);
+    variable *init_variable(variable *var, std::string);
 
     void error_found();
     bool get_errors();

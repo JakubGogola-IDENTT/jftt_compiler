@@ -11,9 +11,11 @@
 
 int yylex();
 int yyparse();
-void yyerror(std::string s);
+void yyerror(char const *s);
 extern FILE *yyin;
 extern int yylineno;
+
+const std::string error_alert = "\x1b[31merror\x1b[0m: ";
 
 std::shared_ptr<data> d = std::make_shared<data>();
 std::shared_ptr<code_generator> cg = std::make_shared<code_generator>(d);
@@ -87,7 +89,8 @@ commands:       commands command
                 | command       
 ;
 
-command:        identifier                                                              { d->init_variable(current_id); }
+
+command:        identifier                                                              { $1 = d->init_variable($1, current_id); }
                 ASSIGN expression';'                                                    { cg->assign($1); }             
 
                 /*### IF_ELSE ###*/
@@ -137,7 +140,11 @@ command:        identifier                                                      
                                                                                                 d->remove_iterator_symbol(*$2);
                                                                                         }
 
-                | READ identifier';'                                                    { d->init_variable(current_id); cg->read($2); }
+
+                | READ identifier';'                                                    { 
+                                                                                                $2 = d->init_variable($2, current_id); 
+                                                                                                cg->read($2); 
+                                                                                        }
                 | WRITE value';'                                                        { cg->write($2); }
 ;
 
@@ -203,6 +210,8 @@ int main(int argc, char** argv) {
         return 0;
 }
 
-void yyerror(std::string s) {
-        std::cerr << s << std::endl;
+void yyerror(char const *s) {
+        std::cerr << error_alert << s << " - unrecognized token (line " << yylineno << ")" << std::endl;
+        std::cerr << "### \x1b[31mErrors occured\x1b[0m ###" << std::endl;
+        exit(0);
 }

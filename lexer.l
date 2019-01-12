@@ -9,6 +9,7 @@
 #include <cstring>
 #include "parser.tab.h"
 
+const std::string error_alert = "\x1b[31merror\x1b[0m: ";
 
 %}
 
@@ -70,5 +71,6 @@ PUNCT                   [\(\)\:\;]
 }
 
 [ \t\n]+                { /*ignore whitespaces*/ }
-.                       { std::cerr << "Syntax error" << std::endl; return ERROR; }
+.                       { return ERROR; }
 %%
+
