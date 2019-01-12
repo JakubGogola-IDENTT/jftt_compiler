@@ -1,9 +1,11 @@
 *.tab.c
 *.tab.h
 *.c
-*.imp
+*.mr
 *.o
+*.imp
+*.sh
 kompilator
-labor4.zip
+*.zip
 maszyna_rejestrowa/**/*.o
 
