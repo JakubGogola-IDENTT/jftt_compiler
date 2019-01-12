@@ -277,7 +277,9 @@ variable *data::get_variable_array_var(std::string name, std::string var_name) {
         return nullptr;
     } else if(var_sym->is_array) {
         std::cerr << this->error_alert << var_name << " - invalid use of array variable" << this->put_line() << std::endl;
-
+        this->error_found();
+        return nullptr;
+    }
     
     var = std::make_shared<variable>(array_sym->offset, var_sym->offset);
     this->variables.push_back(var);
