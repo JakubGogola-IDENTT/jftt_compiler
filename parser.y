@@ -153,6 +153,8 @@ identifier:     pidentifier                                                     
                 | pidentifier'('pidentifier')'                                          { $$ = d->get_variable_array_var(*$1, *$3); }
                 | pidentifier'('num')'                                                  { $$ = d->get_variable_array_num(*$1, $3); }
 ;
+
+
 %%
 
 int main(int argc, char** argv) {
