@@ -354,12 +354,18 @@ label *data::get_label(long long go_to, long long jump_false) {
     return new label(go_to, jump_false);
 }
 
+/**
+ * Generates label for FOR loop.
+ */
 for_label *data::get_for_label(std::string iterator_name, variable *start, variable *end) {
     variable *var = this->get_variable(iterator_name);
     variable *skip = this->get_value_num(1);
     return new for_label(var, start, end, skip);
 }
 
+/**
+ * Generates variable which doesn't make sense.
+ */
 std::shared_ptr<variable> data::nop() {
     std::shared_ptr<variable> var;
     var = std::make_shared<variable>();
