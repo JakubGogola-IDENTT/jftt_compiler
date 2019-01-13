@@ -364,7 +364,7 @@ for_label *data::get_for_label(std::string iterator_name, variable *start, varia
 }
 
 /**
- * Generates variable which doesn't make sense.
+ * It doesn't make sense but it works perfectly. 
  */
 std::shared_ptr<variable> data::nop() {
     std::shared_ptr<variable> var;
