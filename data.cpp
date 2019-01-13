@@ -331,13 +331,7 @@ variable *data::get_value(variable *var, std::string name) {
     std::shared_ptr<variable> val;
 
     if(var == nullptr) {
-
-        //return nullptr; FIXME: could make problem
-        //val = std::make_shared<variable>();
-        //this->variables.push_back(val);
-        //return val.get();
         return this->nop().get();
-
     }
 
     if(!this->sym_map[name]->is_init) {
