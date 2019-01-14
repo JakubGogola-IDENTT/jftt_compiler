@@ -10,7 +10,7 @@ Do napisania kompilatora zostały użyte następujące narzędzia:
 - <b>g++</b> w wersji 8.2.0,
 - <b>GNU Make</b> w wersji 4.2.1.
 
-Kompilator został napisany i przetestowany pod systemem `Ubuntu 18.10 (Cosmic Cuttlefish)`. Wykorzystano jezyk `C++` w standardzie <b>`C++17`</b>.
+Kompilator został napisany i przetestowany pod systemem `Ubuntu 18.10 (Cosmic Cuttlefish)`. Wykorzystano język `C++` w standardzie <b>`C++17`</b>.
 
 ## Kompilacja
 W celu kompilacji plików źródłowych należy użyć polecenia `make`.
@@ -18,7 +18,7 @@ W celu kompilacji plików źródłowych należy użyć polecenia `make`.
 Aby usunąć pliki powstałe w wyniku kompilacji należy wywołać polecenie `make clean`.
 
 ## Uruchamianie kompilatora
-Aby uruchomić kompilator należy użyć polecanie `./kompilator filename.imp filename.mr`, gdzie:
+Aby uruchomić kompilator należy użyć polecania `./kompilator filename.imp filename.mr`, gdzie:
 
 - `filename.imp` - nazwa pliku z kodem wejściowym,
 - `filename.mr` - nazwa pliku z kodem wynikowym.
