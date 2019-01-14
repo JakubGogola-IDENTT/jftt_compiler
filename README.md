@@ -29,8 +29,79 @@ Jeżeli kompilacja przebiegnie pomyślnie zostanie zwrócony plik z kodem na mas
 Do dyspozycji studentów został oddany interpreter prostego kodu maszynowego autorstwa <b>dra Macieja Gębali</b>. Jest on dostępny do pobrania pod tym [linkiem](https://cs.pwr.edu.pl/gebala/dyd/jftt2018/labor4.zip). Interpreter znajduje się również w niniejszym repozytorium w folderze `maszyna_rejestrowa` wraz z plikiem README opisującym sposób kompilacji i uruchomienia.
 
 ## Specyfikacja języka
-TODO:
+Język przeznaczony dla kompilatora jest opisany następują gramatyką: 
 
+    program      -> DECLARE declarations IN commands END
 
+    declarations -> declarations pidentifier;
+                | declarations pidentifier(num:num);
+                | 
+
+    commands     -> commands command
+                | command
+
+    command      -> identifier := expression;
+                | IF condition THEN commands ELSE commands ENDIF
+                | IF condition THEN commands ENDIF
+                | WHILE condition DO commands ENDWHILE
+                | DO commands WHILE condition ENDDO
+                | FOR pidentifier FROM value TO value DO commands ENDFOR
+                | FOR pidentifier FROM value DOWNTO value DO commands ENDFOR
+                | READ identifier;
+                | WRITE value;
+
+    expression   -> value
+                | value + value
+                | value - value
+                | value * value
+                | value / value
+                | value % value
+
+    condition    -> value = value
+                | value != value
+                | value < value
+                | value > value
+                | value <= value
+                | value >= value
+
+    value        -> num
+                | identifier
+
+    identifier   -> pidentifier
+                | pidentifier(pidentifier)
+                | pidentifier(num)
+
+Poniżej znajduje się przykładowy program napisany w tym języku:
+
+    [ Rozklad liczby na czynniki pierwsze ]
+    DECLARE
+        n; m; reszta; potega; dzielnik;
+    IN
+        READ n;
+        dzielnik := 2;
+        m := dzielnik * dzielnik;
+        WHILE n >= m DO
+            potega := 0;
+            reszta := n % dzielnik;
+            WHILE reszta = 0 DO
+                n := n / dzielnik;
+                potega := potega + 1;
+                reszta := n % dzielnik;
+            ENDWHILE
+            IF potega > 0 THEN [ czy znaleziono dzielnik ]
+                WRITE dzielnik;
+                WRITE potega;
+            ELSE
+                dzielnik := dzielnik + 1;
+            m := dzielnik * dzielnik;
+            ENDIF
+        ENDWHILE
+        IF n != 1 THEN [ ostatni dzielnik ]
+            WRITE n;
+            WRITE 1;
+        ENDIF
+    END
+
+Powyższe gramatyka oraz przykładowy program są autorstwa <b>dra Macieja Gębali</b>. Szczegółowe informacje odnośnie zadania można znaleźć w pliku `labor4.pdf` znajdujacym się w repozytorium.
 
 
