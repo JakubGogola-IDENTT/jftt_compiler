@@ -10,7 +10,7 @@ Do napisania kompilatora zostały użyte następujące narzędzia:
 - <b>g++</b> w wersji 8.2.0,
 - <b>GNU Make</b> w wersji 4.2.1.
 
-Kompilator został napisany i przetestowany pod systemem `Ubuntu 18.10 (Cosmic Cuttlefish)`. Wykorzystano język `C++` w standardzie <b>`C++17`</b>.
+Kompilator został napisany i przetestowany pod systemem `Kubuntu 18.10 (Cosmic Cuttlefish)`. Wykorzystano język `C++` w standardzie <b>`C++17`</b>.
 
 ## Kompilacja
 W celu kompilacji plików źródłowych należy użyć polecenia `make`.
