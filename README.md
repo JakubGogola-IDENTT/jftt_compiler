@@ -1,6 +1,6 @@
 # Kompilator - JFTT 2018/2019
 
-Projekt kompilatora stworzony w ramach kursu <b>Języki Formalne i Techniki Translacji</b>. Przedmiot realizowany dla studentów III informatyki WPPT Politechniki Wrocławskiej w semestrze zimowym 2018/2019. Wykładowca: <b>dr Maciej Gębala</b>.
+Projekt kompilatora stworzony w ramach kursu <b>Języki Formalne i Techniki Translacji</b>. Przedmiot realizowany dla studentów III informatyki WPPT Politechniki Wrocławskiej w semestrze zimowym 2018/2019. Wykładowca: <b>dr Maciej Gębala</b>. Pod tym [linkiem](http://cs.pwr.edu.pl/gebala/dyd/jftt2018.html) znajduje się strona kursu.
 
 ## Technologie
 Do napisania kompilatora zostały użyte następujące narzędzia:
@@ -93,7 +93,7 @@ Poniżej znajduje się przykładowy program napisany w tym języku:
                 WRITE potega;
             ELSE
                 dzielnik := dzielnik + 1;
-            m := dzielnik * dzielnik;
+                m := dzielnik * dzielnik;
             ENDIF
         ENDWHILE
         IF n != 1 THEN [ ostatni dzielnik ]
@@ -103,5 +103,6 @@ Poniżej znajduje się przykładowy program napisany w tym języku:
     END
 
 Powyższe gramatyka oraz przykładowy program są autorstwa <b>dra Macieja Gębali</b>. Szczegółowe informacje odnośnie zadania można znaleźć w pliku `labor4.pdf` znajdujacym się w repozytorium.
+
 
 
