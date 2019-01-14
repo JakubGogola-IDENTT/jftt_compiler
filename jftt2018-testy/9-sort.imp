@@ -1,4 +1,5 @@
-
+[ sort.imp 
+]
 DECLARE
 	tab(1:22); x; q; w; j; k; n; m;
 IN
