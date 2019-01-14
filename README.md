@@ -1,7 +1,36 @@
-Projekt kompilatora w ramach kursu <b>Języki Formalne i Techniki Translacji</b>. Przedmiot realizowany dla studentów informatyki WPPT Politechniki Wrocławskiej w semestrze zimowym 2018/2019.
+# Kompilator - JFTT 2018/2019
 
-Aby skompilowac projekt należy użyć polecania `make`. W celu kompilacji kodu należy użyć polecenia `./compiler filename.imp`, gdzie `filename.imp` jest nazwą pliku zawierającą kod źródłowy. Kod wynikowy, w przypadku bezbłędnej kompilacji, zostanie wypisany do pliku `filename.out`. W celu uruchomienia skompilowanego programu należy użyć maszyny rejestrowej znajdującej się w folderze <i>maszyna-rejestrowa</i>.
+Projekt kompilatora stworzony w ramach kursu <b>Języki Formalne i Techniki Translacji</b>. Przedmiot realizowany dla studentów III informatyki WPPT Politechniki Wrocławskiej w semestrze zimowym 2018/2019. Wykładowca: <b>dr Maciej Gębala</b>.
 
-Kompilator został przetestowany i skompilowany pod systemem `Kubuntu 18.10 (Cosmic Cuttlefish)` dla kompilatora języka `C++` `g++` dla standardu `c++11` (wiąże się to z pewnymi ogarniczeniami pozostałych dwóch, dalej wymienionych programów), dla programu `flex` w wersji 2.6.4 i dla programu `bison` w wersji 3.0.4.
+## Technologie
+Do napisania kompilatora zostały użyte następujące narzędzia:
 
-TODO: Specyfikacja języka.
+- <b>Flex</b> w wersji 2.6.4,
+- <b>Bison</b> w wersji 3.0.4,
+- <b>g++</b> w wersji 8.2.0,
+- <b>GNU Make</b> w wersji 4.2.1.
+
+Kompilator został napisany i przetestowany pod systemem `Ubuntu 18.10 (Cosmic Cuttlefish)`. Wykorzystano jezyk `C++` w standardzie <b>`C++17`</b>.
+
+## Kompilacja
+W celu kompilacji plików źródłowych należy użyć polecenia `make`.
+
+Aby usunąć pliki powstałe w wyniku kompilacji należy wywołać polecenie `make clean`.
+
+## Uruchamianie kompilatora
+Aby uruchomić kompilator należy użyć polecanie `./kompilator filename.imp filename.mr`, gdzie:
+
+- `filename.imp` - nazwa pliku z kodem wejściowym,
+- `filename.mr` - nazwa pliku z kodem wynikowym.
+
+Jeżeli kompilacja przebiegnie pomyślnie zostanie zwrócony plik z kodem na maszynę rejestrową. W razie wystąpienia błędów w kodzie wejściowym, zostaną wypisane komunikaty o rodzaju znalezionych błędów oraz miejscu ich występowania. W takim przypadku kompilator nie zwraca pliku z kodem wynikowym.
+
+## Interpreter
+Do dyspozycji studentów został oddany interpreter prostego kodu maszynowego autorstwa <b>dra Macieja Gębali</b>. Jest on dostępny do pobrania pod tym [linkiem](https://cs.pwr.edu.pl/gebala/dyd/jftt2018/labor4.zip). Interpreter znajduje się również w niniejszym repozytorium w folderze `maszyna_rejestrowa` wraz z plikiem README opisującym sposób kompilacji i uruchomienia.
+
+## Specyfikacja języka
+TODO:
+
+
+
+
