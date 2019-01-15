@@ -6,6 +6,7 @@
 #include <vector>
 #include <string>
 #include <limits>
+#include <bitset>
 
 #include "code_generator.hpp"
 #include "data.hpp"
@@ -117,7 +118,6 @@ variable *code_generator::copy_variable(variable *var) {
     name = d->put_border_symbol();
     new_var = d->get_variable(name);
 
-    //TODO: check this shit
     this->single_var(var, G);
     this->reg_to_mem(G, new_var);
 
@@ -711,7 +711,7 @@ cond_label *code_generator::leq(variable *v_1, variable *v_2) {
 /**
  * Generates constant value
  */
-std::vector<std::string> code_generator::gen_const(long long c, enum reg r) {
+std::vector<std::string> code_generator::gen_const_slow(long long c, enum reg r) {
     std::vector<std::string> cmds;
     std::string sub_cmd = "SUB " + this->reg_sym[r] + " " + this->reg_sym[r];
     std::string inc_cmd = "INC " + this->reg_sym[r];
@@ -795,6 +795,70 @@ std::vector<std::string> code_generator::gen_const(long long c, enum reg r) {
             }
         }
     }
+
+    return cmds;
+}
+
+/**
+ * New const generating
+ * TODO: CHECK!!!!!
+ */
+std::vector<std::string> code_generator::gen_const(long long c, enum reg r) {
+    std::vector<std::string> cmds;
+    std::bitset<64> bs(c);
+    std::string sub_cmd = "SUB " + this->reg_sym[r] + " " + this->reg_sym[r];
+    std::string inc_cmd = "INC " + this->reg_sym[r];
+    std::string add_cmd = "ADD " + this->reg_sym[r] + " " + this->reg_sym[r];
+
+    bool is_large = false;
+    long long inc_cost = std::numeric_limits<long long>::max();
+    long long add_cost = 0;
+
+    //Set 0 to given register r
+    cmds.push_back(sub_cmd);
+    add_cost += this->costs[I_SUB];
+
+    if(c == 0) {
+        return cmds;
+    } else if(c == 1) {
+        cmds.push_back(inc_cmd);
+        return cmds;
+    }
+
+    if(c > 200) {
+        is_large = true;
+    }
+
+    std::string bin_value = bs.to_string();
+    std::string::iterator it;
+
+    size_t index = 0;
+    for(it = bin_value.begin(); it != bin_value.end(); it++) {
+        if(*it == '1') {
+            cmds.push_back(inc_cmd);
+            add_cost += I_INC;
+        }
+
+        if(index < bin_value.size() - 1) {
+            cmds.push_back(add_cmd);
+            add_cost += I_ADD;
+        }
+
+        index++;
+    }
+
+    if(!is_large) {
+        inc_cost = c * this->costs[I_INC] + this->costs[I_SUB];
+        if(inc_cost < add_cost) {
+            cmds.clear();
+            cmds.push_back(sub_cmd);
+
+            for(int i = 0; i < c; i++) {
+                cmds.push_back(inc_cmd);
+            }
+        }
+    }
+
 
     return cmds;
 }
