@@ -70,7 +70,7 @@ PUNCT                   [\(\)\:\;]
     "]"                 BEGIN(INITIAL);
 }
 
-[ \t\n]+                { /*ignore whitespaces*/ }
+[ \t\r\n]+                { /*ignore whitespaces*/ }
 .                       { return ERROR; }
 %%
 
